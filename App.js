@@ -5,18 +5,40 @@ import { MapView } from 'expo';
 import UserLocation from './components/UserLocation';
 
 export default class App extends React.Component {
-  getUserLocationHandler = () => {
+  constructor() {
+    super()
+    this.state = {
+      latitude: 0,
+      longitude: 0,
+    }
+  }
+
+
+  componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       position => {
-        console.log(position);
+        this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude })
       },
-      err => console.log(err)
+      (error) => console.log(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
-  };
+
+    this.watchID = navigator.geolocation.watchPosition(
+      position => {
+        this.setState({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      }
+    );
+  }
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID)
+  }
+
   render() {
     return (
-      // <View style={styles.container}>
-      //   <UserLocation onGetLocation={this.getUserLocationHandler} />
       <MapView
         style={{ flex: 1 }}
         initialRegion={{
@@ -25,8 +47,17 @@ export default class App extends React.Component {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
-      />
-      // </View>
+      >
+        <MapView.Marker
+          coordinate={
+            {
+              latitude: this.state.latitude,
+              longitude: this.state.longitude,
+            }
+          }
+        />
+      </MapView>
+
     );
   }
 }
