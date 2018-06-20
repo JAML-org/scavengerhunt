@@ -8,42 +8,24 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      latitude: null,
-      longitude: null,
+      latitude: 0,
+      longitude: 0,
       error: null,
-      isLoading: true,
     };
   }
-  getUserLocationHandler = () => {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        this.setState({
-          isLoading: false,
-          markers: position,
-        });
-        console.log(position);
-      },
-      err => console.log(err)
-    );
-  };
 
   componentDidMount() {
-    this.watchId = navigator.geolocation.watchPosition(
+    navigator.geolocation.getCurrentPosition(
+    )
+    this.watchId = navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
-          isLoading: true,
           error: null,
         });
       },
-      error => this.setState({ error: error.message }),
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000,
-        distanceFilter: 10,
-      }
+      error => console.log(error.message), { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
   }
   componentWillUnmount() {
@@ -52,26 +34,26 @@ export default class App extends React.Component {
 
   render() {
     return (
-        <MapView
-          style={{ flex: 1 }}
-          initialRegion={{
-            latitude: 40.705076,
-            longitude: -74.00916,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        >
-        return (
-          <MapView.Marker coordinate={
-            {latitude: this.state.latitude,
-              longitude: this.state.longitude}
-              title={"YOU ARE HERE"}
+      <MapView
+        style={{ flex: 1 }}
+        initialRegion={{
+          latitude: 40.705076,
+          longitude: -74.00916,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+      >
+        {/* return (
+         <MapView.Marker
+          coordinate={
+            {
+              latitude: this.state.latitude,
+              longitude: this.state.longitude
+            }
           }
-        } />
-        )
-
-
-        </MapView>
+        />
+        ) */}
+      </MapView>
 
     );
   }
