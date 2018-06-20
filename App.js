@@ -15,20 +15,14 @@ export default class App extends React.Component {
 
 
   componentDidMount() {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude })
-      },
-      (error) => console.log(error.message),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-    );
-
     this.watchID = navigator.geolocation.watchPosition(
       position => {
+        console.log("WERTCHED POSITION", position)
         this.setState({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         });
+        console.log(this.state)
       }
     );
   }
