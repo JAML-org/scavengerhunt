@@ -5,31 +5,36 @@ import { MapView } from 'expo';
 import UserLocation from './components/UserLocation';
 
 export default class App extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super()
     this.state = {
       latitude: 0,
       longitude: 0,
-      error: null,
-    };
+    }
   }
+
 
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
-    )
-    this.watchId = navigator.geolocation.getCurrentPosition(
+      position => {
+        this.setState({ latitude: position.coords.latitude, longitude: position.coords.longitude })
+      },
+      (error) => console.log(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    );
+
+    this.watchID = navigator.geolocation.watchPosition(
       position => {
         this.setState({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
-          error: null,
         });
-      },
-      error => console.log(error.message), { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+      }
     );
   }
+
   componentWillUnmount() {
-    navigator.geolocation.clearWatch(this.watchId);
+    navigator.geolocation.clearWatch(this.watchID)
   }
 
   render() {
@@ -43,24 +48,25 @@ export default class App extends React.Component {
           longitudeDelta: 0.0421,
         }}
       >
-        {/* return (
-         <MapView.Marker
+        <MapView.Marker
           coordinate={
             {
               latitude: this.state.latitude,
-              longitude: this.state.longitude
+              longitude: this.state.longitude,
             }
           }
         />
-        ) */}
       </MapView>
 
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+// });
