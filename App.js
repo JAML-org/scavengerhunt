@@ -15,9 +15,7 @@ export default class App extends React.Component {
     this.state = {
       latitude: 0,
       longitude: 0,
-      markers: [],
-      distance: 500,
-      showCircle: true
+      distance: 5,
     }
     this.inPerimeter = this.inPerimeter.bind(this)
   }
@@ -35,20 +33,13 @@ export default class App extends React.Component {
       }
     );
 
-    const markers = Geofence.filterByProximity(fakePoints[0], {
-      latitude: 40.705076,
-      longitude: -74.00916,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
-    }, this.state.distance / 1000);
-    this.setState({ markers });
-
   }
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID)
   }
 
+  //translates the distance btwn twp coordinates from longitude/latitude to kilometers
   distanceInKM(point1, point2) {
     let lat1 = point1.latitude;
     let lon1 = point1.longitude;
@@ -72,7 +63,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { markers } = this.state
+    const markers = fakePoints
     return (
       <MapView
         style={{ flex: 1 }}
@@ -99,26 +90,6 @@ export default class App extends React.Component {
             }
           }
         />
-
-        {this.state.markers.map(marker => (
-          <MapView.Marker
-            key={marker.key}
-            coordinate={marker}
-            title={marker.title}
-            description={null}
-          />
-        ))}
-        {this.state.markers.map(marker => (
-          <MapView.Circle
-            key={marker.key}
-            center={{
-              latitude: marker.latitude, longitude: marker.longitude, latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-            radius={this.state.distance}
-            strokeColor='transparent'
-            fillColor="rgba(0, 0, 0, 0.2)" />
-        ))}
       </MapView>
 
     );
