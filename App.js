@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
 
 export default class App extends Component {
   render() {
+    const markers = fakePoints
     return (
       <View style={styles.container}>
         <RegForm />
