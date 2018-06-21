@@ -1,66 +1,29 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { MapView } from 'expo';
+import React, { Component } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
+import RegForm from './components/RegForm';
 
-import UserLocation from './components/UserLocation';
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#36485f',
+    paddingLeft: 60,
+    paddingRight: 60,
+  },
+});
 
-export default class App extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      latitude: 0,
-      longitude: 0,
-    }
-  }
-
-
-  componentDidMount() {
-    this.watchID = navigator.geolocation.watchPosition(
-      position => {
-        console.log("WERTCHED POSITION", position)
-        this.setState({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-        console.log(this.state)
-      }
-    );
-  }
-
-  componentWillUnmount() {
-    navigator.geolocation.clearWatch(this.watchID)
-  }
-
+export default class App extends Component {
   render() {
     return (
-      <MapView
-        style={{ flex: 1 }}
-        initialRegion={{
-          latitude: 40.705076,
-          longitude: -74.00916,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      >
-        <MapView.Marker
-          coordinate={
-            {
-              latitude: this.state.latitude,
-              longitude: this.state.longitude,
-            }
-          }
-        />
-      </MapView>
-
+      <View style={styles.container}>
+        <RegForm />
+      </View>
     );
   }
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
