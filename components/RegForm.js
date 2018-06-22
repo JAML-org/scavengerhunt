@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as firebase from 'firebase';
 import {
   StyleSheet,
   Text,
@@ -14,8 +15,6 @@ import {
   REACT_APP_STORAGEBUCKET,
 } from '../config';
 
-import * as firebase from 'firebase';
-
 const firebaseConfig = {
   apiKey: REACT_APP_FIREBASE_API_KEY,
   authDomain: REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -25,6 +24,7 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+
 const styles = StyleSheet.create({
   regform: {
     alignSelf: 'stretch',
@@ -66,6 +66,7 @@ export default class RegForm extends React.Component {
       password: '',
     };
   }
+
   updateValue(text, field) {
     if (field === 'email') {
       this.setState({
@@ -97,7 +98,6 @@ export default class RegForm extends React.Component {
   }
 
   render() {
-    console.log(REACT_APP_FIREBASE_API_KEY);
     return (
       <View style={styles.regform}>
         <Text style={styles.header}>Registration</Text>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { MapView } from 'expo';
 import Geofence from 'react-native-expo-geofence';
 
@@ -9,7 +9,7 @@ var fakePoints = [
   { key: 4, latitude: 40.703712, longitude: -74.009220, title: 'Chase Bank' },
 ]
 
-export default class App extends React.Component {
+export default class Map extends Component {
   constructor() {
     super()
     this.state = {
@@ -19,7 +19,6 @@ export default class App extends React.Component {
     }
     this.inPerimeter = this.inPerimeter.bind(this)
   }
-
 
   componentDidMount() {
     this.watchID = navigator.geolocation.watchPosition(
@@ -32,14 +31,13 @@ export default class App extends React.Component {
         // console.warn(this.state)
       }
     );
-
   }
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID)
   }
 
-  //translates the distance btwn twp coordinates from longitude/latitude to kilometers
+  //translates the distance btwn two coordinates from longitude/latitude to kilometers
   distanceInKM(point1, point2) {
     let lat1 = point1.latitude;
     let lon1 = point1.longitude;
@@ -91,7 +89,6 @@ export default class App extends React.Component {
           }
         />
       </MapView>
-
     );
   }
 }
