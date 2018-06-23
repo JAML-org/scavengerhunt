@@ -114,7 +114,7 @@ export default class RegForm extends Component {
         <TextInput
           style={styles.textinput}
           placeholder="Password"
-          password={true}
+          secureTextEntry={true}
           onChangeText={text => this.updateValue(text, 'password')}
         />
         <TouchableOpacity
