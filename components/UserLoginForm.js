@@ -67,6 +67,10 @@ export default class UserLoginForm extends Component {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        console.warn('You are logged in!');
+        this.props.navigation.navigate('')
+      })
       .catch(function(error) {
         let errorCode = error.code;
         let errorMessage = error.message;
@@ -78,7 +82,6 @@ export default class UserLoginForm extends Component {
         }
         console.log(error);
       });
-    console.warn('You are logged in!');
   }
 
   render() {
@@ -92,7 +95,7 @@ export default class UserLoginForm extends Component {
         <TextInput
           style={styles.textinput}
           placeholder="Password"
-          password={true}
+          secureTextEntry={true}
           onChangeText={text => this.updateValue(text, 'password')}
         />
         <TouchableOpacity
