@@ -42,7 +42,9 @@ export default class MyHuntList extends Component {
 
   render() {
     return (
-      <Text style={styles.header}>My Hunt List</Text>
+      <View>
+        <Text style={styles.header}>My Hunt List</Text>
+      </View>
     )
   }
 }

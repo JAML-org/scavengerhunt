@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class RegForm extends React.Component {
+export default class RegForm extends Component {
   constructor() {
     super();
     this.state = {
@@ -83,7 +83,7 @@ export default class RegForm extends React.Component {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .catch(function(error) {
+      .catch(function (error) {
         let errorCode = error.code;
         let errorMessage = error.message;
 

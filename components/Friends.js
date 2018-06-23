@@ -42,7 +42,10 @@ export default class Friends extends Component {
 
   render() {
     return (
-      <Text style={styles.header}>Friends</Text>
+      <View>
+        <Text style={styles.header}>Friends</Text>
+      </View>
+
     )
   }
 }

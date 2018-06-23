@@ -1,12 +1,13 @@
 import React from 'react';
-import { DrawerNavigator } from 'react-navigation';
+import { createDrawerNavigator, drawerWidth } from 'react-navigation';
 import Profile from './Profile'
 import HowToPlay from './HowToPlay'
 import JoinHunt from './JoinHunt'
 import MyHuntList from './MyHuntList'
 import Friends from './Friends'
 
-export const Menu = DrawerNavigator({
+
+const Menu = createDrawerNavigator({
   Profile: {
     screen: Profile,
     navigationOptions: {
@@ -23,19 +24,12 @@ export const Menu = DrawerNavigator({
       }
     }
   },
-  // ChooseHunt: {
-  //   screen: ChooseHunt,
-  //   navigationOptions: {
-  //     drawer: {
-  //       label: 'Choose Hunt'
-  //     }
-  //   }
-  // },
   MyHuntList: {
     screen: MyHuntList,
     navigationOptions: {
       drawer: {
-        label: 'My Hunt List'
+        label: 'My Hunt List',
+        position: "left"
       }
     }
   },
@@ -57,6 +51,7 @@ export const Menu = DrawerNavigator({
   },
   // LogOut: {
   // }
-})
+}
+)
 
 export default Menu

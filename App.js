@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
-import RegForm from './components/RegForm';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+// import RegForm from './components/RegForm';
 import Menu from './components/Menu'
 
 const styles = StyleSheet.create({
@@ -19,11 +13,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export const App = () => {
+const App = () => {
   return (
     <View style={styles.container}>
       <Menu />
-      <RegForm />
+      {/* <RegForm /> */}
     </View>
   );
 }
+
+export default App

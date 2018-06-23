@@ -42,7 +42,9 @@ export default class JoinHunt extends Component {
 
   render() {
     return (
-      <Text style={styles.header}>Join Hunt</Text>
+      <View>
+        <Text style={styles.header}>Join Hunt</Text>
+      </View>
     )
   }
 }

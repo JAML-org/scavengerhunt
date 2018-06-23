@@ -42,7 +42,9 @@ export default class Profile extends Component {
 
   render() {
     return (
-      <Text style={styles.header}>Profile Page</Text>
+      <View>
+        <Text style={styles.header}>Profile Page</Text>
+      </View>
     )
   }
 }

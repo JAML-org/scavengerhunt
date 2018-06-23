@@ -42,7 +42,10 @@ export default class HowToPlay extends Component {
 
   render() {
     return (
-      <Text style={styles.header}>How To Play</Text>
+      <View>
+        <Text style={styles.header}>How To Play</Text>
+      </View>
+
     )
   }
 }
