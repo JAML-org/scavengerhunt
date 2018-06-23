@@ -4,6 +4,9 @@ import UserLoginForm from './components/UserLoginForm';
 import RegForm from './components/RegForm';
 import HuntList from './components/HuntList';
 import HuntDetails from './components/HuntDetails';
+import JoinHunt from './components/JoinHunt';
+import MyHuntList from './components/MyHuntList';
+import Main from './components/Main'
 export const RootStack = createStackNavigator(
   {
     UserLogin: {
@@ -18,8 +21,17 @@ export const RootStack = createStackNavigator(
     HuntDetails: {
       screen: HuntDetails,
     },
+    JoinHunt: {
+      screen: JoinHunt
+    },
+    MyHuntList: {
+      screen: MyHuntList
+    },
+    Main: {
+      screen: Main
+    }
   },
   {
-    initialRouteName: 'HuntList',
+    initialRouteName: 'UserLogin',
   }
 );

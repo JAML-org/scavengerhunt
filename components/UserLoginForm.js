@@ -69,7 +69,7 @@ export default class UserLoginForm extends Component {
       .signInWithEmailAndPassword(email, password)
       .then(() => {
         console.warn('You are logged in!');
-        this.props.navigation.navigate('')
+        this.props.navigation.navigate('Main')
       })
       .catch(function(error) {
         let errorCode = error.code;
