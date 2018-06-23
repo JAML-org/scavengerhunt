@@ -1,5 +1,5 @@
 import React from 'react';
-import { createDrawerNavigator, drawerWidth } from 'react-navigation';
+import { createDrawerNavigator } from 'react-navigation';
 import Profile from './Profile'
 import HowToPlay from './HowToPlay'
 import JoinHunt from './JoinHunt'
@@ -29,7 +29,6 @@ const Menu = createDrawerNavigator({
     navigationOptions: {
       drawer: {
         label: 'My Hunt List',
-        position: "left"
       }
     }
   },
@@ -48,10 +47,12 @@ const Menu = createDrawerNavigator({
         label: 'How To Play'
       }
     }
-  },
-  // LogOut: {
-  // }
-}
+  }
+},
+  {
+    drawerPosition: "left",
+
+  }
 )
 
 export default Menu

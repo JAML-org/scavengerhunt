@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
-// import RegForm from './components/RegForm';
-import Menu from './components/Menu'
+import RegForm from './components/RegForm';
 
 const styles = StyleSheet.create({
   container: {
@@ -16,8 +15,7 @@ const styles = StyleSheet.create({
 const App = () => {
   return (
     <View style={styles.container}>
-      <Menu />
-      {/* <RegForm /> */}
+      <RegForm />
     </View>
   );
 }
