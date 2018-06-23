@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-<<<<<<< HEAD
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import RegForm from './components/RegForm';
-=======
 import UserLoginForm from './components/UserLoginForm';
 import {
   StyleSheet,
@@ -29,7 +26,6 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
->>>>>>> master
 
 const styles = StyleSheet.create({
   container: {
@@ -51,5 +47,3 @@ export default class App extends Component {
     );
   }
 }
-
-export default App
