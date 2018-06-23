@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Button
 } from 'react-native';
-<<<<<<< HEAD
 import {
   REACT_APP_FIREBASE_API_KEY,
   REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -21,8 +20,6 @@ import { Icon } from 'react-native-elements';
 import Menu from './Menu';
 import { DrawerActions } from 'react-navigation';
 
-=======
->>>>>>> master
 
 const styles = StyleSheet.create({
   regform: {
@@ -103,10 +100,7 @@ export default class RegForm extends Component {
 
 
   render() {
-<<<<<<< HEAD
     console.log('PROPS?', this.props)
-=======
->>>>>>> master
     return (
       <View style={styles.regform}>
         <View>

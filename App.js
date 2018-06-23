@@ -41,14 +41,6 @@ const styles = StyleSheet.create({
   },
 });
 
-<<<<<<< HEAD
-const App = () => {
-  return (
-    <View style={styles.container}>
-      <RegForm />
-    </View>
-  );
-=======
 export default class App extends Component {
   render() {
     return (
@@ -58,7 +50,6 @@ export default class App extends Component {
       </View>
     );
   }
->>>>>>> master
 }
 
 export default App
