@@ -5,6 +5,7 @@ import UserLoginForm from './components/UserLoginForm';
 import RegForm from './components/RegForm';
 import HuntList from './components/HuntList';
 import HuntDetails from './components/HuntDetails';
+import HuntTargets from './components/HuntTargets';
 import JoinHunt from './components/JoinHunt';
 import MyHuntList from './components/MyHuntList';
 import Main from './components/Main'
