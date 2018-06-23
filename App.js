@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import RegForm from './components/RegForm';
+import Menu from './components/Menu'
 
 const styles = StyleSheet.create({
   container: {
@@ -18,12 +19,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class App extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <RegForm />
-      </View>
-    );
-  }
+export const App = () => {
+  return (
+    <View style={styles.container}>
+      <Menu />
+      <RegForm />
+    </View>
+  );
 }
