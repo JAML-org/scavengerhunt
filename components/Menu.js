@@ -1,5 +1,10 @@
 import React from 'react';
 import { DrawerNavigator } from 'react-navigation';
+import Profile from './Profile'
+import HowToPlay from './HowToPlay'
+import JoinHunt from './JoinHunt'
+import MyHuntList from './MyHuntList'
+import Friends from './Friends'
 
 export const Menu = DrawerNavigator({
   Profile: {
@@ -18,16 +23,16 @@ export const Menu = DrawerNavigator({
       }
     }
   },
-  ChooseHunt: {
-    screen: ChooseHunt,
-    navigationOptions: {
-      drawer: {
-        label: 'Choose Hunt'
-      }
-    }
-  },
+  // ChooseHunt: {
+  //   screen: ChooseHunt,
+  //   navigationOptions: {
+  //     drawer: {
+  //       label: 'Choose Hunt'
+  //     }
+  //   }
+  // },
   MyHuntList: {
-    screen: HuntList,
+    screen: MyHuntList,
     navigationOptions: {
       drawer: {
         label: 'My Hunt List'
