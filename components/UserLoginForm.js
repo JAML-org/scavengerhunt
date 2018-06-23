@@ -1,31 +1,15 @@
 import React, { Component } from 'react';
+import * as firebase from 'firebase';
 import {
   StyleSheet,
   Text,
   View,
   TextInput,
   TouchableOpacity,
-  Button
 } from 'react-native';
-<<<<<<< HEAD
-import {
-  REACT_APP_FIREBASE_API_KEY,
-  REACT_APP_FIREBASE_AUTH_DOMAIN,
-  REACT_APP_FIREBASE_DB_URL,
-  REACT_APP_FIREBASE_PROJECTID,
-  REACT_APP_STORAGEBUCKET,
-} from '../config';
-
-import * as firebase from 'firebase';
-import { Icon } from 'react-native-elements';
-import Menu from './Menu';
-import { DrawerActions } from 'react-navigation';
-
-=======
->>>>>>> master
 
 const styles = StyleSheet.create({
-  regform: {
+  loginForm: {
     alignSelf: 'stretch',
   },
   header: {
@@ -57,7 +41,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class RegForm extends Component {
+export default class UserLoginForm extends Component {
   constructor() {
     super();
     this.state = {
@@ -82,38 +66,24 @@ export default class RegForm extends Component {
     const { email, password } = this.state;
     firebase
       .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .catch(function (error) {
+      .signInWithEmailAndPassword(email, password)
+      .catch(function(error) {
         let errorCode = error.code;
         let errorMessage = error.message;
 
-        if (errorCode === 'auth/weak-password') {
-          alert('The password is too weak.');
+        if (errorCode === 'auth/wrong-password') {
+          alert('Wrong password.');
         } else {
           alert(errorMessage);
         }
         console.log(error);
       });
+      console.warn('You are logged in!')
   }
 
-  static navigationOptions = {
-    drawerLabel: 'Menu',
-    drawerIcon: <Icon name="menu" />
-  };
-
-
   render() {
-<<<<<<< HEAD
-    console.log('PROPS?', this.props)
-=======
->>>>>>> master
     return (
-      <View style={styles.regform}>
-        <View>
-          <Icon name="menu" onPress={() => console.warn("HI")} />
-        </View>
-
-        <Text style={styles.header}>Registration</Text>
+      <View style={styles.loginForm}>
         <TextInput
           style={styles.textinput}
           placeholder="Email"
@@ -129,7 +99,7 @@ export default class RegForm extends Component {
           style={styles.button}
           onPress={() => this.handleSubmit()}
         >
-          <Text style={styles.btntext}>Submit</Text>
+          <Text style={styles.btntext}>Login</Text>
         </TouchableOpacity>
       </View>
     );
