@@ -5,6 +5,9 @@ import RegForm from './components/RegForm';
 import HuntList from './components/HuntList';
 import HuntDetails from './components/HuntDetails';
 import HuntTargets from './components/HuntTargets';
+import JoinHunt from './components/JoinHunt';
+import MyHuntList from './components/MyHuntList';
+import Main from './components/Main';
 export const RootStack = createStackNavigator(
   {
     UserLogin: {
@@ -22,8 +25,17 @@ export const RootStack = createStackNavigator(
     HuntTargets: {
       screen: HuntTargets,
     },
+    JoinHunt: {
+      screen: JoinHunt,
+    },
+    MyHuntList: {
+      screen: MyHuntList,
+    },
+    Main: {
+      screen: Main,
+    },
   },
   {
-    initialRouteName: 'HuntList',
+    initialRouteName: 'UserLogin',
   }
 );
