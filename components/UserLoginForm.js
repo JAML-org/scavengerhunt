@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#59cbbd',
+    backgroundColor: '#36485f',
     marginTop: 30,
   },
   btntext: {
@@ -78,7 +78,7 @@ export default class UserLoginForm extends Component {
         }
         console.log(error);
       });
-      console.warn('You are logged in!')
+    console.warn('You are logged in!');
   }
 
   render() {
