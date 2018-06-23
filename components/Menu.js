@@ -1,52 +1,25 @@
 import React from 'react';
-import { createDrawerNavigator } from 'react-navigation';
+import { createDrawerNavigator, createStackNavigator, DrawerActions } from 'react-navigation';
 import Profile from './Profile'
 import HowToPlay from './HowToPlay'
 import JoinHunt from './JoinHunt'
-import MyHuntList from './MyHuntList'
+import HuntList from './HuntList'
+import HuntDetails from './HuntDetails'
 import Friends from './Friends'
+import { Icon } from 'react-native-elements'
 
-
-const Menu = createDrawerNavigator({
+export const MenuCreation = createDrawerNavigator({
   Profile: {
     screen: Profile,
-    navigationOptions: {
-      drawer: {
-        label: 'Profile'
-      }
-    }
   },
   JoinHunt: {
     screen: JoinHunt,
-    navigationOptions: {
-      drawer: {
-        label: 'Join Hunt'
-      }
-    }
-  },
-  MyHuntList: {
-    screen: MyHuntList,
-    navigationOptions: {
-      drawer: {
-        label: 'My Hunt List',
-      }
-    }
   },
   Friends: {
     screen: Friends,
-    navigationOptions: {
-      drawer: {
-        label: 'Friends'
-      }
-    }
   },
   HowToPlay: {
     screen: HowToPlay,
-    navigationOptions: {
-      drawer: {
-        label: 'How To Play'
-      }
-    }
   }
 },
   {
@@ -55,4 +28,20 @@ const Menu = createDrawerNavigator({
   }
 )
 
-export default Menu
+
+const MenuNavigation = createStackNavigator({
+  DrawerStack: { screen: MenuCreation },
+  HuntList: {
+    screen: HuntList,
+  },
+  HuntDetails: {
+    screen: HuntDetails,
+  },
+
+}, {
+    headerMode: 'float',
+    navigationOptions: ({ navigation }) => ({ title: "menu", headerLeft: <Icon name="menu" onPress={() => navigation.dispatch(DrawerActions.openDrawer())} /> })
+  })
+
+export default MenuNavigation
+

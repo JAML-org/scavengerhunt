@@ -67,7 +67,7 @@ export default class UserLoginForm extends Component {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .catch(function(error) {
+      .catch(function (error) {
         let errorCode = error.code;
         let errorMessage = error.message;
 
@@ -78,7 +78,7 @@ export default class UserLoginForm extends Component {
         }
         console.log(error);
       });
-    console.warn('You are logged in!');
+    this.props.navigation.navigate('HuntList');
   }
 
   render() {
