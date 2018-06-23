@@ -5,6 +5,9 @@ import UserLoginForm from './components/UserLoginForm';
 import RegForm from './components/RegForm';
 import HuntList from './components/HuntList';
 import HuntDetails from './components/HuntDetails';
+import JoinHunt from './components/JoinHunt';
+import MyHuntList from './components/MyHuntList';
+import Main from './components/Main'
 import { Icon } from 'react-native-elements';
 
 //not logged in stack
@@ -21,8 +24,7 @@ export const AppStack = createStackNavigator(
   },
   {
     headerMode: 'float',
-  }
-);
+  });
 
 export const RootStack = createStackNavigator(
   {

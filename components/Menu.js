@@ -5,12 +5,17 @@ import HowToPlay from './HowToPlay'
 import JoinHunt from './JoinHunt'
 import HuntList from './HuntList'
 import HuntDetails from './HuntDetails'
+import Main from './Main'
 import Friends from './Friends'
+import MyHuntList from './MyHuntList'
 import { Icon } from 'react-native-elements'
 
 export const MenuCreation = createDrawerNavigator({
   Profile: {
     screen: Profile,
+  },
+  MyHuntList: {
+    screen: MyHuntList
   },
   JoinHunt: {
     screen: JoinHunt,
@@ -31,12 +36,18 @@ export const MenuCreation = createDrawerNavigator({
 
 const MenuNavigation = createStackNavigator({
   DrawerStack: { screen: MenuCreation },
+  MyHuntList: {
+    screen: MyHuntList
+  },
   HuntList: {
     screen: HuntList,
   },
   HuntDetails: {
     screen: HuntDetails,
   },
+  Main: {
+    screen: Main,
+  }
 
 }, {
     headerMode: 'float',
