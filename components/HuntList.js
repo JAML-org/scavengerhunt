@@ -20,7 +20,7 @@ const HuntList = props => {
             name="beer"
             type="material-community"
             size={40}
-            // onPress={() => navigate('HuntDetails')}
+            onPress={() => navigate('HuntDetails')}
           />
           <Text style={styles.textCenter}>Bar Crawl</Text>
         </View>

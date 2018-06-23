@@ -1,13 +1,6 @@
-import React, { Component } from 'react';
-import RegForm from './components/RegForm';
-import UserLoginForm from './components/UserLoginForm';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import React from 'react';
+import { RootStack } from './router';
+
 import {
   REACT_APP_FIREBASE_API_KEY,
   REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -26,26 +19,6 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-
-const RootStack = createStackNavigator(
-  {
-    UserLogin: {
-      screen: UserLoginForm,
-    },
-    RegForm: {
-      screen: RegForm,
-    },
-    HuntList: {
-      screen: HuntList,
-    },
-    HuntDetails: {
-      screen: HuntDetails,
-    },
-  },
-  {
-    initialRouteName: 'UserLogin',
-  }
-);
 
 const App = () => <RootStack />;
 
