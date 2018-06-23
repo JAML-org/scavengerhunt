@@ -5,9 +5,20 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Button,
 } from 'react-native';
+import {
+  REACT_APP_FIREBASE_API_KEY,
+  REACT_APP_FIREBASE_AUTH_DOMAIN,
+  REACT_APP_FIREBASE_DB_URL,
+  REACT_APP_FIREBASE_PROJECTID,
+  REACT_APP_STORAGEBUCKET,
+} from '../config';
 
 import * as firebase from 'firebase';
+import { Icon } from 'react-native-elements';
+import Menu from './Menu';
+import { DrawerActions } from 'react-navigation';
 
 const styles = StyleSheet.create({
   regform: {
@@ -81,9 +92,19 @@ export default class RegForm extends Component {
       });
   }
 
+  static navigationOptions = {
+    drawerLabel: 'Menu',
+    drawerIcon: <Icon name="menu" />,
+  };
+
   render() {
+    console.log('PROPS?', this.props);
     return (
       <View style={styles.regform}>
+        <View>
+          <Icon name="menu" onPress={() => console.warn('HI')} />
+        </View>
+
         <Text style={styles.header}>Registration</Text>
         <TextInput
           style={styles.textinput}
