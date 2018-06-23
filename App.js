@@ -1,70 +1,45 @@
-import React, { Component } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import React from 'react';
 import { createStackNavigator } from 'react-navigation';
-import RegForm from './components/RegForm';
-import HuntList from './components/HuntList';
+import { RegForm, UserLoginForm, HuntList, HuntDetails } from './components/';
+import {
+  REACT_APP_FIREBASE_API_KEY,
+  REACT_APP_FIREBASE_AUTH_DOMAIN,
+  REACT_APP_FIREBASE_DB_URL,
+  REACT_APP_FIREBASE_PROJECTID,
+  REACT_APP_STORAGEBUCKET,
+} from './config';
+import * as firebase from 'firebase';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    backgroundColor: '#36485f',
-    paddingLeft: 20,
-    paddingRight: 20,
-    paddingTop: 75,
-  },
-  listContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    alignItems: 'flex-start',
-  },
-  textListItem: {
-    width: 85,
-    height: 85,
-    backgroundColor: 'black',
-    justifyContent: 'center',
-    borderRadius: 100,
-    paddingHorizontal: 10,
-  },
-  textCenter: {
-    textAlign: 'center',
-    color: '#fff',
-  },
-});
+const firebaseConfig = {
+  apiKey: REACT_APP_FIREBASE_API_KEY,
+  authDomain: REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: REACT_APP_FIREBASE_DB_URL,
+  projectId: REACT_APP_FIREBASE_PROJECTID,
+  storageBucket: REACT_APP_STORAGEBUCKET,
+};
+
+firebase.initializeApp(firebaseConfig);
 
 const RootStack = createStackNavigator(
   {
+    UserLogin: {
+      screen: UserLoginForm,
+    },
     RegForm: {
       screen: RegForm,
     },
     HuntList: {
       screen: HuntList,
     },
+    HuntDetails: {
+      screen: HuntDetails,
+    },
   },
   {
-    initialRouteName: 'RegForm',
+    initialRouteName: 'UserLogin',
   }
 );
 
-// export default class App extends Component {
-//   render() {
-//     return (
-//       // <View style={styles.container}>
-//       //   {/* <RegForm /> */}
-//       //   <HuntList styles={styles} />
-//       // </View>
-//       <RootStack />
-//     );
-//   }
-// }
-
-const App = () => <RootStack styles={styles} />;
+const App = () => <RootStack />;
 
 export default App;
