@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { MapView } from 'expo';
-import Geofence from 'react-native-expo-geofence';
 
 var fakePoints = [
   { key: 1, latitude: 40.705554, longitude: -74.013444, title: 'Charging Bull' },

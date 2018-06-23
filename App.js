@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import RegForm from './components/RegForm';
 import UserLoginForm from './components/UserLoginForm';
 import {
   StyleSheet,
