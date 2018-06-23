@@ -71,7 +71,7 @@ export default class UserLoginForm extends Component {
         console.warn('You are logged in!');
         this.props.navigation.navigate('Main')
       })
-      .catch(function(error) {
+      .catch(function (error) {
         let errorCode = error.code;
         let errorMessage = error.message;
 
