@@ -1,6 +1,13 @@
-import React from 'react';
-import { createStackNavigator } from 'react-navigation';
-import { RegForm, UserLoginForm, HuntList, HuntDetails } from './components/';
+import React, { Component } from 'react';
+import RegForm from './components/RegForm';
+import UserLoginForm from './components/UserLoginForm';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import {
   REACT_APP_FIREBASE_API_KEY,
   REACT_APP_FIREBASE_AUTH_DOMAIN,
