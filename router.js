@@ -34,6 +34,6 @@ export const RootStack = createStackNavigator(
   },
   {
     headerMode: 'none',
-    initialRouteName: 'AppStack',
+    initialRouteName: 'MenuStack',
   }
 )

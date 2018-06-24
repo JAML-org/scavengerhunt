@@ -37,24 +37,11 @@ const Menu = createDrawerNavigator({
   }
 },
   {
+    drawerWidth: 300,
     drawerPosition: "left",
     initialRouteName: 'Main'
   }
 )
-
-/*
-let x;
-function bar () {
-  console.log(x);
-}
-
-function foo (_x) {
-  x = _x
-}
-
-// somewhere someone calls foo(5)
-// then later at some point someone calls bar()
-*/
 
 const MenuContainer = () => {
   let pressMenu;
@@ -63,12 +50,13 @@ const MenuContainer = () => {
       <Header
         backgroundColor="white"
         leftComponent={<Icon name="menu" onPress={() => {
-          pressMenu(DrawerActions.toggleDrawer())
+          if (pressMenu.state.nav.isDrawerOpen) pressMenu.dispatch(DrawerActions.closeDrawer())
+          else pressMenu.dispatch(DrawerActions.openDrawer())
         }} />}
       />
       <Menu
         ref={navigatorRef => {
-          pressMenu = navigatorRef.dispatch
+          pressMenu = navigatorRef
         }}
       />
     </React.Fragment>
