@@ -74,7 +74,7 @@ console.log(center)
         aperiam tempora eos.
       </Text>
       <Text># of Targets</Text>
-      <Button title="Choose Theme" onPress={() => navigate('HuntTargets')} />
+      <Button title="Choose Theme" onPress={() => navigate('Map')} />
     </View>
   );
 };
