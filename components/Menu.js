@@ -8,9 +8,9 @@ import HuntDetails from './HuntDetails'
 import Main from './Main'
 import Friends from './Friends'
 import MyHuntList from './MyHuntList'
-import { Icon } from 'react-native-elements'
+import { Icon, Header } from 'react-native-elements'
 
-export const MenuCreation = createDrawerNavigator({
+const Menu = createDrawerNavigator({
   Profile: {
     screen: Profile,
   },
@@ -25,19 +25,6 @@ export const MenuCreation = createDrawerNavigator({
   },
   HowToPlay: {
     screen: HowToPlay,
-  }
-},
-  {
-    drawerPosition: "left",
-
-  }
-)
-
-
-const MenuNavigation = createStackNavigator({
-  DrawerStack: { screen: MenuCreation },
-  MyHuntList: {
-    screen: MyHuntList
   },
   HuntList: {
     screen: HuntList,
@@ -48,11 +35,44 @@ const MenuNavigation = createStackNavigator({
   Main: {
     screen: Main,
   }
+},
+  {
+    drawerWidth: 300,
+    drawerPosition: "left",
+    initialRouteName: 'Main'
+  }
+)
 
-}, {
-    headerMode: 'float',
-    navigationOptions: ({ navigation }) => ({ title: "menu", headerLeft: <Icon name="menu" onPress={() => navigation.dispatch(DrawerActions.openDrawer())} /> })
-  })
+const MenuContainer = () => {
+  let pressMenu;
+  return (
+    <React.Fragment>
+      <Header
+        backgroundColor="white"
+        leftComponent={<Icon name="menu" onPress={() => {
+          if (pressMenu.state.nav.isDrawerOpen) pressMenu.dispatch(DrawerActions.closeDrawer())
+          else pressMenu.dispatch(DrawerActions.openDrawer())
+        }} />}
+      />
+      <Menu
+        ref={navigatorRef => {
+          pressMenu = navigatorRef
+        }}
+      />
+    </React.Fragment>
+  )
+}
 
-export default MenuNavigation
+// const MenuNavigation = createStackNavigator({
+//   DrawerStack: {
+//     screen: MenuCreation
+//   },
+
+// }, {
+//     headerMode: 'float',
+//     navigationOptions: ({ navigation }) => ({ title: "menu", headerLeft: <Icon name="menu" onPress={() => navigation.dispatch(DrawerActions.openDrawer())} /> }),
+//     initialRouteName: "DrawerStack"
+//   })
+
+export default MenuContainer
 

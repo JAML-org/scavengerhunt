@@ -4,10 +4,6 @@ import { View } from 'react-native';
 import { Icon, Text, Divider, Button } from 'react-native-elements';
 
 class HuntList extends React.Component {
-  static navigationOptions = {
-    drawerLabel: 'Menu',
-    drawerIcon: () => (<Icon name="menu" />)
-  }
   render() {
     const { navigate } = this.props.navigation;
     return (
