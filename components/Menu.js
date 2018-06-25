@@ -1,47 +1,55 @@
 import React from 'react';
-import { createDrawerNavigator, createStackNavigator, DrawerActions } from 'react-navigation';
-import Profile from './Profile'
-import HowToPlay from './HowToPlay'
-import JoinHunt from './JoinHunt'
-import HuntList from './HuntList'
-import HuntDetails from './HuntDetails'
-import Main from './Main'
-import Friends from './Friends'
-import MyHuntList from './MyHuntList'
-import { Icon, Header } from 'react-native-elements'
+import {
+  createDrawerNavigator,
+  DrawerActions,
+} from 'react-navigation';
+import Profile from './Profile';
+import HowToPlay from './HowToPlay';
+import JoinHunt from './JoinHunt';
+import HuntList from './HuntList';
+import HuntDetails from './HuntDetails';
+import Main from './Main';
+import Friends from './Friends';
+import MyHuntList from './MyHuntList';
+import Map from './Map';
+import { Icon, Header } from 'react-native-elements';
 
-const Menu = createDrawerNavigator({
-  Profile: {
-    screen: Profile,
+const Menu = createDrawerNavigator(
+  {
+    Profile: {
+      screen: Profile,
+    },
+    Map: {
+      screen: Map,
+    },
+    MyHuntList: {
+      screen: MyHuntList,
+    },
+    JoinHunt: {
+      screen: JoinHunt,
+    },
+    Friends: {
+      screen: Friends,
+    },
+    HowToPlay: {
+      screen: HowToPlay,
+    },
+    HuntList: {
+      screen: HuntList,
+    },
+    HuntDetails: {
+      screen: HuntDetails,
+    },
+    Main: {
+      screen: Main,
+    },
   },
-  MyHuntList: {
-    screen: MyHuntList
-  },
-  JoinHunt: {
-    screen: JoinHunt,
-  },
-  Friends: {
-    screen: Friends,
-  },
-  HowToPlay: {
-    screen: HowToPlay,
-  },
-  HuntList: {
-    screen: HuntList,
-  },
-  HuntDetails: {
-    screen: HuntDetails,
-  },
-  Main: {
-    screen: Main,
-  }
-},
   {
     drawerWidth: 300,
-    drawerPosition: "left",
-    initialRouteName: 'Main'
+    drawerPosition: 'left',
+    initialRouteName: 'Main',
   }
-)
+);
 
 const MenuContainer = () => {
   let pressMenu;
@@ -49,19 +57,25 @@ const MenuContainer = () => {
     <React.Fragment>
       <Header
         backgroundColor="white"
-        leftComponent={<Icon name="menu" onPress={() => {
-          if (pressMenu.state.nav.isDrawerOpen) pressMenu.dispatch(DrawerActions.closeDrawer())
-          else pressMenu.dispatch(DrawerActions.openDrawer())
-        }} />}
+        leftComponent={
+          <Icon
+            name="menu"
+            onPress={() => {
+              if (pressMenu.state.nav.isDrawerOpen)
+                pressMenu.dispatch(DrawerActions.closeDrawer());
+              else pressMenu.dispatch(DrawerActions.openDrawer());
+            }}
+          />
+        }
       />
       <Menu
         ref={navigatorRef => {
-          pressMenu = navigatorRef
+          pressMenu = navigatorRef;
         }}
       />
     </React.Fragment>
-  )
-}
+  );
+};
 
 // const MenuNavigation = createStackNavigator({
 //   DrawerStack: {
@@ -74,5 +88,4 @@ const MenuContainer = () => {
 //     initialRouteName: "DrawerStack"
 //   })
 
-export default MenuContainer
-
+export default MenuContainer;
