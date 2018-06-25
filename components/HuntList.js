@@ -27,7 +27,6 @@ class HuntList extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     const { hunts } = this.state;
-    console.log("LOOK HERE", this.props)
     return (
       <View style={styles.container}>
         <View style={styles.listContainer}>
