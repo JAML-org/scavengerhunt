@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  createDrawerNavigator,
-  DrawerActions,
-} from 'react-navigation';
+import { createDrawerNavigator, DrawerActions, } from 'react-navigation';
 import Profile from './Profile';
 import HowToPlay from './HowToPlay';
 import JoinHunt from './JoinHunt';
@@ -16,33 +13,15 @@ import { Icon, Header } from 'react-native-elements';
 
 const Menu = createDrawerNavigator(
   {
-    Profile: {
-      screen: Profile,
-    },
-    Map: {
-      screen: Map,
-    },
-    MyHuntList: {
-      screen: MyHuntList,
-    },
-    JoinHunt: {
-      screen: JoinHunt,
-    },
-    Friends: {
-      screen: Friends,
-    },
-    HowToPlay: {
-      screen: HowToPlay,
-    },
-    HuntList: {
-      screen: HuntList,
-    },
-    HuntDetails: {
-      screen: HuntDetails,
-    },
-    Main: {
-      screen: Main,
-    },
+    Profile: { screen: Profile },
+    Map: { screen: Map },
+    MyHuntList: { screen: MyHuntList },
+    JoinHunt: { screen: JoinHunt },
+    Friends: { screen: Friends },
+    HowToPlay: { screen: HowToPlay },
+    HuntList: { screen: HuntList },
+    HuntDetails: { screen: HuntDetails },
+    Main: { screen: Main },
   },
   {
     drawerWidth: 300,
@@ -61,9 +40,7 @@ const MenuContainer = () => {
           <Icon
             name="menu"
             onPress={() => {
-              if (pressMenu.state.nav.isDrawerOpen)
-                pressMenu.dispatch(DrawerActions.closeDrawer());
-              else pressMenu.dispatch(DrawerActions.openDrawer());
+              pressMenu.dispatch(DrawerActions.toggleDrawer())
             }}
           />
         }

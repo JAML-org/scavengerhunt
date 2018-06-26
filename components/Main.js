@@ -13,10 +13,6 @@ const Main = props => {
   return (
     <View style={styles.main}>
 
-      {/* <TouchableOpacity style={styles.button} onPress={() => props.navigation.openDrawer()}>
-        <Text style={styles.btntext}>Menu</Text>
-      </TouchableOpacity> */}
-
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigate('JoinHunt')}
