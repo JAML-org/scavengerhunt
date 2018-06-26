@@ -144,7 +144,7 @@ export default class Map extends Component {
                 onPress={() => this.refs.modal6.open()}
                 style={styles.btn}
               />
-              <Text>ONE</Text>
+              <Text>TARGETS</Text>
             </View>
             <View>
               <Icon
@@ -155,7 +155,7 @@ export default class Map extends Component {
                 onPress={() => this.refs.modal6.open()}
                 style={styles.btn}
               />
-              <Text>TWO</Text>
+              <Text>SCORES</Text>
             </View>
           </View>
         </View>
