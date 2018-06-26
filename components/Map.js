@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { MapView } from 'expo';
 import Modal from 'react-native-modalbox';
 import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
-import Button from 'react-native-button';
+import { Icon } from 'react-native-elements';
 
 var fakePoints = [
   {
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: '100%',
     paddingBottom: 10,
-    backgroundColor: 'orange',
   },
   buttonList: {
     flexDirection: 'row',
@@ -111,37 +110,53 @@ export default class Map extends Component {
   render() {
     let screen = Dimensions.get('window');
     return (
-      <MapView
-        style={{ flex: 1, position: 'relative' }}
-        initialRegion={{
-          latitude: 40.705076,
-          longitude: -74.00916,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      >
-        {this.inPerimeter(
-          { latitude: this.state.latitude, longitude: this.state.longitude },
-          fakePoints[0]
-        ) && console.warn('in perimeter!!')}
-        <MapView.Marker
-          pinColor="#000000"
-          coordinate={{
-            latitude: this.state.latitude,
-            longitude: this.state.longitude,
+      <View style={{ flex: 1, position: 'relative' }}>
+        <MapView
+          style={{ flex: 1 }}
+          initialRegion={{
+            latitude: 40.705076,
+            longitude: -74.00916,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
           }}
-        />
+        >
+          {this.inPerimeter(
+            { latitude: this.state.latitude, longitude: this.state.longitude },
+            fakePoints[0]
+          ) && console.warn('in perimeter!!')}
+          <MapView.Marker
+            pinColor="#000000"
+            coordinate={{
+              latitude: this.state.latitude,
+              longitude: this.state.longitude,
+            }}
+          />
+        </MapView>
+
         <View style={styles.bottomView}>
           <View style={styles.buttonList}>
-            <Button onPress={() => this.refs.modal6.open()} style={styles.btn}>
-              ONE
-            </Button>
-            <Button onPress={() => this.refs.modal6.open()} style={styles.btn}>
-              TWO
-            </Button>
-            <Button onPress={() => this.refs.modal6.open()} style={styles.btn}>
-              THREE
-            </Button>
+            <View>
+              <Icon
+                name="beer"
+                color="black"
+                reverse
+                type="material-community"
+                onPress={() => this.refs.modal6.open()}
+                style={styles.btn}
+              />
+              <Text>ONE</Text>
+            </View>
+            <View>
+              <Icon
+                name="beer"
+                color="black"
+                reverse
+                type="material-community"
+                onPress={() => this.refs.modal6.open()}
+                style={styles.btn}
+              />
+              <Text>TWO</Text>
+            </View>
           </View>
         </View>
         <Modal
@@ -156,7 +171,7 @@ export default class Map extends Component {
             </View>
           </ScrollView>
         </Modal>
-      </MapView>
+      </View>
     );
   }
 }
