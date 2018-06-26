@@ -57,37 +57,45 @@ export default class RegForm extends Component {
     this.state = {
       email: '',
       password: '',
+      name: '',
+      phone: '',
+      username: ''
     };
   }
 
   updateValue(text, field) {
-    if (field === 'email') {
-      this.setState({
-        email: text,
-      });
-    } else if (field === 'password') {
-      this.setState({
-        password: text,
-      });
-    }
+    this.setState({
+      [field]: text
+    })
   }
 
-  handleSubmit() {
-    const { email, password } = this.state;
-    firebase
+  async handleSubmit() {
+    const { email, password, username, phone, name } = this.state;
+    const snap = await firebase.database().ref('/Users').once('value');
+    try { 
+      await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .catch(function (error) {
-        let errorCode = error.code;
-        let errorMessage = error.message;
+      
+      await firebase.database().ref('/Users').set({
+        ...snap.val(),
+          [username]: {
+            phone,
+            name,
+            email
+          }
+      })
+    } catch (error){
+      let errorCode = error.code;
+      let errorMessage = error.message;
 
-        if (errorCode === 'auth/weak-password') {
-          alert('The password is too weak.');
-        } else {
-          alert(errorMessage);
-        }
-        console.log(error);
-      });
+      if (errorCode === 'auth/weak-password') {
+        alert('The password is too weak.');
+      } else {
+        alert(errorMessage);
+      }
+      console.log(error);
+    }
   }
 
   static navigationOptions = {
@@ -98,22 +106,39 @@ export default class RegForm extends Component {
   render() {
     return (
       <View style={styles.regform}>
-        <View>
-          <Icon name="menu" onPress={() => console.warn('HI')} />
-        </View>
-
         <Text style={styles.header}>Registration</Text>
+
+        <TextInput
+          style={styles.textinput}
+          placeholder="Name"
+          onChangeText={text => this.updateValue(text, 'name')}
+        />
+
+        <TextInput
+          style={styles.textinput}
+          placeholder="Username"
+          onChangeText={text => this.updateValue(text, 'username')}
+        />
+
         <TextInput
           style={styles.textinput}
           placeholder="Email"
           onChangeText={text => this.updateValue(text, 'email')}
         />
+
+        <TextInput    
+          style={styles.textinput}
+          placeholder="Phone number"
+          onChangeText={text => this.updateValue(text, 'phone')}
+        />
+
         <TextInput
           style={styles.textinput}
           placeholder="Password"
           secureTextEntry={true}
           onChangeText={text => this.updateValue(text, 'password')}
         />
+
         <TouchableOpacity
           style={styles.button}
           onPress={() => this.handleSubmit()}

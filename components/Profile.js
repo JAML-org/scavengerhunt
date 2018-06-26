@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { Avatar, Button, FormLabel, FormInput, FormValidationMessage } from 'react-native-elements';
+
 
 const styles = StyleSheet.create({
   regform: {
@@ -43,7 +45,23 @@ export default class Profile extends Component {
   render() {
     return (
       <View>
-        <Text style={styles.header}>Profile Page</Text>
+        <View>
+          <View>
+            <Avatar/>
+            <Button/>
+          </View>
+
+          <View>
+            <Text>Username</Text>
+            <Text>Completed Hunt: 3</Text>
+            <Text>Hunts Won: 1</Text>
+          </View>
+
+        </View>
+
+        <View>
+          
+        </View>
       </View>
     )
   }
