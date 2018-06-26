@@ -17,8 +17,6 @@ import {
 
 import * as firebase from 'firebase';
 import { Icon } from 'react-native-elements';
-import Menu from './Menu';
-import { DrawerActions } from 'react-navigation';
 
 const styles = StyleSheet.create({
   regform: {
@@ -79,7 +77,7 @@ export default class RegForm extends Component {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .catch(function(error) {
+      .catch(function (error) {
         let errorCode = error.code;
         let errorMessage = error.message;
 
@@ -98,7 +96,6 @@ export default class RegForm extends Component {
   };
 
   render() {
-    console.log('PROPS?', this.props);
     return (
       <View style={styles.regform}>
         <View>
