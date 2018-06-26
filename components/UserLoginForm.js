@@ -85,6 +85,7 @@ export default class UserLoginForm extends Component {
   }
 
   render() {
+    const { navigate } = this.props.navigation;
     return (
       <View style={styles.loginForm}>
         <TextInput
@@ -104,6 +105,14 @@ export default class UserLoginForm extends Component {
         >
           <Text style={styles.btntext}>Login</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigate('RegForm')}
+        >
+          <Text style={styles.btntext}>Sign Up</Text>
+        </TouchableOpacity>
+
       </View>
     );
   }
