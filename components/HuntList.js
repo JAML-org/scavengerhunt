@@ -45,7 +45,11 @@ class HuntList extends React.Component {
                     name={hunts[hunt].icon}
                     type="material-community"
                     size={40}
-                    onPress={() => navigate('HuntDetails')}
+                    onPress={() => navigate('HuntDetails', {
+                      hunt: hunts[hunt],
+                      huntName: hunt,
+                      huntLocationsID: hunts[hunt].locations
+                    })}
                   />
                   <Text style={styles.textCenter}>{hunt}</Text>
                 </View>

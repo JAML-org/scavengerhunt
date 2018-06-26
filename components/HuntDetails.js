@@ -4,8 +4,7 @@ import { View, Button } from 'react-native';
 import { Text } from 'react-native-elements';
 import { MapView } from 'expo';
 import style from './style';
-
-
+import * as firebase from 'firebase';
 
 const fakePoints = [
   [40.704343,-74.012981],
@@ -14,8 +13,36 @@ const fakePoints = [
   [40.703712,-74.00922]
 ];
 
-const HuntDetails = props => {
-  const { navigate } = props.navigation;
+class HuntDetails extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+       locations: {}
+    }
+  }
+
+  async componentDidMount() {
+    try {
+      let response = await firebase.database().ref('/Locations');
+      let snapshot = await response.once('value')
+      this.setState({
+        locations: snapshot.val()
+      })
+      console.log("LOOK HERE",snapshot)
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  render() {
+  const { navigate, getParam } = this.props.navigation;
+  const hunt = getParam('hunt', 'NO-HUNT');
+  const huntName = getParam('huntName', 'NO-HUNT-NAME');
+  const huntLocationsID = getParam('huntLocationsID', 'NO-HUNT-LOCATION-ID');
+  const huntLocations = huntLocationsID.map(locationID => {
+    return this.state.locations[locationID];
+  })
+  console.log('THESE ARE THE HUNT LOCATIONS', huntLocations)
 
   function rad2degr(rad) { return rad * 180 / Math.PI; }
   function degr2rad(degr) { return degr * Math.PI / 180; }
@@ -50,33 +77,28 @@ const HuntDetails = props => {
   }
 
   const center = getLatLngCenter(fakePoints);
-console.log(center)
+  
   return (
     <View style={styles.container}>
-      <Text h1>Pursuit Name</Text>
-      <Text h4>Location Name</Text>
+      <Text h2>{huntName}</Text>
       }}
       <MapView
         style={style.map}
         initialRegion={{
-          latitude: 40.705076,
-          longitude: -74.00916,
+          latitude: center.latitude,
+          longitude: center.longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
       >
         <MapView.Circle center={center} radius={1000} strokeColor='red' />
       </MapView>
-      <Text>
-        Hunt Details Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-        Incidunt asperiores cumque nisi minus sit ab dolore quidem fugiat culpa
-        officia ex, distinctio tempore, porro placeat, doloremque exercitationem
-        aperiam tempora eos.
-      </Text>
-      <Text># of Targets</Text>
-      <Button title="Choose Theme" onPress={() => navigate('Map')} />
+      <Text>{hunt.blurb}</Text>
+      <Text>Targets: {hunt.locations.length}</Text>
+      <Button title="Choose Theme" onPress={() => navigate('Map', { huntLocations })} />
     </View>
   );
+  }
 };
 
 export default HuntDetails;
