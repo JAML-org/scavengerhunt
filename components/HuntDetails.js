@@ -5,23 +5,24 @@ import { Text } from 'react-native-elements';
 import { MapView } from 'expo';
 import style from './style';
 
-
-
 const fakePoints = [
-  [40.704343,-74.012981],
-  [40.705554,-74.013444],
-  [40.702265,-74.011981],
-  [40.703712,-74.00922]
+  [40.704343, -74.012981],
+  [40.705554, -74.013444],
+  [40.702265, -74.011981],
+  [40.703712, -74.00922],
 ];
 
 const HuntDetails = props => {
   const { navigate } = props.navigation;
 
-  function rad2degr(rad) { return rad * 180 / Math.PI; }
-  function degr2rad(degr) { return degr * Math.PI / 180; }
+  function rad2degr(rad) {
+    return (rad * 180) / Math.PI;
+  }
+  function degr2rad(degr) {
+    return (degr * Math.PI) / 180;
+  }
 
   function getLatLngCenter(latLngInDegr) {
-
     let LATIDX = 0;
     let LNGIDX = 1;
     let sumX = 0;
@@ -46,11 +47,10 @@ const HuntDetails = props => {
     let hyp = Math.sqrt(avgX * avgX + avgY * avgY);
     let lat = Math.atan2(avgZ, hyp);
 
-    return {latitude: rad2degr(lat), longitude: rad2degr(lng)};
+    return { latitude: rad2degr(lat), longitude: rad2degr(lng) };
   }
 
   const center = getLatLngCenter(fakePoints);
-console.log(center)
   return (
     <View style={styles.container}>
       <Text h1>Pursuit Name</Text>
@@ -65,7 +65,7 @@ console.log(center)
           longitudeDelta: 0.0421,
         }}
       >
-        <MapView.Circle center={center} radius={1000} strokeColor='red' />
+        <MapView.Circle center={center} radius={1000} strokeColor="red" />
       </MapView>
       <Text>
         Hunt Details Lorem ipsum dolor, sit amet consectetur adipisicing elit.

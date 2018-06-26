@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { MapView } from 'expo';
+import Modal from 'react-native-modalbox';
+import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import Button from 'react-native-button';
 
 var fakePoints = [
   {
@@ -17,6 +20,32 @@ var fakePoints = [
   },
   { key: 4, latitude: 40.703712, longitude: -74.00922, title: 'Chase Bank' },
 ];
+
+const styles = StyleSheet.create({
+  bottomView: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    paddingBottom: 10,
+    backgroundColor: 'orange',
+  },
+  buttonList: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  btn: {
+    backgroundColor: '#3B5998',
+    color: 'white',
+    padding: 10,
+  },
+  modal: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 300,
+  },
+});
 
 export default class Map extends Component {
   constructor() {
@@ -65,11 +94,25 @@ export default class Map extends Component {
     return distance <= this.state.distance / 1000;
   }
 
+  renderList() {
+    var list = [];
+
+    for (var i = 0; i < 50; i++) {
+      list.push(
+        <Text style={styles.text} key={i}>
+          Elem {i}
+        </Text>
+      );
+    }
+
+    return list;
+  }
+
   render() {
-    const markers = fakePoints;
+    let screen = Dimensions.get('window');
     return (
       <MapView
-        style={{ flex: 1 }}
+        style={{ flex: 1, position: 'relative' }}
         initialRegion={{
           latitude: 40.705076,
           longitude: -74.00916,
@@ -78,10 +121,7 @@ export default class Map extends Component {
         }}
       >
         {this.inPerimeter(
-          {
-            latitude: this.state.latitude,
-            longitude: this.state.longitude,
-          },
+          { latitude: this.state.latitude, longitude: this.state.longitude },
           fakePoints[0]
         ) && console.warn('in perimeter!!')}
         <MapView.Marker
@@ -91,6 +131,31 @@ export default class Map extends Component {
             longitude: this.state.longitude,
           }}
         />
+        <View style={styles.bottomView}>
+          <View style={styles.buttonList}>
+            <Button onPress={() => this.refs.modal6.open()} style={styles.btn}>
+              ONE
+            </Button>
+            <Button onPress={() => this.refs.modal6.open()} style={styles.btn}>
+              TWO
+            </Button>
+            <Button onPress={() => this.refs.modal6.open()} style={styles.btn}>
+              THREE
+            </Button>
+          </View>
+        </View>
+        <Modal
+          style={styles.modal}
+          position={'bottom'}
+          ref={'modal6'}
+          swipeArea={20}
+        >
+          <ScrollView>
+            <View style={{ width: screen.width, paddingLeft: 10 }}>
+              {this.renderList()}
+            </View>
+          </ScrollView>
+        </Modal>
       </MapView>
     );
   }
