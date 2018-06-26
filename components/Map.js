@@ -108,43 +108,43 @@ export default class Map extends Component {
   render() {
     let screen = Dimensions.get('window');
     return <View style={{ flex: 1, position: 'relative' }}>
-        <MapView style={{ flex: 1 }} initialRegion={{ latitude: 40.705076, longitude: -74.00916, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}>
-          {this.inPerimeter({ latitude: this.state.latitude, longitude: this.state.longitude }, fakePoints[0]) && console.warn('in perimeter!!')}
-          <MapView.Marker pinColor="#000000" coordinate={{ latitude: this.state.latitude, longitude: this.state.longitude }} />
-        </MapView>
+      <MapView style={{ flex: 1 }} initialRegion={{ latitude: 40.705076, longitude: -74.00916, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}>
+        {this.inPerimeter({ latitude: this.state.latitude, longitude: this.state.longitude }, fakePoints[0]) && console.warn('in perimeter!!')}
+        <MapView.Marker pinColor="#000000" coordinate={{ latitude: this.state.latitude, longitude: this.state.longitude }} />
+      </MapView>
 
-        <View style={styles.bottomView}>
-          <View style={styles.buttonList}>
-            <View>
-              <Icon name="beer" color="black" reverse type="material-community" onPress={() => this.refs.targets.open()} style={styles.btn} />
-              <Text>TARGETS</Text>
-            </View>
-            <View>
-              <Icon name="beer" color="black" reverse type="material-community" onPress={() => this.refs.scores.open()} style={styles.btn} />
-              <Text>SCORES</Text>
-            </View>
+      <View style={styles.bottomView}>
+        <View style={styles.buttonList}>
           <View>
-            <Icon name="beer" color="black" reverse type="material-community" onPress={() => this.refs.scores.open()} style={styles.btn} />
-            <Text>STATUS</Text>
+            <Icon name="target" color="black" reverse type="material-community" onPress={() => this.refs.targets.open()} style={styles.btn} />
+            <Text>TARGETS</Text>
           </View>
+          <View>
+            <Icon name="trophy" color="black" reverse type="material-community" onPress={() => this.refs.scores.open()} style={styles.btn} />
+            <Text>SCORES</Text>
+          </View>
+          <View>
+            <Icon name="radar" color="black" reverse type="material-community" onPress={() => this.refs.scores.open()} style={styles.btn} />
+            <Text>RADAR</Text>
           </View>
         </View>
-        <Modal style={styles.modal} position={'bottom'} ref={'targets'} swipeArea={20}>
-          <ScrollView>
-            <View style={{ width: screen.width, paddingLeft: 10 }}>
-              {this.renderList()}
-            </View>
-          </ScrollView>
-        </Modal>
-        <Modal style={styles.modal} position={'bottom'} ref={'scores'} swipeArea={20}>
-          <ScrollView>
-            <View style={{ width: screen.width, paddingLeft: 10 }}>
-              <Text>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt quaerat ipsam consequuntur quam magni. Hic odio deserunt facilis corrupti blanditiis voluptatem nesciunt minima quisquam, alias dolorum repudiandae et, sint consequuntur?
+      </View>
+      <Modal style={styles.modal} position={'bottom'} ref={'targets'} swipeArea={20}>
+        <ScrollView>
+          <View style={{ width: screen.width, paddingLeft: 10 }}>
+            {this.renderList()}
+          </View>
+        </ScrollView>
+      </Modal>
+      <Modal style={styles.modal} position={'bottom'} ref={'scores'} swipeArea={20}>
+        <ScrollView>
+          <View style={{ width: screen.width, paddingLeft: 10 }}>
+            <Text>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt quaerat ipsam consequuntur quam magni. Hic odio deserunt facilis corrupti blanditiis voluptatem nesciunt minima quisquam, alias dolorum repudiandae et, sint consequuntur?
                 </Text>
-            </View>
-          </ScrollView>
-        </Modal>
-      </View>;
+          </View>
+        </ScrollView>
+      </Modal>
+    </View>;
   }
 }
