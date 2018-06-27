@@ -5,25 +5,6 @@ import { View, Text, StyleSheet, ScrollView, Dimensions, Image } from 'react-nat
 import { Icon } from 'react-native-elements';
 import * as firebase from 'firebase';
 
-//
-
-var fakePoints = [
-  {
-    key: 1,
-    latitude: 40.705554,
-    longitude: -74.013444,
-    title: 'Charging Bull',
-  },
-  { key: 2, latitude: 40.704343, longitude: -74.012981, title: 'A Starbucks' },
-  {
-    key: 3,
-    latitude: 40.702265,
-    longitude: -74.011981,
-    title: 'Retro Fitness',
-  },
-  { key: 4, latitude: 40.703712, longitude: -74.00922, title: 'Chase Bank' },
-];
-
 const styles = StyleSheet.create({
   bottomView: {
     position: 'absolute',
@@ -61,6 +42,7 @@ export default class Map extends Component {
     };
     this.inPerimeter = this.inPerimeter.bind(this);
     this.renderList = this.renderList.bind(this);
+    this.selectTarget = this.selectTarget.bind(this);
   }
 
   componentDidMount() {
@@ -75,6 +57,11 @@ export default class Map extends Component {
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID);
+  }
+
+  selectTarget(event) {
+    console.log("SHOW ME WHAT YOU GOT!!!", event)
+    // this.setState({selectedTarget: event.target.value})
   }
 
   //translates the distance btwn two coordinates from longitude/latitude to kilometers
@@ -102,7 +89,6 @@ export default class Map extends Component {
     if (distance > .005 && distance <= .050) {
       radarMessage = "warm"
     }
-
     if (distance > .050) { radarMessage = "cold" }
     return radarMessage
   }
@@ -114,10 +100,8 @@ export default class Map extends Component {
     try {
       const hunts = await firebase.database().ref('/Hunts').once('value');
       const targets = await firebase.database().ref('/Locations').once('value');
-
       const huntsVal = hunts.val()
       const locations = targets.val()
-
       const huntLocationArr = huntsVal[huntName].locations
 
       for (let i = 0; i < huntLocationArr.length; i++) {
@@ -130,7 +114,6 @@ export default class Map extends Component {
     catch (error) {
       console.error(error)
     }
-    console.log('LIST', list)
     this.setState({
       targetImages: list
     })
@@ -162,11 +145,12 @@ export default class Map extends Component {
         </View>
         <Modal style={styles.modal} position={'bottom'} ref={'targets'} swipeArea={20}>
           <ScrollView>
-            <View style={{ width: screen.width, paddingLeft: 10, paddingTop: 20, flexDirection: "row", justifyContent: "space-around" }}>
+            <View style={{ width: screen.width, paddingLeft: 10, paddingTop: 20, flexDirection: "row", justifyContent: "space-evenly", flexWrap: "wrap" }}>
               {imageArr.map((image, i) => {
                 return (
-                  <View key={i} style={{ overflow: "hidden", borderRadius: 25, width: 50, height: 50 }}>
-                    <Image style={{ width: 50, height: 50 }} source={{ uri: image }} />
+                  <View key={i} style={{ overflow: "hidden", borderRadius: 40, width: 80, height: 80, paddingBottom: 30 }} >
+                    <Image style={{ width: 80, height: 80 }} source={{ uri: image }} />
+                    {/* onPress add border, trigger function */}
                   </View>
                 )
               })}
@@ -178,7 +162,7 @@ export default class Map extends Component {
             <View style={{ width: screen.width, paddingLeft: 10 }}>
               <Text>
                 {
-                  this.inPerimeter({ latitude: this.state.latitude, longitude: this.state.longitude }, fakePoints[0])
+                  this.inPerimeter({ latitude: this.state.latitude, longitude: this.state.longitude }, this.state.selectedTarget)
                 }
               </Text>
             </View>
