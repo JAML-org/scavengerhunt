@@ -93,7 +93,7 @@ class HuntDetails extends React.Component {
         </MapView>
         <Text>{hunt.blurb}</Text>
         <Text>Targets: {hunt.locations.length}</Text>
-        <Button title="Choose Theme" onPress={() => navigate('Map', { huntLocations })} />
+        <Button title="Choose Theme" onPress={() => navigate('Map', { huntLocations, huntName })} />
       </View>
     );
   }

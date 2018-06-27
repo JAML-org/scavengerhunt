@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { MapView } from 'expo';
 import Modal from 'react-native-modalbox';
-import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions, Image } from 'react-native';
 import { Icon } from 'react-native-elements';
+import * as firebase from 'firebase';
+
+//
 
 var fakePoints = [
   {
@@ -53,8 +56,11 @@ export default class Map extends Component {
       latitude: 0,
       longitude: 0,
       distance: 5,
+      selectedTarget: {}, // {name: '', latitude: , longitude: , image: }
+      targetImages: [],
     };
     this.inPerimeter = this.inPerimeter.bind(this);
+    this.renderList = this.renderList.bind(this);
   }
 
   componentDidMount() {
@@ -64,6 +70,7 @@ export default class Map extends Component {
         longitude: position.coords.longitude,
       });
     });
+    this.renderList()
   }
 
   componentWillUnmount() {
@@ -100,22 +107,38 @@ export default class Map extends Component {
     return radarMessage
   }
 
-  renderList() {
-    var list = [];
+  async renderList() {
+    const { getParam } = this.props.navigation;
+    const huntName = getParam('huntName', 'NO-HUNT')
+    let list = []
+    try {
+      const hunts = await firebase.database().ref('/Hunts').once('value');
+      const targets = await firebase.database().ref('/Locations').once('value');
 
-    for (var i = 0; i < 50; i++) {
-      list.push(
-        <Text style={styles.text} key={i}>
-          Elem {i}
-        </Text>
-      );
+      const huntsVal = hunts.val()
+      const locations = targets.val()
+
+      const huntLocationArr = huntsVal[huntName].locations
+
+      for (let i = 0; i < huntLocationArr.length; i++) {
+        let image = locations[+huntLocationArr[i]].image
+        list.push(
+          image
+        );
+      }
     }
-
-    return list;
+    catch (error) {
+      console.error(error)
+    }
+    console.log('LIST', list)
+    this.setState({
+      targetImages: list
+    })
   }
 
   render() {
     let screen = Dimensions.get('window');
+    const imageArr = this.state.targetImages;
     return (
       <View style={{ flex: 1, position: 'relative' }}>
         <MapView style={{ flex: 1 }} initialRegion={{ latitude: 40.705076, longitude: -74.00916, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}>
@@ -140,7 +163,17 @@ export default class Map extends Component {
         <Modal style={styles.modal} position={'bottom'} ref={'targets'} swipeArea={20}>
           <ScrollView>
             <View style={{ width: screen.width, paddingLeft: 10 }}>
-              {this.renderList()}
+              {imageArr.map((image, i) => {
+                return (
+                  <Image
+                    key={i}
+                    style={{
+                      width: 50,
+                      height: 50,
+                    }}
+                    source={{ uri: image }} />
+                )
+              })}
             </View>
           </ScrollView>
         </Modal>
