@@ -3,7 +3,6 @@ import MenuContainer from './components/Menu';
 import UserLoginForm from './components/UserLoginForm';
 import RegForm from './components/RegForm';
 
-
 export const AppStack = createStackNavigator(
   {
     UserLogin: {
@@ -11,19 +10,20 @@ export const AppStack = createStackNavigator(
     },
     RegForm: {
       screen: RegForm,
-    }
+    },
   },
   {
     headerMode: 'float',
-  });
+  }
+);
 
 export const RootStack = createStackNavigator(
   {
     AppStack: { screen: AppStack },
-    MenuStack: { screen: MenuContainer }
+    MenuStack: { screen: MenuContainer },
   },
   {
     headerMode: 'none',
     initialRouteName: 'AppStack',
   }
-)
+);
