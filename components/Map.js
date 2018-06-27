@@ -162,16 +162,12 @@ export default class Map extends Component {
         </View>
         <Modal style={styles.modal} position={'bottom'} ref={'targets'} swipeArea={20}>
           <ScrollView>
-            <View style={{ width: screen.width, paddingLeft: 10 }}>
+            <View style={{ width: screen.width, paddingLeft: 10, paddingTop: 20, flexDirection: "row", justifyContent: "space-around" }}>
               {imageArr.map((image, i) => {
                 return (
-                  <Image
-                    key={i}
-                    style={{
-                      width: 50,
-                      height: 50,
-                    }}
-                    source={{ uri: image }} />
+                  <View key={i} style={{ overflow: "hidden", borderRadius: 25, width: 50, height: 50 }}>
+                    <Image style={{ width: 50, height: 50 }} source={{ uri: image }} />
+                  </View>
                 )
               })}
             </View>
