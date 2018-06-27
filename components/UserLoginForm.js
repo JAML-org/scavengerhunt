@@ -62,16 +62,16 @@ export default class UserLoginForm extends Component {
     }
   }
 
-  handleSubmit() {
+  async handleSubmit() {
     const { email, password } = this.state;
-    firebase
+    await firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
         console.warn('You are logged in!');
-        this.props.navigation.navigate('MenuStack')
+        this.props.navigation.navigate('MenuStack');
       })
-      .catch(function (error) {
+      .catch(function(error) {
         let errorCode = error.code;
         let errorMessage = error.message;
 
@@ -112,7 +112,6 @@ export default class UserLoginForm extends Component {
         >
           <Text style={styles.btntext}>Sign Up</Text>
         </TouchableOpacity>
-
       </View>
     );
   }

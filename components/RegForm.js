@@ -59,33 +59,38 @@ export default class RegForm extends Component {
       password: '',
       name: '',
       phone: '',
-      username: ''
+      username: '',
     };
   }
 
   updateValue(text, field) {
     this.setState({
-      [field]: text
-    })
+      [field]: text,
+    });
   }
 
   async handleSubmit() {
     const { email, password, username, phone, name } = this.state;
-    const snap = await firebase.database().ref('/Users').once('value');
-    try { 
+    const snap = await firebase
+      .database()
+      .ref('/Users')
+      .once('value');
+    try {
+      await firebase.auth().createUserWithEmailAndPassword(email, password);
+
       await firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      
-      await firebase.database().ref('/Users').set({
-        ...snap.val(),
-          [username]: {
+        .database()
+        .ref('/Users')
+        .set({
+          ...snap.val(),
+          [firebase.auth().currentUser.uid]: {
+            username,
             phone,
             name,
-            email
-          }
-      })
-    } catch (error){
+            email,
+          },
+        });
+    } catch (error) {
       let errorCode = error.code;
       let errorMessage = error.message;
 
@@ -126,7 +131,7 @@ export default class RegForm extends Component {
           onChangeText={text => this.updateValue(text, 'email')}
         />
 
-        <TextInput    
+        <TextInput
           style={styles.textinput}
           placeholder="Phone number"
           onChangeText={text => this.updateValue(text, 'phone')}
