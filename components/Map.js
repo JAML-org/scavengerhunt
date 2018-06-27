@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
 import { MapView } from 'expo';
 import Modal from 'react-native-modalbox';
-import { View, Text, StyleSheet, ScrollView, Dimensions, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  Image,
+  TouchableHighlight,
+  Alert,
+} from 'react-native';
 import { Icon } from 'react-native-elements';
 import * as firebase from 'firebase';
 
@@ -28,6 +37,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 150,
   },
+  active: {
+    overflow: 'hidden',
+    borderRadius: 40,
+    width: 80,
+    height: 80,
+    paddingBottom: 30,
+    marginLeft: 20,
+    opacity: 0.5,
+  },
+  inactive: {
+    overflow: 'hidden',
+    borderRadius: 40,
+    width: 80,
+    height: 80,
+    paddingBottom: 30,
+    marginLeft: 20,
+  },
 });
 
 export default class Map extends Component {
@@ -38,7 +64,7 @@ export default class Map extends Component {
       longitude: 0,
       distance: 5,
       selectedTarget: {}, // {name: '', latitude: , longitude: , image: }
-      targetImages: [],
+      targets: [],
     };
     this.inPerimeter = this.inPerimeter.bind(this);
     this.renderList = this.renderList.bind(this);
@@ -52,16 +78,15 @@ export default class Map extends Component {
         longitude: position.coords.longitude,
       });
     });
-    this.renderList()
+    this.renderList();
   }
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID);
   }
 
-  selectTarget(event) {
-    console.log("SHOW ME WHAT YOU GOT!!!", event)
-    // this.setState({selectedTarget: event.target.value})
+  selectTarget(target) {
+    this.setState({ selectedTarget: target });
   }
 
   //translates the distance btwn two coordinates from longitude/latitude to kilometers
@@ -82,93 +107,163 @@ export default class Map extends Component {
 
   inPerimeter(userCoords, targetCoords) {
     const distance = this.distanceInKM(userCoords, targetCoords);
-    let radarMessage = ''
-    if (distance <= (this.state.distance / 1000)) {
-      radarMessage = "you've found it"
+    let radarMessage = '';
+    if (distance <= this.state.distance / 1000) {
+      radarMessage = "you've found it";
     }
-    if (distance > .005 && distance <= .050) {
-      radarMessage = "warm"
+    if (distance > 0.005 && distance <= 0.05) {
+      radarMessage = 'warm';
     }
-    if (distance > .050) { radarMessage = "cold" }
-    return radarMessage
+    if (distance > 0.05) {
+      radarMessage = 'cold';
+    }
+    return radarMessage;
   }
 
   async renderList() {
     const { getParam } = this.props.navigation;
-    const huntName = getParam('huntName', 'NO-HUNT')
-    let list = []
+    const huntName = getParam('huntName', 'NO-HUNT');
+    let list = [];
     try {
-      const hunts = await firebase.database().ref('/Hunts').once('value');
-      const targets = await firebase.database().ref('/Locations').once('value');
-      const huntsVal = hunts.val()
-      const locations = targets.val()
-      const huntLocationArr = huntsVal[huntName].locations
+      const hunts = await firebase
+        .database()
+        .ref('/Hunts')
+        .once('value');
+      const targets = await firebase
+        .database()
+        .ref('/Locations')
+        .once('value');
+      const huntsVal = hunts.val();
+      const locations = targets.val();
+      const huntLocationArr = huntsVal[huntName].locations;
 
       for (let i = 0; i < huntLocationArr.length; i++) {
-        let image = locations[+huntLocationArr[i]].image
-        list.push(
-          image
-        );
+        let target = locations[+huntLocationArr[i]];
+        list.push(target);
       }
-    }
-    catch (error) {
-      console.error(error)
+    } catch (error) {
+      console.error(error);
     }
     this.setState({
-      targetImages: list
-    })
+      targets: list,
+    });
   }
 
   render() {
     let screen = Dimensions.get('window');
-    const imageArr = this.state.targetImages;
+    const targets = this.state.targets;
     return (
       <View style={{ flex: 1, position: 'relative' }}>
-        <MapView style={{ flex: 1 }} initialRegion={{ latitude: 40.705076, longitude: -74.00916, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }}>
-          <MapView.Marker pinColor="#000000" coordinate={{ latitude: this.state.latitude, longitude: this.state.longitude }} />
+        <MapView
+          style={{ flex: 1 }}
+          initialRegion={{
+            latitude: 40.705076,
+            longitude: -74.00916,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        >
+          <MapView.Marker
+            pinColor="#000000"
+            coordinate={{
+              latitude: this.state.latitude,
+              longitude: this.state.longitude,
+            }}
+          />
         </MapView>
         <View style={styles.bottomView}>
           <View style={styles.buttonList}>
             <View>
-              <Icon name="target" color="black" reverse type="material-community" onPress={() => this.refs.targets.open()} style={styles.btn} />
+              <Icon
+                name="target"
+                color="black"
+                reverse
+                type="material-community"
+                onPress={() => this.refs.targets.open()}
+                style={styles.btn}
+              />
               <Text>TARGETS</Text>
             </View>
             <View>
-              <Icon name="trophy" color="black" reverse type="material-community" onPress={() => this.refs.scores.open()} style={styles.btn} />
+              <Icon
+                name="trophy"
+                color="black"
+                reverse
+                type="material-community"
+                onPress={() => this.refs.scores.open()}
+                style={styles.btn}
+              />
               <Text>SCORES</Text>
             </View>
             <View>
-              <Icon name="radar" color="black" reverse type="material-community" onPress={() => this.refs.scores.open()} style={styles.btn} />
+              <Icon
+                name="radar"
+                color="black"
+                reverse
+                type="material-community"
+                onPress={() => this.refs.scores.open()}
+                style={styles.btn}
+              />
               <Text>RADAR</Text>
             </View>
           </View>
         </View>
-        <Modal style={styles.modal} position={'bottom'} ref={'targets'} swipeArea={20}>
-          <ScrollView>
-            <View style={{ width: screen.width, paddingLeft: 10, paddingTop: 20, flexDirection: "row", justifyContent: "space-evenly", flexWrap: "wrap" }}>
-              {imageArr.map((image, i) => {
+        <Modal
+          style={styles.modal}
+          position={'bottom'}
+          ref={'targets'}
+          swipeArea={20}
+        >
+          <ScrollView horizontal={true} style={{ width: screen.width }}>
+            <View
+              style={{
+                paddingTop: 20,
+                flexDirection: 'row',
+              }}
+            >
+              {targets.map((target, i) => {
                 return (
-                  <View key={i} style={{ overflow: "hidden", borderRadius: 40, width: 80, height: 80, paddingBottom: 30 }} >
-                    <Image style={{ width: 80, height: 80 }} source={{ uri: image }} />
+                  <TouchableHighlight
+                    style={
+                      this.state.selectedTarget.name === target.name
+                        ? styles.active
+                        : styles.inactive
+                    }
+                    key={i}
+                    onPress={() => this.selectTarget(target)}
+                  >
+                    <Image
+                      style={{ width: 80, height: 80 }}
+                      source={{ uri: target.image }}
+                    />
                     {/* onPress add border, trigger function */}
-                  </View>
-                )
+                  </TouchableHighlight>
+                );
               })}
             </View>
           </ScrollView>
         </Modal>
-        <Modal style={styles.modal} position={'bottom'} ref={'scores'} swipeArea={20}>
+        <Modal
+          style={styles.modal}
+          position={'bottom'}
+          ref={'scores'}
+          swipeArea={20}
+        >
           <ScrollView>
             <View style={{ width: screen.width, paddingLeft: 10 }}>
               <Text>
-                {
-                  this.inPerimeter({ latitude: this.state.latitude, longitude: this.state.longitude }, this.state.selectedTarget)
-                }
+                {this.inPerimeter(
+                  {
+                    latitude: this.state.latitude,
+                    longitude: this.state.longitude,
+                  },
+                  this.state.selectedTarget
+                )}
               </Text>
             </View>
           </ScrollView>
         </Modal>
       </View>
-    )
+    );
   }
 }
