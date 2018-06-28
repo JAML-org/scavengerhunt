@@ -1,50 +1,55 @@
-import React, { Component } from 'react'
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
-
-const styles = StyleSheet.create({
-  regform: {
-    alignSelf: 'stretch',
-  },
-  header: {
-    fontSize: 24,
-    color: '#fff',
-    paddingBottom: 10,
-    marginBottom: 40,
-    borderBottomColor: '#199187',
-    borderBottomWidth: 1,
-  },
-  textinput: {
-    alignSelf: 'stretch',
-    height: 40,
-    marginBottom: 30,
-    color: 'black',
-    borderBottomColor: '#f8f8f8',
-    borderBottomWidth: 1,
-  },
-  button: {
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#59cbbd',
-    marginTop: 30,
-  },
-  btntext: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-});
+import React, { Component } from 'react';
+import { View } from 'react-native';
+import { Text, Divider, List, ListItem, Icon } from 'react-native-elements';
+import * as firebase from 'firebase';
+import styles from './style';
 
 export default class JoinHunt extends Component {
   constructor() {
-    super()
-    this.state = {}
+    super();
+    this.state = {
+      invites: {},
+    };
+  }
+
+  async componentDidMount() {
+    const userId = await firebase.auth().currentUser.uid;
+    const user = await firebase
+      .database()
+      .ref(`/Users/${userId}`)
+      .once('value')
+      .then(snap => snap.val());
+
+    this.setState({
+      invites: user.invites,
+    });
+    // console.log('INVITES', invites);
   }
 
   render() {
+    const { invites } = this.state;
     return (
-      <View>
-        <Text style={styles.header}>Join Hunt</Text>
+      <View style={styles.container}>
+        <View style={{ width: '100%', height: '25%' }}>
+          <Text h4 style={{ color: 'white' }}>
+            Invites
+          </Text>
+          <Divider />
+        </View>
+        <View>
+          <List>
+            {Object.keys(invites).map(invite => (
+              <ListItem
+                key={invite}
+                roundAvatar
+                title={invites[invite].theme}
+                subtitle={`from ${invites[invite].from.name}`}
+                avatar={{ uri: invites[invite].from.avatar }}
+              />
+            ))}
+          </List>
+        </View>
       </View>
-    )
+    );
   }
 }
