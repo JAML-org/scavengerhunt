@@ -153,6 +153,7 @@ export default class Map extends Component {
   render() {
     let screen = Dimensions.get('window');
     const targets = this.state.targets;
+    console.log('WHERE AM I?!', this.state.latitude, this.state.longitude)
     return (
       <View style={{ flex: 1, position: 'relative' }}>
         <MapView
@@ -237,7 +238,6 @@ export default class Map extends Component {
                       style={{ width: 80, height: 80 }}
                       source={{ uri: target.image }}
                     />
-                    {/* onPress add border, trigger function */}
                   </TouchableHighlight>
                 );
               })}
