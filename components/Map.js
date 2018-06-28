@@ -8,8 +8,7 @@ import {
   ScrollView,
   Dimensions,
   Image,
-  TouchableHighlight,
-  Alert,
+  TouchableHighlight
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import * as firebase from 'firebase';

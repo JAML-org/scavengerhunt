@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
-import { Text, Divider, List, ListItem, Icon } from 'react-native-elements';
+import { StyleSheet, View } from 'react-native';
+import { Text, Divider, List, ListItem, Button } from 'react-native-elements';
 import * as firebase from 'firebase';
 import styles from './style';
 
@@ -9,7 +9,8 @@ export default class JoinHunt extends Component {
     super();
     this.state = {
       invites: {},
-    };
+      selected: {}
+    }
   }
 
   async componentDidMount() {
@@ -28,6 +29,7 @@ export default class JoinHunt extends Component {
 
   render() {
     const { invites } = this.state;
+    console.log("STATE ===========>", this.state)
     return (
       <View style={styles.container}>
         <View style={{ width: '100%', height: '25%' }}>
@@ -45,11 +47,39 @@ export default class JoinHunt extends Component {
                 title={invites[invite].theme}
                 subtitle={`from ${invites[invite].from.name}`}
                 avatar={{ uri: invites[invite].from.avatar }}
+                onPress={() => this.setState({ selected: invite })}
               />
             ))}
           </List>
+        </View>
+        <View style={styling.buttonList}>
+          <View>
+            <Button
+              title="ACCEPT"
+            // onPress={REDIRECT TO MAP W/GAME ID}
+            />
+          </View>
+          <View>
+            <Button
+              title="DECLINE"
+            // onPress={DELETE INVITE}
+            />
+          </View>
         </View>
       </View>
     );
   }
 }
+
+const styling = StyleSheet.create({
+  buttonList: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 25
+  }
+})
