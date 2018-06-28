@@ -65,6 +65,7 @@ export default class Map extends Component {
       distance: 5,
       selectedTarget: {}, // {name: '', latitude: , longitude: , image: }
       targets: [],
+      gameId: ''
     };
     this.inPerimeter = this.inPerimeter.bind(this);
     this.renderList = this.renderList.bind(this);

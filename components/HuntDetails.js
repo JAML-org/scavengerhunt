@@ -10,24 +10,41 @@ const fakePoints = [
   [40.704343, -74.012981],
   [40.705554, -74.013444],
   [40.702265, -74.011981],
-  [40.703712, -74.00922]
+  [40.703712, -74.00922],
 ];
 
 class HuntDetails extends React.Component {
   constructor() {
     super();
     this.state = {
-      locations: {}
+      locations: {},
+    };
+    this.newGame = this.newGame.bind(this);
+  }
+
+  async newGame() {
+    try {
+      let games = await firebase.database().ref('/Games');
+      let newgames = await games.push();
+      let currentPlayer = firebase.auth().currentUser.uid;
+      const { getParam } = this.props.navigation;
+      const huntName = getParam('huntName');
+      newgames.set({
+        players: {[currentPlayer]: 0},
+        theme: huntName,
+      });
+    } catch (error) {
+      console.log(error);
     }
   }
 
   async componentDidMount() {
     try {
       let response = await firebase.database().ref('/Locations');
-      let snapshot = await response.once('value')
+      let snapshot = await response.once('value');
       this.setState({
-        locations: snapshot.val()
-      })
+        locations: snapshot.val(),
+      });
     } catch (error) {
       console.error(error);
     }
@@ -40,13 +57,16 @@ class HuntDetails extends React.Component {
     const huntLocationsID = getParam('huntLocationsID', 'NO-HUNT-LOCATION-ID');
     const huntLocations = huntLocationsID.map(locationID => {
       return this.state.locations[locationID];
-    })
+    });
 
-    function rad2degr(rad) { return rad * 180 / Math.PI; }
-    function degr2rad(degr) { return degr * Math.PI / 180; }
+    function rad2degr(rad) {
+      return (rad * 180) / Math.PI;
+    }
+    function degr2rad(degr) {
+      return (degr * Math.PI) / 180;
+    }
 
     function getLatLngCenter(latLngInDegr) {
-
       let LATIDX = 0;
       let LNGIDX = 1;
       let sumX = 0;
@@ -80,7 +100,7 @@ class HuntDetails extends React.Component {
       <View style={styles.container}>
         <Text h2>{huntName}</Text>
         }}
-      <MapView
+        <MapView
           style={style.map}
           initialRegion={{
             latitude: center.latitude,
@@ -89,14 +109,21 @@ class HuntDetails extends React.Component {
             longitudeDelta: 0.0421,
           }}
         >
-          <MapView.Circle center={center} radius={1000} strokeColor='red' />
+          <MapView.Circle center={center} radius={1000} strokeColor="red" />
         </MapView>
         <Text>{hunt.blurb}</Text>
         <Text>Targets: {hunt.locations.length}</Text>
-        <Button title="Choose Theme" onPress={() => navigate('Map', { huntLocations, huntName })} />
+        {/* <Button title="Choose Theme" onPress={() => navigate('Map', { huntLocations, huntName })} /> */}
+        <Button
+          title="Ready to Play!"
+          onPress={() => {
+            this.newGame();
+            navigate('Map', { huntLocations, huntName });
+          }}
+        />
       </View>
     );
   }
-};
+}
 
 export default HuntDetails;
