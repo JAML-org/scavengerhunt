@@ -6,13 +6,6 @@ import { MapView } from 'expo';
 import style from './style';
 import * as firebase from 'firebase';
 
-// const fakePoints = [
-//   [40.704343, -74.012981],
-//   [40.705554, -74.013444],
-//   [40.702265, -74.011981],
-//   [40.703712, -74.00922],
-// ];
-
 class HuntDetails extends React.Component {
   constructor() {
     super();
@@ -30,14 +23,17 @@ class HuntDetails extends React.Component {
   async newGame() {
     try {
       let games = await firebase.database().ref('/Games');
-      let newgames = await games.push();
+      let newgame = await games.push();
       let currentPlayer = firebase.auth().currentUser.uid;
       const { getParam } = this.props.navigation;
       const huntName = getParam('huntName');
-      newgames.set({
+      newgame.set({
         players: { [currentPlayer]: 0 },
         theme: huntName,
       });
+
+      //   let stuff = await newgame.once('value').then(snap => snap.val())
+      // console.log('GIMME GAME ID!!!', stuff)
     } catch (error) {
       console.log(error);
     }
@@ -60,7 +56,7 @@ class HuntDetails extends React.Component {
       const coordsArr = huntLocationsID.map(locationID => {
         return this.state.locations[locationID].coords;
       });
-      console.log('COORDS', coordsArr);
+
       this.setState({ huntLocations, coordsArr });
     } catch (error) {
       console.error(error);
@@ -112,10 +108,8 @@ class HuntDetails extends React.Component {
 
     let center = {};
     if (this.state.coordsArr.length) {
-      // console.log('HELLLOOO!!----', this.state.coordsArr);
       center = this.getLatLngCenter(this.state.coordsArr);
     }
-    console.log('CENTER!!', center);
 
     const huntLocations = this.state.huntLocations;
     return (

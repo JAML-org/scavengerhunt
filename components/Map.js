@@ -153,7 +153,7 @@ export default class Map extends Component {
   render() {
     let screen = Dimensions.get('window');
     const targets = this.state.targets;
-    console.log('WHERE AM I?!', this.state.latitude, this.state.longitude)
+    console.log(this.state.selectedTarget)
     return (
       <View style={{ flex: 1, position: 'relative' }}>
         <MapView
@@ -259,6 +259,7 @@ export default class Map extends Component {
                     longitude: this.state.longitude,
                   },
                   this.state.selectedTarget
+
                 )}
               </Text>
             </View>
