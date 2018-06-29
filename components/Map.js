@@ -8,7 +8,12 @@ import {
   ScrollView,
   Dimensions,
   Image,
+<<<<<<< HEAD
   TouchableHighlight
+=======
+  TouchableHighlight,
+  TouchableOpacity,
+>>>>>>> master
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import * as firebase from 'firebase';
@@ -62,13 +67,15 @@ export default class Map extends Component {
       latitude: 0,
       longitude: 0,
       distance: 5,
-      selectedTarget: {}, // {name: '', latitude: , longitude: , image: }
+      selectedTarget: {}, // {name: '', latitude: , longitude: }
       targets: [],
-      gameId: ''
+      isOpen: false,
     };
     this.inPerimeter = this.inPerimeter.bind(this);
     this.renderList = this.renderList.bind(this);
     this.selectTarget = this.selectTarget.bind(this);
+    this.updateScore = this.updateScore.bind(this);
+    this.getScores = this.getScores.bind(this);
   }
 
   componentDidMount() {
@@ -107,9 +114,11 @@ export default class Map extends Component {
 
   inPerimeter(userCoords, targetCoords) {
     const distance = this.distanceInKM(userCoords, targetCoords);
+
     let radarMessage = '';
     if (distance <= this.state.distance / 1000) {
       radarMessage = "you've found it";
+      this.updateScore();
     }
     if (distance > 0.005 && distance <= 0.05) {
       radarMessage = 'warm';
@@ -118,6 +127,38 @@ export default class Map extends Component {
       radarMessage = 'cold';
     }
     return radarMessage;
+  }
+
+  async updateScore() {
+    const { getParam } = this.props.navigation;
+    let currentGameId = getParam('newGameId');
+    let currentPlayerId = getParam('currentPlayer');
+    try {
+      //find the current game
+      let currentGame = await firebase
+        .database()
+        .ref(`/Games/${currentGameId}/players/`);
+
+      //get previousScore
+      let previousScoreObj = await currentGame
+        .child(`${currentPlayerId}`)
+        .once('value');
+      let previousScore = await previousScoreObj.val();
+
+      //update Player's score
+      let currentScore = previousScore + 10;
+      currentGame.update({
+        [currentPlayerId]: currentScore,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async getScores() {
+    //go into Games
+    //match playerID to user
+    //Sort based on points
   }
 
   async renderList() {
@@ -151,8 +192,9 @@ export default class Map extends Component {
 
   render() {
     let screen = Dimensions.get('window');
-    const targets = this.state.targets;
-    console.log(this.state.selectedTarget)
+    const { targets, isOpen } = this.state;
+    console.log('isOpen', isOpen);
+
     return (
       <View style={{ flex: 1, position: 'relative' }}>
         <MapView
@@ -202,7 +244,7 @@ export default class Map extends Component {
                 color="black"
                 reverse
                 type="material-community"
-                onPress={() => this.refs.scores.open()}
+                onPress={() => {this.refs.radar.open()}}
                 style={styles.btn}
               />
               <Text>RADAR</Text>
@@ -214,14 +256,10 @@ export default class Map extends Component {
           position={'bottom'}
           ref={'targets'}
           swipeArea={20}
+          isOpen={true}
         >
           <ScrollView horizontal={true} style={{ width: screen.width }}>
-            <View
-              style={{
-                paddingTop: 20,
-                flexDirection: 'row',
-              }}
-            >
+            <View style={{ paddingTop: 20, flexDirection: 'row' }}>
               {targets.map((target, i) => {
                 return (
                   <TouchableHighlight
@@ -231,7 +269,13 @@ export default class Map extends Component {
                         : styles.inactive
                     }
                     key={i}
-                    onPress={() => this.selectTarget(target)}
+                    onPress={() =>
+                      this.selectTarget({
+                        name: target.name,
+                        latitude: target.coords[0],
+                        longitude: target.coords[1],
+                      })
+                    }
                   >
                     <Image
                       style={{ width: 80, height: 80 }}
@@ -251,18 +295,31 @@ export default class Map extends Component {
         >
           <ScrollView>
             <View style={{ width: screen.width, paddingLeft: 10 }}>
-              <Text>
-                {this.inPerimeter(
-                  {
-                    latitude: this.state.latitude,
-                    longitude: this.state.longitude,
-                  },
-                  this.state.selectedTarget
-
-                )}
-              </Text>
+              <Text>These are the scores.</Text>
             </View>
           </ScrollView>
+        </Modal>
+
+        <Modal
+          style={styles.modal}
+          position={'bottom'}
+          ref={'radar'}
+          swipeArea={20}
+          onOpened={() => this.setState({ isOpen: true })}
+          onClosed={() => this.setState({ isOpen: false })}
+        >
+          <View style={{ width: screen.width, paddingLeft: 10 }}>
+            <Text>
+              {this.inPerimeter(
+                    {
+                      latitude: this.state.latitude,
+                      longitude: this.state.longitude,
+                    },
+                    this.state.selectedTarget
+                  )
+                }
+            </Text>
+          </View>
         </Modal>
       </View>
     );

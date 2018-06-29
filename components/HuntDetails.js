@@ -3,7 +3,6 @@ import styles from './style';
 import { View, Button } from 'react-native';
 import { Text } from 'react-native-elements';
 import { MapView } from 'expo';
-import style from './style';
 import * as firebase from 'firebase';
 
 class HuntDetails extends React.Component {
@@ -13,6 +12,7 @@ class HuntDetails extends React.Component {
       locations: {},
       coordsArr: [],
       huntLocations: [],
+      newGameId: '',
     };
     this.newGame = this.newGame.bind(this);
     this.getLatLngCenter = this.getLatLngCenter.bind(this);
@@ -20,19 +20,43 @@ class HuntDetails extends React.Component {
     this.degr2rad = this.degr2rad.bind(this);
   }
 
-  async newGame() {
+  async newGame(navigate) {
     try {
-      let games = await firebase.database().ref('/Games');
-      let newgame = await games.push();
-      let currentPlayer = firebase.auth().currentUser.uid;
+      //Get huntName from HuntList component to pass into new game
       const { getParam } = this.props.navigation;
       const huntName = getParam('huntName');
-      newgame.set({
+
+      //Get signed in user
+      let currentPlayer = await firebase.auth().currentUser.uid;
+      //Route to Games in Firebase
+      let games = await firebase.database().ref('/Games');
+
+      //Generate newgame ID
+      let newGame = await games.push();
+      //Add game to Games route
+      newGame.set({
         players: { [currentPlayer]: 0 },
         theme: huntName,
       });
 
-      console.log('GIMME GAME ID!!!', newgame.key);
+      //Route to currentUser games
+      let userGame = await firebase
+        .database()
+        .ref(`/Users/${currentPlayer}/Games`);
+
+      //Add newGame to currentUser
+      userGame.update({
+        [newGame.key]: '',
+      });
+      //Set state for newGameId to pass down to Map component before navigating
+      this.setState({ newGameId: newGame.key }, () => {
+        navigate('Map', {
+          huntLocations: this.state.huntLocations,
+          huntName,
+          newGameId: this.state.newGameId,
+          currentPlayer
+        });
+      });
     } catch (error) {
       console.log(error);
     }
@@ -62,7 +86,6 @@ class HuntDetails extends React.Component {
     }
   }
   getLatLngCenter(latLngInDegr) {
-    console.log('');
     let LATIDX = 0;
     let LNGIDX = 1;
     let sumX = 0;
@@ -97,6 +120,7 @@ class HuntDetails extends React.Component {
   }
 
   render() {
+    const { coordsArr } = this.state;
     const { navigate, getParam } = this.props.navigation;
     const hunt = getParam('hunt', 'NO-HUNT');
     const huntName = getParam('huntName', 'NO-HUNT-NAME');
@@ -106,17 +130,16 @@ class HuntDetails extends React.Component {
     }
 
     let center = {};
-    if (this.state.coordsArr.length) {
-      center = this.getLatLngCenter(this.state.coordsArr);
+    if (coordsArr.length) {
+      center = this.getLatLngCenter(coordsArr);
     }
 
-    const huntLocations = this.state.huntLocations;
     return (
       <View style={styles.container}>
         <Text h2>{huntName}</Text>
         }}
         <MapView
-          style={style.map}
+          style={styles.map}
           initialRegion={{
             latitude: center.latitude || 40.7051283,
             longitude: center.longitude || -74.0089738,
@@ -132,12 +155,10 @@ class HuntDetails extends React.Component {
         </MapView>
         <Text>{hunt.blurb}</Text>
         <Text>Targets: {hunt.locations.length}</Text>
-        {/* <Button title="Choose Theme" onPress={() => navigate('Map', { huntLocations, huntName })} /> */}
         <Button
           title="Ready to Play!"
           onPress={() => {
-            this.newGame();
-            navigate('Map', { huntLocations, huntName });
+            this.newGame(navigate);
           }}
         />
         <Button
