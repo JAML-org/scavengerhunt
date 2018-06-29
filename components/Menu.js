@@ -10,6 +10,7 @@ import Friends from './Friends';
 import MyHuntList from './MyHuntList';
 import Map from './Map';
 import { Icon, Header } from 'react-native-elements';
+import InviteFriends from './InviteFriends';
 
 const Menu = createDrawerNavigator(
   {
@@ -22,6 +23,7 @@ const Menu = createDrawerNavigator(
     HuntList: { screen: HuntList },
     HuntDetails: { screen: HuntDetails },
     Main: { screen: Main },
+    InviteFriends: { screen: InviteFriends }
   },
   {
     drawerWidth: 300,

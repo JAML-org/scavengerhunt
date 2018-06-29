@@ -1,5 +1,10 @@
-import React, { Component } from 'react'
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import React from 'react'
+import { StyleSheet, View, } from 'react-native';
+import { Text, Divider, List, ListItem, SearchBar } from 'react-native-elements'
+
+// const fakeFriends = {
+//   "H3zfrmvnhYg939HKxnAvwA6KMAB3": { name: "Jenny", avatar: "https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/111.png", username: "Jg23" }
+// }
 
 const styles = StyleSheet.create({
   regform: {
@@ -34,18 +39,37 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Friends extends Component {
-  constructor() {
-    super()
-    this.state = {}
-  }
+const Friends = (props) => {
+  const friends = props.friends
 
-  render() {
-    return (
-      <View>
-        <Text style={styles.header}>Friends</Text>
+  return (
+    <View>
+      <View >
+        <SearchBar
+          lightTheme
+          // onChangeText={someMethod}
+          // onClear={someMethod}
+          placeholder='Search Friend' />
+        <Divider />
       </View>
-
-    )
-  }
+      <View>
+        {friends ?
+          <List>
+            {friends.map(friend => (
+              <ListItem
+                key={friend}
+                roundAvatar
+                title={friend.name}
+                subtitle={`Username: ${friend.username}`}
+                avatar={{ uri: friend.avatar }}
+              />
+            ))}
+          </List>
+          : (<Text h4 style={{ color: 'white' }}>Add Friends</Text>)
+        }
+      </View>
+    </View>
+  )
 }
+
+export default Friends
