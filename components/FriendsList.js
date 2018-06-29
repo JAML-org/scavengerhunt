@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { StyleSheet, View, } from 'react-native';
 import { Text, Divider, List, ListItem, SearchBar } from 'react-native-elements'
 
 const FriendsList = (props) => {
 
-  const { search, friends, clearSearch, searchedFriend } = props
+  const { search, friends, clearSearch, searchedFriend, select } = props
   return (
     <View>
       <View >
@@ -28,6 +28,7 @@ const FriendsList = (props) => {
                 title={friend.name}
                 subtitle={`Username: ${friend.username}`}
                 avatar={{ uri: friend.avatar }}
+                onPress={() => { select(friend.userId) }}
               />
             ))}
           </List>
