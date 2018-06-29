@@ -9,7 +9,6 @@ import {
   Dimensions,
   Image,
   TouchableHighlight,
-  Alert,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import * as firebase from 'firebase';
@@ -56,8 +55,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const fakeTarget = {latitude: 40.705076, longitude: -74.00916}
-
 export default class Map extends Component {
   constructor() {
     super();
@@ -65,12 +62,14 @@ export default class Map extends Component {
       latitude: 0,
       longitude: 0,
       distance: 5,
-      selectedTarget: {}, // {name: '', latitude: , longitude: , image: }
+      selectedTarget: {}, // {name: '', latitude: , longitude: }
       targets: [],
     };
     this.inPerimeter = this.inPerimeter.bind(this);
     this.renderList = this.renderList.bind(this);
     this.selectTarget = this.selectTarget.bind(this);
+    this.updateScore = this.updateScore.bind(this);
+    this.getScores = this.getScores.bind(this);
   }
 
   componentDidMount() {
@@ -109,10 +108,11 @@ export default class Map extends Component {
 
   inPerimeter(userCoords, targetCoords) {
     const distance = this.distanceInKM(userCoords, targetCoords);
-    console.log('This is the target!!!', targetCoords)
+
     let radarMessage = '';
     if (distance <= this.state.distance / 1000) {
       radarMessage = "you've found it";
+      this.updateScore();
     }
     if (distance > 0.005 && distance <= 0.05) {
       radarMessage = 'warm';
@@ -121,6 +121,38 @@ export default class Map extends Component {
       radarMessage = 'cold';
     }
     return radarMessage;
+  }
+
+  async updateScore() {
+    const { getParam } = this.props.navigation;
+    let currentGameId = getParam('newGameId');
+    let currentPlayerId = getParam('currentPlayer');
+    try {
+      //find the current game
+      let currentGame = await firebase
+        .database()
+        .ref(`/Games/${currentGameId}/players/`);
+
+      //get previousScore
+      let previousScoreObj = await currentGame
+        .child(`${currentPlayerId}`)
+        .once('value');
+      let previousScore = await previousScoreObj.val();
+
+      //update Player's score
+      let currentScore = previousScore + 10;
+      currentGame.update({
+        [currentPlayerId]: currentScore,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async getScores() {
+    //go into Games
+    //match playerID to user
+    //Sort based on points
   }
 
   async renderList() {
@@ -153,7 +185,6 @@ export default class Map extends Component {
   }
 
   render() {
-    const { getParam } = this.props.navigation;
     let screen = Dimensions.get('window');
     const targets = this.state.targets;
 
@@ -230,9 +261,14 @@ export default class Map extends Component {
                         : styles.inactive
                     }
                     key={i}
-                    onPress={() => this.selectTarget(target)}
+                    onPress={() =>
+                      this.selectTarget({
+                        name: target.name,
+                        latitude: target.coords[0],
+                        longitude: target.coords[1],
+                      })
+                    }
                   >
-                    {/* {latitude: target.coords[0], longitude: target.coords[1]} */}
                     <Image
                       style={{ width: 80, height: 80 }}
                       source={{ uri: target.image }}
@@ -251,9 +287,7 @@ export default class Map extends Component {
         >
           <ScrollView>
             <View style={{ width: screen.width, paddingLeft: 10 }}>
-              <Text>
-                These are the scores.
-              </Text>
+              <Text>These are the scores.</Text>
             </View>
           </ScrollView>
         </Modal>
@@ -264,20 +298,18 @@ export default class Map extends Component {
           ref={'radar'}
           swipeArea={20}
         >
-
-            <View style={{ width: screen.width, paddingLeft: 10 }}>
-              <Text> This is the radar!!
-                {this.inPerimeter(
-                  {
-                    latitude: this.state.latitude,
-                    longitude: this.state.longitude,
-                  },
-                  this.state.selectedTarget
-
-                )}
-              </Text>
-            </View>
-
+          <View style={{ width: screen.width, paddingLeft: 10 }}>
+            <Text>
+              This is the radar!!
+              {this.inPerimeter(
+                {
+                  latitude: this.state.latitude,
+                  longitude: this.state.longitude,
+                },
+                this.state.selectedTarget
+              )}
+            </Text>
+          </View>
         </Modal>
       </View>
     );

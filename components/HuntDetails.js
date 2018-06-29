@@ -3,7 +3,6 @@ import styles from './style';
 import { View, Button } from 'react-native';
 import { Text } from 'react-native-elements';
 import { MapView } from 'expo';
-import style from './style';
 import * as firebase from 'firebase';
 
 class HuntDetails extends React.Component {
@@ -55,6 +54,7 @@ class HuntDetails extends React.Component {
           huntLocations: this.state.huntLocations,
           huntName,
           newGameId: this.state.newGameId,
+          currentPlayer
         });
       });
     } catch (error) {
@@ -139,7 +139,7 @@ class HuntDetails extends React.Component {
         <Text h2>{huntName}</Text>
         }}
         <MapView
-          style={style.map}
+          style={styles.map}
           initialRegion={{
             latitude: center.latitude || 40.7051283,
             longitude: center.longitude || -74.0089738,
