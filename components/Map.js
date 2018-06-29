@@ -65,6 +65,7 @@ export default class Map extends Component {
       distance: 5,
       selectedTarget: {}, // {name: '', latitude: , longitude: , image: }
       targets: [],
+      gameId: ''
     };
     this.inPerimeter = this.inPerimeter.bind(this);
     this.renderList = this.renderList.bind(this);
@@ -152,6 +153,7 @@ export default class Map extends Component {
   render() {
     let screen = Dimensions.get('window');
     const targets = this.state.targets;
+    console.log(this.state.selectedTarget)
     return (
       <View style={{ flex: 1, position: 'relative' }}>
         <MapView
@@ -236,7 +238,6 @@ export default class Map extends Component {
                       style={{ width: 80, height: 80 }}
                       source={{ uri: target.image }}
                     />
-                    {/* onPress add border, trigger function */}
                   </TouchableHighlight>
                 );
               })}
@@ -258,6 +259,7 @@ export default class Map extends Component {
                     longitude: this.state.longitude,
                   },
                   this.state.selectedTarget
+
                 )}
               </Text>
             </View>
