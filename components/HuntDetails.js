@@ -32,8 +32,7 @@ class HuntDetails extends React.Component {
         theme: huntName,
       });
 
-      //   let stuff = await newgame.once('value').then(snap => snap.val())
-      // console.log('GIMME GAME ID!!!', stuff)
+      console.log('GIMME GAME ID!!!', newgame.key);
     } catch (error) {
       console.log(error);
     }
