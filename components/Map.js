@@ -56,6 +56,8 @@ const styles = StyleSheet.create({
   },
 });
 
+const fakeTarget = {latitude: 40.705076, longitude: -74.00916}
+
 export default class Map extends Component {
   constructor() {
     super();
@@ -65,7 +67,6 @@ export default class Map extends Component {
       distance: 5,
       selectedTarget: {}, // {name: '', latitude: , longitude: , image: }
       targets: [],
-      gameId: ''
     };
     this.inPerimeter = this.inPerimeter.bind(this);
     this.renderList = this.renderList.bind(this);
@@ -108,6 +109,7 @@ export default class Map extends Component {
 
   inPerimeter(userCoords, targetCoords) {
     const distance = this.distanceInKM(userCoords, targetCoords);
+    console.log('This is the target!!!', targetCoords)
     let radarMessage = '';
     if (distance <= this.state.distance / 1000) {
       radarMessage = "you've found it";
@@ -151,9 +153,10 @@ export default class Map extends Component {
   }
 
   render() {
+    const { getParam } = this.props.navigation;
     let screen = Dimensions.get('window');
     const targets = this.state.targets;
-    console.log(this.state.selectedTarget)
+
     return (
       <View style={{ flex: 1, position: 'relative' }}>
         <MapView
@@ -203,7 +206,7 @@ export default class Map extends Component {
                 color="black"
                 reverse
                 type="material-community"
-                onPress={() => this.refs.scores.open()}
+                onPress={() => this.refs.radar.open()}
                 style={styles.btn}
               />
               <Text>RADAR</Text>
@@ -217,12 +220,7 @@ export default class Map extends Component {
           swipeArea={20}
         >
           <ScrollView horizontal={true} style={{ width: screen.width }}>
-            <View
-              style={{
-                paddingTop: 20,
-                flexDirection: 'row',
-              }}
-            >
+            <View style={{ paddingTop: 20, flexDirection: 'row' }}>
               {targets.map((target, i) => {
                 return (
                   <TouchableHighlight
@@ -234,6 +232,7 @@ export default class Map extends Component {
                     key={i}
                     onPress={() => this.selectTarget(target)}
                   >
+                    {/* {latitude: target.coords[0], longitude: target.coords[1]} */}
                     <Image
                       style={{ width: 80, height: 80 }}
                       source={{ uri: target.image }}
@@ -253,6 +252,21 @@ export default class Map extends Component {
           <ScrollView>
             <View style={{ width: screen.width, paddingLeft: 10 }}>
               <Text>
+                These are the scores.
+              </Text>
+            </View>
+          </ScrollView>
+        </Modal>
+
+        <Modal
+          style={styles.modal}
+          position={'bottom'}
+          ref={'radar'}
+          swipeArea={20}
+        >
+
+            <View style={{ width: screen.width, paddingLeft: 10 }}>
+              <Text> This is the radar!!
                 {this.inPerimeter(
                   {
                     latitude: this.state.latitude,
@@ -263,7 +277,7 @@ export default class Map extends Component {
                 )}
               </Text>
             </View>
-          </ScrollView>
+
         </Modal>
       </View>
     );

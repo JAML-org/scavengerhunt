@@ -13,6 +13,7 @@ class HuntDetails extends React.Component {
       locations: {},
       coordsArr: [],
       huntLocations: [],
+      newGameId: '',
     };
     this.newGame = this.newGame.bind(this);
     this.getLatLngCenter = this.getLatLngCenter.bind(this);
@@ -20,19 +21,34 @@ class HuntDetails extends React.Component {
     this.degr2rad = this.degr2rad.bind(this);
   }
 
-  async newGame() {
+  async newGame(navigate) {
     try {
-      let games = await firebase.database().ref('/Games');
-      let newgame = await games.push();
-      let currentPlayer = firebase.auth().currentUser.uid;
       const { getParam } = this.props.navigation;
+
+      let currentPlayer = await firebase.auth().currentUser.uid;
+      let games = await firebase.database().ref('/Games');
+
+      let newgame = await games.push();
       const huntName = getParam('huntName');
       newgame.set({
         players: { [currentPlayer]: 0 },
         theme: huntName,
       });
 
-      console.log('GIMME GAME ID!!!', newgame.key);
+      let player = await firebase.database().ref(`/Users/${currentPlayer}`);
+      let newPlayerGame = await player.push()
+
+      let usergame = await player.key;
+      usergame.set({
+        Games: { [newgame.key]: '' },
+      });
+      this.setState({ newGameId: newgame.key }, () => {
+        navigate('Map', {
+          huntLocations: this.state.huntLocations,
+          huntName,
+          newGameId: this.state.newGameId,
+        });
+      });
     } catch (error) {
       console.log(error);
     }
@@ -97,6 +113,7 @@ class HuntDetails extends React.Component {
   }
 
   render() {
+    const { coordsArr, huntLocations, newGameId } = this.state;
     const { navigate, getParam } = this.props.navigation;
     const hunt = getParam('hunt', 'NO-HUNT');
     const huntName = getParam('huntName', 'NO-HUNT-NAME');
@@ -106,11 +123,10 @@ class HuntDetails extends React.Component {
     }
 
     let center = {};
-    if (this.state.coordsArr.length) {
-      center = this.getLatLngCenter(this.state.coordsArr);
+    if (coordsArr.length) {
+      center = this.getLatLngCenter(coordsArr);
     }
 
-    const huntLocations = this.state.huntLocations;
     return (
       <View style={styles.container}>
         <Text h2>{huntName}</Text>
@@ -136,8 +152,7 @@ class HuntDetails extends React.Component {
         <Button
           title="Ready to Play!"
           onPress={() => {
-            this.newGame();
-            navigate('Map', { huntLocations, huntName });
+            this.newGame(navigate);
           }}
         />
         <Button
