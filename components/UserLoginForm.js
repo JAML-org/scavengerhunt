@@ -68,7 +68,6 @@ export default class UserLoginForm extends Component {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        console.warn('You are logged in!');
         this.props.navigation.navigate('MenuStack');
       })
       .catch(function(error) {

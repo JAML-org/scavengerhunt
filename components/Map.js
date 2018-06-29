@@ -9,6 +9,7 @@ import {
   Dimensions,
   Image,
   TouchableHighlight,
+  TouchableOpacity,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import * as firebase from 'firebase';
@@ -64,6 +65,7 @@ export default class Map extends Component {
       distance: 5,
       selectedTarget: {}, // {name: '', latitude: , longitude: }
       targets: [],
+      isOpen: false,
     };
     this.inPerimeter = this.inPerimeter.bind(this);
     this.renderList = this.renderList.bind(this);
@@ -186,7 +188,8 @@ export default class Map extends Component {
 
   render() {
     let screen = Dimensions.get('window');
-    const targets = this.state.targets;
+    const { targets, isOpen } = this.state;
+    console.log('isOpen', isOpen);
 
     return (
       <View style={{ flex: 1, position: 'relative' }}>
@@ -237,7 +240,7 @@ export default class Map extends Component {
                 color="black"
                 reverse
                 type="material-community"
-                onPress={() => this.refs.radar.open()}
+                onPress={() => {this.refs.radar.open()}}
                 style={styles.btn}
               />
               <Text>RADAR</Text>
@@ -249,6 +252,7 @@ export default class Map extends Component {
           position={'bottom'}
           ref={'targets'}
           swipeArea={20}
+          isOpen={true}
         >
           <ScrollView horizontal={true} style={{ width: screen.width }}>
             <View style={{ paddingTop: 20, flexDirection: 'row' }}>
@@ -297,17 +301,19 @@ export default class Map extends Component {
           position={'bottom'}
           ref={'radar'}
           swipeArea={20}
+          onOpened={() => this.setState({ isOpen: true })}
+          onClosed={() => this.setState({ isOpen: false })}
         >
           <View style={{ width: screen.width, paddingLeft: 10 }}>
             <Text>
-              This is the radar!!
               {this.inPerimeter(
-                {
-                  latitude: this.state.latitude,
-                  longitude: this.state.longitude,
-                },
-                this.state.selectedTarget
-              )}
+                    {
+                      latitude: this.state.latitude,
+                      longitude: this.state.longitude,
+                    },
+                    this.state.selectedTarget
+                  )
+                }
             </Text>
           </View>
         </Modal>
