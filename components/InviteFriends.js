@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, } from 'react-native';
 import { Text, Divider, List, ListItem, SearchBar } from 'react-native-elements'
-import Friends from './Friends'
+import FriendsList from './FriendsList'
 import * as firebase from 'firebase'
 
 export default class InviteFriends extends Component {
@@ -10,8 +10,13 @@ export default class InviteFriends extends Component {
     this.state = {
       searchedFriend: '',
       selectedFriend: [],
-      allFriends: []
+      friends: [],
+      users: [],
+      filteredFriends: []
     }
+
+    this.searchChange = this.searchChange.bind(this)
+    this.clearSearch = this.clearSearch.bind(this)
   }
 
   async componentDidMount() {
@@ -23,15 +28,27 @@ export default class InviteFriends extends Component {
       const friendIds = Object.keys(allFriends)
       const fullFriendsInfo = friendIds.map(friend => ({ name: allUsers[friend].name, username: allUsers[friend].username, avatar: allUsers[friend].avatar, userId: friend }))
 
-      this.setState({ allFriends: fullFriendsInfo })
+      this.setState({ friends: fullFriendsInfo, users: allUsers, filteredFriends: fullFriendsInfo })
     } catch (error) { console.error(error) }
   }
 
+  searchChange(searched) {
+    console.log("No One Told You Life Was Gonna Be This Way CLAP CLAP CLAP CLAP =>", this.state.friends)
+    const foundFriends = searched && this.state.friends.filter(friend => friend.name.toLowerCase().includes(searched.toLowerCase()))
+    this.setState({ searchedFriend: searched, filteredFriends: foundFriends || this.state.friends })
+  }
+
+  clearSearch() {
+    this.setState({ filteredFriends: [...this.state.friends], searchedFriend: '' })
+  }
+
   render() {
-    console.log(this.state.allFriends)
+    console.log("searched friend =====>", this.state.filteredFriends)
     return (
       <View>
-        <Friends friends={this.state.allFriends} />
+        <Text h4>Invite Friends to Play</Text>
+        <Divider />
+        <FriendsList search={this.searchChange} friends={this.state.filteredFriends} clearSearch={this.clearSearch} searchedFriend={this.state.searchedFriend} />
       </View>
     )
   }
