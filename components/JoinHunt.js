@@ -43,9 +43,6 @@ export default class JoinHunt extends Component {
 
   render() {
     const { invites, selected } = this.state;
-    // if (!invites) {
-    //   return (<Text>Sorry no Invites</Text>)
-    // }
     return (
       <View style={styles.container}>
         <View style={{ width: '100%', height: '25%' }}>
