@@ -23,26 +23,34 @@ class HuntDetails extends React.Component {
 
   async newGame(navigate) {
     try {
+      //Get huntName from HuntList component to pass into new game
       const { getParam } = this.props.navigation;
+      const huntName = getParam('huntName');
 
+      //Get signed in user
       let currentPlayer = await firebase.auth().currentUser.uid;
+      //Route to Games in Firebase
       let games = await firebase.database().ref('/Games');
 
-      let newgame = await games.push();
-      const huntName = getParam('huntName');
-      newgame.set({
+      //Generate newgame ID
+      let newGame = await games.push();
+      //Add game to Games route
+      newGame.set({
         players: { [currentPlayer]: 0 },
         theme: huntName,
       });
 
-      let player = await firebase.database().ref(`/Users/${currentPlayer}`);
-      let newPlayerGame = await player.push()
+      //Route to currentUser games
+      let userGame = await firebase
+        .database()
+        .ref(`/Users/${currentPlayer}/Games`);
 
-      let usergame = await player.key;
-      usergame.set({
-        Games: { [newgame.key]: '' },
+      //Add newGame to currentUser
+      userGame.update({
+        [newGame.key]: '',
       });
-      this.setState({ newGameId: newgame.key }, () => {
+      //Set state for newGameId to pass down to Map component before navigating
+      this.setState({ newGameId: newGame.key }, () => {
         navigate('Map', {
           huntLocations: this.state.huntLocations,
           huntName,
@@ -78,7 +86,6 @@ class HuntDetails extends React.Component {
     }
   }
   getLatLngCenter(latLngInDegr) {
-    console.log('');
     let LATIDX = 0;
     let LNGIDX = 1;
     let sumX = 0;
@@ -113,7 +120,7 @@ class HuntDetails extends React.Component {
   }
 
   render() {
-    const { coordsArr, huntLocations, newGameId } = this.state;
+    const { coordsArr } = this.state;
     const { navigate, getParam } = this.props.navigation;
     const hunt = getParam('hunt', 'NO-HUNT');
     const huntName = getParam('huntName', 'NO-HUNT-NAME');
@@ -148,7 +155,6 @@ class HuntDetails extends React.Component {
         </MapView>
         <Text>{hunt.blurb}</Text>
         <Text>Targets: {hunt.locations.length}</Text>
-        {/* <Button title="Choose Theme" onPress={() => navigate('Map', { huntLocations, huntName })} /> */}
         <Button
           title="Ready to Play!"
           onPress={() => {
