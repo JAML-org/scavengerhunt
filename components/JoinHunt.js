@@ -1,50 +1,116 @@
-import React, { Component } from 'react'
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
-
-const styles = StyleSheet.create({
-  regform: {
-    alignSelf: 'stretch',
-  },
-  header: {
-    fontSize: 24,
-    color: '#fff',
-    paddingBottom: 10,
-    marginBottom: 40,
-    borderBottomColor: '#199187',
-    borderBottomWidth: 1,
-  },
-  textinput: {
-    alignSelf: 'stretch',
-    height: 40,
-    marginBottom: 30,
-    color: 'black',
-    borderBottomColor: '#f8f8f8',
-    borderBottomWidth: 1,
-  },
-  button: {
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#59cbbd',
-    marginTop: 30,
-  },
-  btntext: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-});
+import React, { Component } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Text, Divider, List, Button, ListItem, TouchableHighlight } from 'react-native-elements';
+import * as firebase from 'firebase';
+import styles from './style';
 
 export default class JoinHunt extends Component {
   constructor() {
-    super()
-    this.state = {}
+    super();
+    this.state = {
+      invites: {},
+      selected: ""
+    }
+    this.toggleSelected = this.toggleSelected.bind(this)
+    this.deleteInvite = this.deleteInvite.bind(this)
+  }
+
+  async componentDidMount() {
+    const userId = await firebase.auth().currentUser.uid;
+    const user = await firebase
+      .database()
+      .ref(`/Users/${userId}`)
+      .once('value')
+      .then(snap => snap.val());
+
+    this.setState({
+      invites: user.invites,
+    });
+  }
+
+  toggleSelected(invite) {
+    this.state.selected === invite ? this.setState({ selected: "" }) : this.setState({ selected: invite })
+  }
+
+  async deleteInvite(invite) {
+    const userId = await firebase.auth().currentUser.uid;
+    await firebase
+      .database()
+      .ref(`/Users/${userId}/invites`)
+      .child(invite)
+      .remove()
   }
 
   render() {
+    const { invites, selected } = this.state;
     return (
-      <View>
-        <Text style={styles.header}>Join Hunt</Text>
+      <View style={styles.container}>
+        <View style={{ width: '100%', height: '25%' }}>
+          <Text h4 style={{ color: 'white' }}>
+            Invites
+          </Text>
+          <Divider />
+        </View>
+        <View>
+          {invites ?
+            <List>
+              {Object.keys(invites).map(invite => (
+                <ListItem
+                  key={invite}
+                  roundAvatar
+                  title={invites[invite].theme}
+                  subtitle={`from ${invites[invite].from.name}`}
+                  avatar={{ uri: invites[invite].from.avatar }}
+                  containerStyle={
+                    selected === invite
+                      ? styling.active
+                      : styling.inactive}
+                  onPress={() => this.toggleSelected(invite)}
+                />
+              ))}
+            </List>
+            : (<Text h4 style={{ color: 'white' }}>Sorry no Invites</Text>)
+          }
+        </View>
+        <View style={styling.buttonList}>
+          <View>
+            <Button
+              title="ACCEPT"
+              buttonStyle={styling.btn}
+              onPress={() => this.props.navigation.navigate('Map', selected)}
+            />
+          </View>
+          <View>
+            <Button
+              title="DECLINE"
+              buttonStyle={styling.btn}
+              onPress={() => this.deleteInvite(selected)}
+            />
+          </View>
+        </View>
       </View>
-    )
+    );
   }
 }
+
+const styling = StyleSheet.create({
+  buttonList: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 30,
+  },
+  btn: {
+    borderRadius: 20,
+  },
+  active: {
+    backgroundColor: "orange"
+  },
+  inactive: {
+    backgroundColor: "white"
+  },
+})
