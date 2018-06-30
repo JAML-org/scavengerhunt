@@ -9,10 +9,10 @@ import {
   Image,
   TouchableHighlight
 } from 'react-native';
-import { Icon } from 'react-native-elements';
 import * as firebase from 'firebase';
 import GameMap from './GameMap';
 import GameButton from './GameButton';
+import GameTargetsView from './GameTargetsView';
 
 export default class Map extends Component {
   constructor() {
@@ -153,8 +153,8 @@ export default class Map extends Component {
 
   render() {
     let screen = Dimensions.get('window');
-    const { targets } = this.state;
-    console.log("TYPE OF GAME BUTTON!!==========>", typeof GameButton)
+    const { targets, selectedTarget } = this.state;
+    console.log()
     return (
       <View style={{ flex: 1, position: 'relative' }}>
         <GameMap latitude={this.state.latitude} longitude={this.state.longitude} />
@@ -173,32 +173,7 @@ export default class Map extends Component {
           isOpen={true}
         >
           <ScrollView horizontal={true} style={{ width: screen.width }}>
-            <View style={{ paddingTop: 20, flexDirection: 'row' }}>
-              {targets.map((target, i) => {
-                return (
-                  <TouchableHighlight
-                    style={
-                      this.state.selectedTarget.name === target.name
-                        ? styles.active
-                        : styles.inactive
-                    }
-                    key={i}
-                    onPress={() =>
-                      this.selectTarget({
-                        name: target.name,
-                        latitude: target.coords[0],
-                        longitude: target.coords[1],
-                      })
-                    }
-                  >
-                    <Image
-                      style={{ width: 80, height: 80 }}
-                      source={{ uri: target.image }}
-                    />
-                  </TouchableHighlight>
-                );
-              })}
-            </View>
+            <GameTargetsView targets={targets} selectedTarget={selectedTarget} />
           </ScrollView>
         </Modal>
         <Modal
