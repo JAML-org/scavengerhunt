@@ -1,27 +1,24 @@
 import React from 'react';
-import { createDrawerNavigator, DrawerActions, } from 'react-navigation';
+import { createDrawerNavigator, DrawerActions } from 'react-navigation';
 import Profile from './Profile';
 import HowToPlay from './HowToPlay';
 import JoinHunt from './JoinHunt';
-import HuntList from './HuntList';
-import HuntDetails from './HuntDetails';
+// import HuntList from './HuntList';
+// import HuntDetails from './HuntDetails';
 import Main from './Main';
 import Friends from './Friends';
 import MyHuntList from './MyHuntList';
-import Map from './Map';
+// import Map from './Map';
 import { Icon, Header } from 'react-native-elements';
 
 const Menu = createDrawerNavigator(
   {
+    Main: { screen: Main },
     Profile: { screen: Profile },
-    Map: { screen: Map },
     MyHuntList: { screen: MyHuntList },
     JoinHunt: { screen: JoinHunt },
     Friends: { screen: Friends },
     HowToPlay: { screen: HowToPlay },
-    HuntList: { screen: HuntList },
-    HuntDetails: { screen: HuntDetails },
-    Main: { screen: Main },
   },
   {
     drawerWidth: 300,
@@ -40,7 +37,7 @@ const MenuContainer = () => {
           <Icon
             name="menu"
             onPress={() => {
-              pressMenu.dispatch(DrawerActions.toggleDrawer())
+              pressMenu.dispatch(DrawerActions.toggleDrawer());
             }}
           />
         }

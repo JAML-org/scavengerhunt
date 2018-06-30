@@ -1,5 +1,11 @@
-import React, { Component } from 'react'
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import React, { Component } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 
 const styles = StyleSheet.create({
   regform: {
@@ -36,8 +42,8 @@ const styles = StyleSheet.create({
 
 export default class Friends extends Component {
   constructor() {
-    super()
-    this.state = {}
+    super();
+    this.state = {};
   }
 
   render() {
@@ -45,7 +51,6 @@ export default class Friends extends Component {
       <View>
         <Text style={styles.header}>Friends</Text>
       </View>
-
-    )
+    );
   }
 }
