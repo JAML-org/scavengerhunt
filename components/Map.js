@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { MapView } from 'expo';
 import Modal from 'react-native-modalbox';
 import {
   View,
@@ -8,53 +7,12 @@ import {
   ScrollView,
   Dimensions,
   Image,
-  TouchableHighlight,
-  TouchableOpacity,
+  TouchableHighlight
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import * as firebase from 'firebase';
-
-const styles = StyleSheet.create({
-  bottomView: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    paddingBottom: 10,
-  },
-  buttonList: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
-  btn: {
-    backgroundColor: '#3B5998',
-    color: 'white',
-    padding: 10,
-  },
-  modal: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 150,
-  },
-  active: {
-    overflow: 'hidden',
-    borderRadius: 40,
-    width: 80,
-    height: 80,
-    paddingBottom: 30,
-    marginLeft: 20,
-    opacity: 0.5,
-  },
-  inactive: {
-    overflow: 'hidden',
-    borderRadius: 40,
-    width: 80,
-    height: 80,
-    paddingBottom: 30,
-    marginLeft: 20,
-  },
-});
+import GameMap from './GameMap';
+import GameButton from './GameButton';
 
 export default class Map extends Component {
   constructor() {
@@ -63,10 +21,10 @@ export default class Map extends Component {
       latitude: 0,
       longitude: 0,
       distance: 5,
-      selectedTarget: {}, // {name: '', latitude: , longitude: }
+      selectedTarget: {},
       targets: [],
-      isOpen: false,
     };
+
     this.inPerimeter = this.inPerimeter.bind(this);
     this.renderList = this.renderList.bind(this);
     this.selectTarget = this.selectTarget.bind(this);
@@ -83,6 +41,7 @@ export default class Map extends Component {
     });
     this.renderList();
   }
+
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID);
@@ -112,17 +71,23 @@ export default class Map extends Component {
     const distance = this.distanceInKM(userCoords, targetCoords);
 
     let radarMessage = '';
+    let color;
+
     if (distance <= this.state.distance / 1000) {
+      color = 'red'
       radarMessage = "you've found it";
       this.updateScore();
     }
     if (distance > 0.005 && distance <= 0.05) {
+      color = 'orange'
       radarMessage = 'warm';
     }
     if (distance > 0.05) {
+      color = 'blue'
       radarMessage = 'cold';
     }
-    return radarMessage;
+    // this.setState({ proximity: color })
+    return color;
   }
 
   async updateScore() {
@@ -188,63 +153,16 @@ export default class Map extends Component {
 
   render() {
     let screen = Dimensions.get('window');
-    const { targets, isOpen } = this.state;
-    console.log('isOpen', isOpen);
-
+    const { targets } = this.state;
+    console.log("TYPE OF GAME BUTTON!!==========>", typeof GameButton)
     return (
       <View style={{ flex: 1, position: 'relative' }}>
-        <MapView
-          style={{ flex: 1 }}
-          initialRegion={{
-            latitude: 40.705076,
-            longitude: -74.00916,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        >
-          <MapView.Marker
-            pinColor="#000000"
-            coordinate={{
-              latitude: this.state.latitude,
-              longitude: this.state.longitude,
-            }}
-          />
-        </MapView>
+        <GameMap latitude={this.state.latitude} longitude={this.state.longitude} />
         <View style={styles.bottomView}>
           <View style={styles.buttonList}>
-            <View>
-              <Icon
-                name="target"
-                color="black"
-                reverse
-                type="material-community"
-                onPress={() => this.refs.targets.open()}
-                style={styles.btn}
-              />
-              <Text>TARGETS</Text>
-            </View>
-            <View>
-              <Icon
-                name="trophy"
-                color="black"
-                reverse
-                type="material-community"
-                onPress={() => this.refs.scores.open()}
-                style={styles.btn}
-              />
-              <Text>SCORES</Text>
-            </View>
-            <View>
-              <Icon
-                name="radar"
-                color="black"
-                reverse
-                type="material-community"
-                onPress={() => { this.refs.radar.open() }}
-                style={styles.btn}
-              />
-              <Text>RADAR</Text>
-            </View>
+            <GameButton iconName="target" buttonName="TARGETS" onPress={() => this.refs.targets.open()} />
+            <GameButton iconName="trophy" buttonName="SCORES" onPress={() => this.refs.scores.open()} />
+            <GameButton iconName="radar" buttonName="RADAR" onPress={() => this.refs.radar.open()} />
           </View>
         </View>
         <Modal
@@ -321,3 +239,45 @@ export default class Map extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  bottomView: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    paddingBottom: 10,
+  },
+  buttonList: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  btn: {
+    backgroundColor: '#3B5998',
+    color: 'white',
+    padding: 10,
+  },
+  modal: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 150,
+  },
+  active: {
+    overflow: 'hidden',
+    borderRadius: 40,
+    width: 80,
+    height: 80,
+    paddingBottom: 30,
+    marginLeft: 20,
+    opacity: 0.5,
+  },
+  inactive: {
+    overflow: 'hidden',
+    borderRadius: 40,
+    width: 80,
+    height: 80,
+    paddingBottom: 30,
+    marginLeft: 20,
+  },
+});
