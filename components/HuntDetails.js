@@ -143,7 +143,7 @@ class HuntDetails extends React.Component {
           initialRegion={{
             latitude: center.latitude || 40.7051283,
             longitude: center.longitude || -74.0089738,
-            latitudeDelta: 0.0722,
+            latitudeDelta: 0.0422,
             longitudeDelta: 0.0221,
           }}
         >
