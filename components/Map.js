@@ -6,8 +6,6 @@ import {
   StyleSheet,
   ScrollView,
   Dimensions,
-  Image,
-  TouchableHighlight
 } from 'react-native';
 import * as firebase from 'firebase';
 import GameMap from './GameMap';
@@ -173,7 +171,7 @@ export default class Map extends Component {
           isOpen={true}
         >
           <ScrollView horizontal={true} style={{ width: screen.width }}>
-            <GameTargetsView targets={targets} selectedTarget={selectedTarget} />
+            <GameTargetsView targets={targets} selectedTarget={selectedTarget} selectTarget={this.selectTarget} />
           </ScrollView>
         </Modal>
         <Modal

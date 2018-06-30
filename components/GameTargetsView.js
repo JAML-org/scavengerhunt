@@ -15,7 +15,7 @@ const GameTargetsViews = (props) => {
             }
             key={i}
             onPress={() =>
-              this.selectTarget({
+              props.selectTarget({
                 name: target.name,
                 latitude: target.coords[0],
                 longitude: target.coords[1],
