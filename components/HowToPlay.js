@@ -10,14 +10,9 @@ export default class HowToPlay extends Component {
 
   render() {
     return (
-      <ImageBackground
-        source={require('../urban-pursuit-leaf-bg.jpg')}
-        style={styles.bgImage}
-      >
-        <View style={styles.container}>
-          <Text style={styles.header}>How To Play</Text>
-        </View>
-      </ImageBackground>
+      <View style={styles.container}>
+        <Text style={styles.header}>How To Play</Text>
+      </View>
     );
   }
 }

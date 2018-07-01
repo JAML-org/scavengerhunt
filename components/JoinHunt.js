@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ImageBackground } from 'react-native';
-import {
-  Text,
-  Divider,
-  List,
-  Button,
-  ListItem,
-  TouchableHighlight,
-} from 'react-native-elements';
+import { Text, Divider, List, Button, ListItem } from 'react-native-elements';
 import * as firebase from 'firebase';
-import styles from './style';
+import styles, { colors } from './style';
 
 export default class JoinHunt extends Component {
   constructor() {
@@ -124,9 +117,9 @@ const styling = StyleSheet.create({
     borderRadius: 20,
   },
   active: {
-    backgroundColor: 'orange',
+    backgroundColor: colors.orange,
   },
   inactive: {
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
   },
 });

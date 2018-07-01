@@ -3,7 +3,7 @@ import { createDrawerNavigator, DrawerActions } from 'react-navigation';
 import Profile from './Profile';
 import HowToPlay from './HowToPlay';
 import JoinHunt from './JoinHunt';
-import HuntList from './HuntList';
+import PursuitList from './PursuitList';
 import HuntDetails from './HuntDetails';
 import Main from './Main';
 import Friends from './Friends';
@@ -12,6 +12,7 @@ import Map from './Map';
 import { Image } from 'react-native';
 import { Icon, Header } from 'react-native-elements';
 import InviteFriends from './InviteFriends';
+import { colors } from './style';
 
 const Menu = createDrawerNavigator(
   {
@@ -22,7 +23,7 @@ const Menu = createDrawerNavigator(
     Friends: { screen: Friends },
     HowToPlay: { screen: HowToPlay },
     Map: { screen: Map },
-    HuntList: { screen: HuntList },
+    PursuitList: { screen: PursuitList },
     HuntDetails: { screen: HuntDetails },
     InviteFriends: { screen: InviteFriends },
   },
@@ -38,7 +39,7 @@ const MenuContainer = () => {
   return (
     <React.Fragment>
       <Header
-        backgroundColor="white"
+        backgroundColor={colors.white}
         leftComponent={
           <Icon
             name="menu"

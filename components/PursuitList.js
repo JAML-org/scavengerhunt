@@ -1,10 +1,10 @@
 import React from 'react';
-import styles from './style';
+import styles, { colors } from './style';
 import { View, ImageBackground } from 'react-native';
-import { Icon, Text, Divider, Button } from 'react-native-elements';
+import { Icon, Text, Divider } from 'react-native-elements';
 import * as firebase from 'firebase';
 
-class HuntList extends React.Component {
+class PursuitList extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -35,8 +35,8 @@ class HuntList extends React.Component {
         <View style={styles.container}>
           <View style={styles.listContainer}>
             <View style={{ width: '100%', height: '25%' }}>
-              <Text h4 style={{ color: 'white' }}>
-                Choose a Hunt
+              <Text h4 style={styles.header}>
+                Choose a Theme
               </Text>
               <Divider />
             </View>
@@ -67,4 +67,4 @@ class HuntList extends React.Component {
   }
 }
 
-export default HuntList;
+export default PursuitList;

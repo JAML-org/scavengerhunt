@@ -27,8 +27,8 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
   },
   header: {
-    color: colors.black,
-    textAlign: 'center',
+    color: colors.mediumblue,
+    textAlign: 'left',
   },
   textinput: {
     width: '100%',

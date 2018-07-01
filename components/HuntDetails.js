@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './style';
-import { View, Button } from 'react-native';
+import { View, Button, ImageBackground } from 'react-native';
 import { Text } from 'react-native-elements';
 import { MapView } from 'expo';
 import * as firebase from 'firebase';
@@ -54,7 +54,7 @@ class HuntDetails extends React.Component {
           huntLocations: this.state.huntLocations,
           huntName,
           newGameId: this.state.newGameId,
-          currentPlayer
+          currentPlayer,
         });
       });
     } catch (error) {
@@ -135,37 +135,46 @@ class HuntDetails extends React.Component {
     }
 
     return (
-      <View style={styles.container}>
-        <Text h2>{huntName}</Text>
-        }}
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: center.latitude || 40.7051283,
-            longitude: center.longitude || -74.0089738,
-            latitudeDelta: 0.0422,
-            longitudeDelta: 0.0221,
+      <ImageBackground
+        source={require('../urban-pursuit-leaf-bg.jpg')}
+        style={styles.bgImage}
+      >
+        <View style={styles.container}>
+          <Text h2 style={styles.header}>
+            {huntName}
+          </Text>
           }}
-        >
-          <MapView.Circle
-            center={center || { latitude: 40.7051283, longitude: -74.0089738 }}
-            radius={1000}
-            strokeColor="red"
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: center.latitude || 40.7051283,
+              longitude: center.longitude || -74.0089738,
+              latitudeDelta: 0.0422,
+              longitudeDelta: 0.0221,
+            }}
+          >
+            <MapView.Circle
+              center={
+                center || { latitude: 40.7051283, longitude: -74.0089738 }
+              }
+              radius={1000}
+              strokeColor="red"
+            />
+          </MapView>
+          <Text>{hunt.blurb}</Text>
+          <Text>Targets: {hunt.locations.length}</Text>
+          <Button
+            title="Ready to Play!"
+            onPress={() => {
+              this.newGame(navigate);
+            }}
           />
-        </MapView>
-        <Text>{hunt.blurb}</Text>
-        <Text>Targets: {hunt.locations.length}</Text>
-        <Button
-          title="Ready to Play!"
-          onPress={() => {
-            this.newGame(navigate);
-          }}
-        />
-        <Button
-          title="Pick a Different Theme"
-          onPress={() => navigate('HuntList')}
-        />
-      </View>
+          <Button
+            title="Pick a Different Theme"
+            onPress={() => navigate('PursuitListi')}
+          />
+        </View>
+      </ImageBackground>
     );
   }
 }

@@ -6,7 +6,7 @@ import SignUpForm from './components/SignUpForm';
 import Profile from './components/Profile';
 import HowToPlay from './components/HowToPlay';
 import JoinHunt from './components/JoinHunt';
-import HuntList from './components/HuntList';
+import PursuitList from './components/PursuitList';
 import HuntDetails from './components/HuntDetails';
 import Main from './components/Main';
 import Friends from './components/Friends';
@@ -27,7 +27,7 @@ const UnLoggedInStack = createSwitchNavigator(
     },
   },
   {
-    headerMode: 'float',
+    headerMode: 'none',
   }
 );
 
@@ -40,7 +40,7 @@ export const LoggedInStack = createStackNavigator({
   JoinHunt: { screen: JoinHunt },
   Friends: { screen: Friends },
   HowToPlay: { screen: HowToPlay },
-  HuntList: { screen: HuntList },
+  PursuitList: { screen: PursuitList },
   HuntDetails: { screen: HuntDetails },
   InviteFriends: { screen: InviteFriends },
 });
