@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import Modal from 'react-native-modalbox';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Dimensions,
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import * as firebase from 'firebase';
 import GameMap from './GameMap';
 import GameButton from './GameButton';
@@ -22,6 +15,8 @@ export default class Map extends Component {
       distance: 5,
       selectedTarget: {},
       targets: [],
+      modalT: true,
+      modalS: false
     };
 
     this.inPerimeter = this.inPerimeter.bind(this);
@@ -151,29 +146,27 @@ export default class Map extends Component {
     });
   }
 
-  setNativeProps = (nativeProps) => {
-    this.targetRef.setNativeProps(nativeProps);
-    this.scoreRef.setNativeProps(nativeProps);
-  }
 
   render() {
-    const targetR = React.createRef()
-    const scoreR = React.createRef()
+
+    console.log('MODAL T STATE ===> ', this.state.modalT)
     const { targets, selectedTarget } = this.state;
     return (
       <View style={{ flex: 1, position: 'relative' }}>
         <GameMap latitude={this.state.latitude} longitude={this.state.longitude} />
         <View style={styles.bottomView}>
           <View style={styles.buttonList}>
-            <GameButton iconName="target" buttonName="TARGETS" onPress={() => targetR.open()} />
-            <GameButton iconName="trophy" buttonName="SCORES" onPress={() => scoreR.open()} />
+            <GameButton iconName="target" buttonName="TARGETS"
+              onPress={() => this.setState({ modalT: !this.state.modalT })} />
+            <GameButton iconName="trophy" buttonName="SCORES"
+              onPress={() => this.setState({ modalS: !this.state.modalS })} />
             <GameButton iconName="radar" buttonName="RADAR" />
           </View>
         </View>
-        <GameModal ref={comp => this.targetRef = comp}>
+        <GameModal isOpen={this.state.modalT} onClosed={() => this.setState({ modalT: false })}>
           <GameTargetsView targets={targets} selectedTarget={selectedTarget} selectTarget={this.selectTarget} />
         </GameModal>
-        <GameModal >
+        <GameModal isOpen={this.state.modalS} onClosed={() => this.setState({ modalS: false })}>
           <Text>These are the scores.</Text>
         </GameModal>
       </View>

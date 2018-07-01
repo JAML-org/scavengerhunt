@@ -7,7 +7,7 @@ import {
   Dimensions,
 } from 'react-native';
 
-const GameModal = (props, ref) => {
+const GameModal = (props) => {
 
   const screen = Dimensions.get('window')
 
@@ -15,8 +15,9 @@ const GameModal = (props, ref) => {
     <Modal
       style={styles.modal}
       position={'bottom'}
-      ref={ref}
       swipeArea={20}
+      isOpen={props.isOpen}
+      onClosed={props.onClosed}
     >
       <ScrollView>
         <View style={{ width: screen.width, paddingLeft: 10 }}>
