@@ -240,7 +240,7 @@ export default class Map extends Component {
                 color="black"
                 reverse
                 type="material-community"
-                onPress={() => {this.refs.radar.open()}}
+                onPress={() => { this.refs.radar.open() }}
                 style={styles.btn}
               />
               <Text>RADAR</Text>
@@ -307,13 +307,13 @@ export default class Map extends Component {
           <View style={{ width: screen.width, paddingLeft: 10 }}>
             <Text>
               {this.inPerimeter(
-                    {
-                      latitude: this.state.latitude,
-                      longitude: this.state.longitude,
-                    },
-                    this.state.selectedTarget
-                  )
-                }
+                {
+                  latitude: this.state.latitude,
+                  longitude: this.state.longitude,
+                },
+                this.state.selectedTarget
+              )
+              }
             </Text>
           </View>
         </Modal>
