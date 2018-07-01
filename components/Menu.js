@@ -1,29 +1,31 @@
 import React from 'react';
-import { createDrawerNavigator, DrawerActions, } from 'react-navigation';
+import { createDrawerNavigator, DrawerActions } from 'react-navigation';
 import Profile from './Profile';
 import HowToPlay from './HowToPlay';
 import JoinHunt from './JoinHunt';
-import HuntList from './HuntList';
+import PursuitList from './PursuitList';
 import HuntDetails from './HuntDetails';
 import Main from './Main';
 import Friends from './Friends';
 import MyHuntList from './MyHuntList';
 import Map from './Map';
+import { Image } from 'react-native';
 import { Icon, Header } from 'react-native-elements';
 import InviteFriends from './InviteFriends';
+import { colors } from './style';
 
 const Menu = createDrawerNavigator(
   {
+    Main: { screen: Main },
     Profile: { screen: Profile },
-    Map: { screen: Map },
     MyHuntList: { screen: MyHuntList },
     JoinHunt: { screen: JoinHunt },
     Friends: { screen: Friends },
     HowToPlay: { screen: HowToPlay },
-    HuntList: { screen: HuntList },
+    Map: { screen: Map },
+    PursuitList: { screen: PursuitList },
     HuntDetails: { screen: HuntDetails },
-    Main: { screen: Main },
-    InviteFriends: { screen: InviteFriends }
+    InviteFriends: { screen: InviteFriends },
   },
   {
     drawerWidth: 300,
@@ -37,12 +39,23 @@ const MenuContainer = () => {
   return (
     <React.Fragment>
       <Header
-        backgroundColor="white"
+        backgroundColor={colors.white}
         leftComponent={
           <Icon
             name="menu"
             onPress={() => {
-              pressMenu.dispatch(DrawerActions.toggleDrawer())
+              pressMenu.dispatch(DrawerActions.toggleDrawer());
+            }}
+          />
+        }
+        centerComponent={
+          <Image
+            source={require('../urban-pursuit-logo.jpg')}
+            style={{
+              flex: 1,
+              width: 150,
+              height: 100,
+              resizeMode: Image.resizeMode.contain,
             }}
           />
         }

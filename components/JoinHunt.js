@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text, Divider, List, Button, ListItem, TouchableHighlight } from 'react-native-elements';
+import { StyleSheet, View, ImageBackground } from 'react-native';
+import { Text, Divider, List, Button, ListItem } from 'react-native-elements';
 import * as firebase from 'firebase';
-import styles from './style';
+import styles, { colors } from './style';
 
 export default class JoinHunt extends Component {
   constructor() {
     super();
     this.state = {
       invites: {},
-      selected: ""
-    }
-    this.toggleSelected = this.toggleSelected.bind(this)
-    this.deleteInvite = this.deleteInvite.bind(this)
+      selected: '',
+    };
+    this.toggleSelected = this.toggleSelected.bind(this);
+    this.deleteInvite = this.deleteInvite.bind(this);
   }
 
   async componentDidMount() {
@@ -29,7 +29,9 @@ export default class JoinHunt extends Component {
   }
 
   toggleSelected(invite) {
-    this.state.selected === invite ? this.setState({ selected: "" }) : this.setState({ selected: invite })
+    this.state.selected === invite
+      ? this.setState({ selected: '' })
+      : this.setState({ selected: invite });
   }
 
   async deleteInvite(invite) {
@@ -38,57 +40,64 @@ export default class JoinHunt extends Component {
       .database()
       .ref(`/Users/${userId}/invites`)
       .child(invite)
-      .remove()
+      .remove();
   }
 
   render() {
     const { invites, selected } = this.state;
     return (
-      <View style={styles.container}>
-        <View style={{ width: '100%', height: '25%' }}>
-          <Text h4 style={{ color: 'white' }}>
-            Invites
-          </Text>
-          <Divider />
-        </View>
-        <View>
-          {invites ?
-            <List>
-              {Object.keys(invites).map(invite => (
-                <ListItem
-                  key={invite}
-                  roundAvatar
-                  title={invites[invite].theme}
-                  subtitle={`from ${invites[invite].from.name}`}
-                  avatar={{ uri: invites[invite].from.avatar }}
-                  containerStyle={
-                    selected === invite
-                      ? styling.active
-                      : styling.inactive}
-                  onPress={() => this.toggleSelected(invite)}
-                />
-              ))}
-            </List>
-            : (<Text h4 style={{ color: 'white' }}>Sorry no Invites</Text>)
-          }
-        </View>
-        <View style={styling.buttonList}>
-          <View>
-            <Button
-              title="ACCEPT"
-              buttonStyle={styling.btn}
-              onPress={() => this.props.navigation.navigate('Map', selected)}
-            />
+      <ImageBackground
+        source={require('../urban-pursuit-leaf-bg.jpg')}
+        style={styles.bgImage}
+      >
+        <View style={styles.container}>
+          <View style={{ width: '100%', height: '25%' }}>
+            <Text h4 style={{ color: 'white' }}>
+              Invites
+            </Text>
+            <Divider />
           </View>
           <View>
-            <Button
-              title="DECLINE"
-              buttonStyle={styling.btn}
-              onPress={() => this.deleteInvite(selected)}
-            />
+            {invites ? (
+              <List>
+                {Object.keys(invites).map(invite => (
+                  <ListItem
+                    key={invite}
+                    roundAvatar
+                    title={invites[invite].theme}
+                    subtitle={`from ${invites[invite].from.name}`}
+                    avatar={{ uri: invites[invite].from.avatar }}
+                    containerStyle={
+                      selected === invite ? styling.active : styling.inactive
+                    }
+                    onPress={() => this.toggleSelected(invite)}
+                  />
+                ))}
+              </List>
+            ) : (
+              <Text h4 style={{ color: 'white' }}>
+                Sorry no Invites
+              </Text>
+            )}
+          </View>
+          <View style={styling.buttonList}>
+            <View>
+              <Button
+                title="ACCEPT"
+                buttonStyle={styling.btn}
+                onPress={() => this.props.navigation.navigate('Map', selected)}
+              />
+            </View>
+            <View>
+              <Button
+                title="DECLINE"
+                buttonStyle={styling.btn}
+                onPress={() => this.deleteInvite(selected)}
+              />
+            </View>
           </View>
         </View>
-      </View>
+      </ImageBackground>
     );
   }
 }
@@ -108,9 +117,9 @@ const styling = StyleSheet.create({
     borderRadius: 20,
   },
   active: {
-    backgroundColor: "orange"
+    backgroundColor: colors.orange,
   },
   inactive: {
-    backgroundColor: "white"
+    backgroundColor: colors.white,
   },
-})
+});

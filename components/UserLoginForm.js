@@ -2,44 +2,13 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import {
   StyleSheet,
-  Text,
   View,
   TextInput,
   TouchableOpacity,
+  ImageBackground,
 } from 'react-native';
-
-const styles = StyleSheet.create({
-  loginForm: {
-    alignSelf: 'stretch',
-  },
-  header: {
-    fontSize: 24,
-    color: '#fff',
-    paddingBottom: 10,
-    marginBottom: 40,
-    borderBottomColor: '#199187',
-    borderBottomWidth: 1,
-  },
-  textinput: {
-    alignSelf: 'stretch',
-    height: 40,
-    marginBottom: 30,
-    color: 'black',
-    borderBottomColor: '#f8f8f8',
-    borderBottomWidth: 1,
-  },
-  button: {
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#36485f',
-    marginTop: 30,
-  },
-  btntext: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-});
+import { Text, Icon } from 'react-native-elements';
+import styles, { colors } from './style';
 
 export default class UserLoginForm extends Component {
   constructor() {
@@ -68,7 +37,7 @@ export default class UserLoginForm extends Component {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        this.props.navigation.navigate('MenuStack');
+        this.props.navigation.navigate('LoggedInStack');
       })
       .catch(function(error) {
         let errorCode = error.code;
@@ -86,32 +55,80 @@ export default class UserLoginForm extends Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <View style={styles.loginForm}>
-        <TextInput
-          style={styles.textinput}
-          placeholder="Email"
-          onChangeText={text => this.updateValue(text, 'email')}
-        />
-        <TextInput
-          style={styles.textinput}
-          placeholder="Password"
-          secureTextEntry={true}
-          onChangeText={text => this.updateValue(text, 'password')}
-        />
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => this.handleSubmit()}
-        >
-          <Text style={styles.btntext}>Login</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigate('RegForm')}
-        >
-          <Text style={styles.btntext}>Sign Up</Text>
-        </TouchableOpacity>
-      </View>
+      <ImageBackground
+        source={require('../urban-pursuit-leaf-bg.jpg')}
+        style={styles.bgImage}
+      >
+        <View style={styles.container}>
+          <View style={loginStyles.header}>
+            <View style={loginStyles.iconBG}>
+              <Icon
+                xlarge
+                rounded
+                // reverse
+                size={150}
+                color={colors.lightblue}
+                name="user"
+                type="font-awesome"
+              />
+            </View>
+          </View>
+          <View style={loginStyles.form}>
+            <TextInput
+              style={styles.textinput}
+              placeholder="Email"
+              onChangeText={text => this.updateValue(text, 'email')}
+            />
+            <TextInput
+              style={styles.textinput}
+              placeholder="Password"
+              secureTextEntry={true}
+              onChangeText={text => this.updateValue(text, 'password')}
+            />
+          </View>
+          <View style={loginStyles.bottom}>
+            <TouchableOpacity
+              style={styles.btn}
+              onPress={() => this.handleSubmit()}
+            >
+              <Text h4 style={styles.btnText}>
+                Login
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={loginStyles.bottom}>
+            <Text style={styles.textCenter}>
+              Dont have an account?{' '}
+              <Text style={styles.linkText} onPress={() => navigate('SignUp')}>
+                Sign Up
+              </Text>
+            </Text>
+          </View>
+        </View>
+      </ImageBackground>
     );
   }
 }
+
+const loginStyles = StyleSheet.create({
+  header: {
+    flex: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconBG: {
+    backgroundColor: colors.white,
+    borderRadius: 100,
+    height: 200,
+    width: 200,
+    justifyContent: 'center',
+  },
+  form: {
+    flex: 2,
+    justifyContent: 'flex-end',
+  },
+  bottom: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+});
