@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Modal from 'react-native-modalbox';
 import {
   View,
@@ -7,26 +7,24 @@ import {
   Dimensions,
 } from 'react-native';
 
-export default class GameModal extends Component {
+const GameModal = (props, ref) => {
 
+  const screen = Dimensions.get('window')
 
-  render() {
-    const screen = Dimensions.get('window')
-    return (
-      <Modal
-        style={styles.modal}
-        position={'bottom'}
-        ref={this.props.refName}
-        swipeArea={20}
-      >
-        <ScrollView>
-          <View style={{ width: screen.width, paddingLeft: 10 }}>
-            {this.props.children}
-          </View>
-        </ScrollView>
-      </Modal>
-    )
-  }
+  return (
+    <Modal
+      style={styles.modal}
+      position={'bottom'}
+      ref={ref}
+      swipeArea={20}
+    >
+      <ScrollView>
+        <View style={{ width: screen.width, paddingLeft: 10 }}>
+          {props.children}
+        </View>
+      </ScrollView>
+    </Modal>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -36,3 +34,5 @@ const styles = StyleSheet.create({
     height: 150,
   }
 })
+
+export default GameModal

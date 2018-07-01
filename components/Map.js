@@ -23,8 +23,6 @@ export default class Map extends Component {
       selectedTarget: {},
       targets: [],
     };
-    // this.targetsRef = React.createRef();
-    // this.scoresRef = React.createRef();
 
     this.inPerimeter = this.inPerimeter.bind(this);
     this.renderList = this.renderList.bind(this);
@@ -153,23 +151,29 @@ export default class Map extends Component {
     });
   }
 
+  setNativeProps = (nativeProps) => {
+    this.targetRef.setNativeProps(nativeProps);
+    this.scoreRef.setNativeProps(nativeProps);
+  }
+
   render() {
-    console.log("TARGETS REF===>", this.targetsRef)
+    const targetR = React.createRef()
+    const scoreR = React.createRef()
     const { targets, selectedTarget } = this.state;
     return (
       <View style={{ flex: 1, position: 'relative' }}>
         <GameMap latitude={this.state.latitude} longitude={this.state.longitude} />
         <View style={styles.bottomView}>
           <View style={styles.buttonList}>
-            <GameButton iconName="target" buttonName="TARGETS" onPress={() => this.refs.targets.open()} />
-            <GameButton iconName="trophy" buttonName="SCORES" onPress={() => this.refs.scores.open()} />
+            <GameButton iconName="target" buttonName="TARGETS" onPress={() => targetR.open()} />
+            <GameButton iconName="trophy" buttonName="SCORES" onPress={() => scoreR.open()} />
             <GameButton iconName="radar" buttonName="RADAR" />
           </View>
         </View>
-        <GameModal refName={"targets"}>
+        <GameModal ref={comp => this.targetRef = comp}>
           <GameTargetsView targets={targets} selectedTarget={selectedTarget} selectTarget={this.selectTarget} />
         </GameModal>
-        <GameModal refName={"scoresRef"}>
+        <GameModal >
           <Text>These are the scores.</Text>
         </GameModal>
       </View>
