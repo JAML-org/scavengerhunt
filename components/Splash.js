@@ -46,7 +46,7 @@ const splashStyling = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   btn: {
-    marginVertical: 20,
+    marginVertical: 10,
   },
 });
 

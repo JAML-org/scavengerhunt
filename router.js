@@ -1,4 +1,3 @@
-import React from 'react';
 import { createSwitchNavigator, createStackNavigator } from 'react-navigation';
 import MenuContainer from './components/Menu';
 import SplashScreen from './components/Splash';
@@ -13,7 +12,6 @@ import Main from './components/Main';
 import Friends from './components/Friends';
 import MyHuntList from './components/MyHuntList';
 import Map from './components/Map';
-import { Image } from 'react-native';
 
 const UnLoggedInStack = createSwitchNavigator(
   {
