@@ -101,13 +101,14 @@ export default class Map extends Component {
       let previousScoreObj = await currentGame
         .child(`${currentPlayerId}`)
         .once('value');
-      let previousScore = await previousScoreObj.val();
+        console.log('OBJECT THING! ====', previousScoreObj)
+      // let previousScore = await previousScoreObj.val();
 
-      //update Player's score
-      let currentScore = previousScore + 10;
-      currentGame.update({
-        [currentPlayerId]: currentScore,
-      });
+      // //update Player's score
+      // let currentScore = previousScore + 10;
+      // currentGame.update({
+      //   [currentPlayerId]: currentScore,
+      // });
     } catch (error) {
       console.error(error);
     }
@@ -135,7 +136,7 @@ export default class Map extends Component {
       const huntsVal = hunts.val();
       const locations = targets.val();
       const huntLocationArr = huntsVal[huntName].locations;
-
+      console.log('THE HUNTS!=====', huntLocationArr)
       for (let i = 0; i < huntLocationArr.length; i++) {
         let target = locations[+huntLocationArr[i]];
         list.push(target);
@@ -152,7 +153,6 @@ export default class Map extends Component {
   render() {
 
     const { targets, selectedTarget, modalScore, modalTarget, latitude, longitude } = this.state;
-    console.log(targets)
     return (
       <View style={{ flex: 1, position: 'relative' }}>
         <GameMap latitude={latitude} longitude={longitude} />
