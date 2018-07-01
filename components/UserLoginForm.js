@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
-import { StyleSheet, View, TextInput, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  TouchableOpacity,
+  ImageBackground,
+} from 'react-native';
 import { Text, Icon } from 'react-native-elements';
 import styles, { colors } from './style';
 
@@ -49,52 +55,57 @@ export default class UserLoginForm extends Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <View style={styles.container}>
-        <View style={loginStyles.header}>
-          <View style={loginStyles.iconBG}>
-            <Icon
-              xlarge
-              rounded
-              // reverse
-              size={150}
-              color={colors.lightblue}
-              name="user"
-              type="font-awesome"
+      <ImageBackground
+        source={require('../urban-pursuit-leaf-bg.jpg')}
+        style={styles.bgImage}
+      >
+        <View style={styles.container}>
+          <View style={loginStyles.header}>
+            <View style={loginStyles.iconBG}>
+              <Icon
+                xlarge
+                rounded
+                // reverse
+                size={150}
+                color={colors.lightblue}
+                name="user"
+                type="font-awesome"
+              />
+            </View>
+          </View>
+          <View style={loginStyles.form}>
+            <TextInput
+              style={styles.textinput}
+              placeholder="Email"
+              onChangeText={text => this.updateValue(text, 'email')}
+            />
+            <TextInput
+              style={styles.textinput}
+              placeholder="Password"
+              secureTextEntry={true}
+              onChangeText={text => this.updateValue(text, 'password')}
             />
           </View>
-        </View>
-        <View style={loginStyles.form}>
-          <TextInput
-            style={styles.textinput}
-            placeholder="Email"
-            onChangeText={text => this.updateValue(text, 'email')}
-          />
-          <TextInput
-            style={styles.textinput}
-            placeholder="Password"
-            secureTextEntry={true}
-            onChangeText={text => this.updateValue(text, 'password')}
-          />
-        </View>
-        <View style={loginStyles.bottom}>
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={() => this.handleSubmit()}
-          >
-            <Text h4 style={styles.btnText}>
-              Login
+          <View style={loginStyles.bottom}>
+            <TouchableOpacity
+              style={styles.btn}
+              onPress={() => this.handleSubmit()}
+            >
+              <Text h4 style={styles.btnText}>
+                Login
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={loginStyles.bottom}>
+            <Text style={styles.textCenter}>
+              Dont have an account?{' '}
+              <Text style={styles.linkText} onPress={() => navigate('SignUp')}>
+                Sign Up
+              </Text>
             </Text>
-          </TouchableOpacity>
+          </View>
         </View>
-        <View style={loginStyles.bottom}>
-          <Text style={styles.textCenter}>
-            Dont have an account?{' '}
-            <Text style={styles.linkText} onPress={() => navigate('SignUp')}>
-              Sign Up
-            </Text>
-          </Text>
-        </View>
-      </View>
+      </ImageBackground>
     );
   }
 }

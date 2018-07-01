@@ -1,20 +1,8 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
-import {
-  Avatar,
-  Button,
-  FormLabel,
-  FormInput,
-  FormValidationMessage,
-} from 'react-native-elements';
-import styles from './style';
+import { StyleSheet, View, TextInput, ImageBackground } from 'react-native';
+import { Avatar, Text, Button } from 'react-native-elements';
+import styles, { colors } from './style';
 
 export default class Profile extends Component {
   constructor() {
@@ -22,6 +10,7 @@ export default class Profile extends Component {
     this.state = {
       name: '',
       username: '',
+      avatar: '',
       phone: '',
       password: '',
       totalCompleted: 0,
@@ -54,6 +43,7 @@ export default class Profile extends Component {
     this.setState({
       name: user.name,
       username: user.username,
+      avatar: user.avatar,
       phone: user.phone,
       totalCompleted,
       totalWon,
@@ -68,9 +58,11 @@ export default class Profile extends Component {
 
   async handleSubmit() {
     const userAuth = await firebase.auth().currentUser;
-    const user = await firebase.database().ref(`/Users/${userAuth.uid}`)
-    .once('value')
-    .then(snap => snap.val())
+    const user = await firebase
+      .database()
+      .ref(`/Users/${userAuth.uid}`)
+      .once('value')
+      .then(snap => snap.val());
 
     await firebase
       .database()
@@ -95,62 +87,114 @@ export default class Profile extends Component {
   }
 
   render() {
-    const { totalCompleted, totalWon, name, username, phone } = this.state;
+    const {
+      totalCompleted,
+      totalWon,
+      name,
+      username,
+      avatar,
+      phone,
+    } = this.state;
     return (
-      <View style={styles.container}>
-        <View>
-          <View>
-            <Avatar xlarge rounded />
-            <Text style={styles.textCenter}>Change Avatar</Text>
+      <ImageBackground
+        source={require('../urban-pursuit-leaf-bg.jpg')}
+        style={styles.bgImage}
+      >
+        <View style={styles.container}>
+          <View style={profileStyling.userInfo}>
+            <View style={profileStyling.col2}>
+              <Avatar xlarge rounded source={{ uri: avatar }} />
+              <Text
+                style={[
+                  styles.linkText,
+                  styles.textCenter,
+                  profileStyling.link,
+                ]}
+              >
+                Change Avatar
+              </Text>
+            </View>
+
+            <View style={profileStyling.col2}>
+              <Text h4 style={[styles.textCenter, profileStyling.username]}>
+                {username}
+              </Text>
+              <Text style={styles.textCenter}>
+                Completed Hunt: {totalCompleted}
+              </Text>
+              <Text style={styles.textCenter}>
+                Hunts Won: {`${totalWon} / ${totalCompleted}`}
+              </Text>
+            </View>
           </View>
 
-          <View>
-            <Text style={styles.textCenter}>{username}</Text>
-            <Text style={styles.textCenter}>
-              Completed Hunt: {totalCompleted}
-            </Text>
-            <Text style={styles.textCenter}>
-              Hunts Won: {`${totalWon} / ${totalCompleted}`}
-            </Text>
-          </View>
-        </View>
-
-        <View>
-          <View>
-            <FormInput
+          <View style={profileStyling.form}>
+            <TextInput
+              style={styles.textinput}
               name="name"
               value={name}
               placeholder="Name"
               onChangeText={text => this.handleChange(text, 'name')}
             />
-          </View>
-          <View>
-            <FormInput
+            <TextInput
+              style={styles.textinput}
               name="username"
               value={username}
               placeholder="Username"
               onChangeText={text => this.handleChange(text, 'username')}
             />
-          </View>
-          <View>
-            <FormInput
+            <TextInput
+              style={styles.textinput}
               name="phone"
               value={phone}
               placeholder="phone"
               onChangeText={text => this.handleChange(text, 'phone')}
             />
-          </View>
-          <View>
-            <FormInput
+            <TextInput
+              style={styles.textinput}
               name="password"
               placeholder="Enter new password"
               secureTextEntry={true}
               onChangeText={text => this.handleChange(text, 'password')}
             />
           </View>
-          <Button title="Save Changes" onPress={() => this.handleSubmit()} />
+          <View style={profileStyling.save}>
+            <Button
+              buttonStyle={styles.btn}
+              title="Save Changes"
+              onPress={() => this.handleSubmit()}
+            />
+          </View>
         </View>
-      </View>
+      </ImageBackground>
     );
   }
 }
+
+const profileStyling = StyleSheet.create({
+  userInfo: {
+    flex: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  col2: {
+    width: '50%',
+    justifyContent: 'center',
+    paddingBottom: 50,
+  },
+  username: {
+    color: colors.pink,
+    flexWrap: 'wrap',
+    fontFamily: 'Kohinoor Bangla',
+  },
+  link: {
+    marginTop: 10,
+  },
+  form: {
+    flex: 2,
+  },
+  save: {
+    flex: 1,
+  },
+});

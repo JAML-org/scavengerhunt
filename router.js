@@ -1,5 +1,7 @@
+import React from 'react';
 import { createSwitchNavigator, createStackNavigator } from 'react-navigation';
 import MenuContainer from './components/Menu';
+import SplashScreen from './components/Splash';
 import UserLoginForm from './components/UserLoginForm';
 import SignUpForm from './components/SignUpForm';
 import Profile from './components/Profile';
@@ -11,9 +13,13 @@ import Main from './components/Main';
 import Friends from './components/Friends';
 import MyHuntList from './components/MyHuntList';
 import Map from './components/Map';
+import { Image } from 'react-native';
 
 const UnLoggedInStack = createSwitchNavigator(
   {
+    SplashScreen: {
+      screen: SplashScreen,
+    },
     UserLogin: {
       screen: UserLoginForm,
     },

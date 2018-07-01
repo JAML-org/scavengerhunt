@@ -2,20 +2,25 @@ import { StyleSheet } from 'react-native';
 
 export const colors = {
   green: '#73f442',
-  mediumblue: '#85e7dc',
+  mediumblue: '#85e7de',
   lightblue: '#9ffae4',
-  bgColor: '#e5efe9',
-  lighterbg: '#f3fcf7',
+  bgColor: '#e4eee9',
+  lighterbg: '#eef8f4',
   black: '#000',
   white: '#fff',
-  gray: '#bfc3c2',
+  gray: '#5d5f5f',
+  pink: '#d667cd',
+  orange: '#f5a847',
 };
 
 const styles = StyleSheet.create({
+  bgImage: {
+    width: '100%',
+    height: '100%',
+  },
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-    backgroundColor: colors.bgColor,
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 50,
@@ -29,8 +34,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 40,
     borderBottomWidth: 1,
-    borderColor: colors.gray,
+    borderColor: colors.orange,
     fontSize: 18,
+    fontFamily: 'Kohinoor Bangla',
     paddingHorizontal: 10,
     marginBottom: 10,
   },
@@ -43,12 +49,16 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontWeight: 'bold',
     textAlign: 'center',
+    fontFamily: 'Kohinoor Bangla',
   },
   linkText: {
     color: colors.mediumblue,
+    fontFamily: 'Kohinoor Bangla',
+    fontWeight: 'bold',
   },
   textCenter: {
     textAlign: 'center',
+    fontFamily: 'Kohinoor Bangla',
   },
   listContainer: {
     flexDirection: 'row',
