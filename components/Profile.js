@@ -95,6 +95,9 @@ export default class Profile extends Component {
       avatar,
       phone,
     } = this.state;
+    if (!avatar) {
+      return 'Loading...';
+    }
     return (
       <ImageBackground
         source={require('../urban-pursuit-leaf-bg.jpg')}
