@@ -149,7 +149,6 @@ export default class Map extends Component {
 
   render() {
 
-    console.log('MODAL T STATE ===> ', this.state.modalT)
     const { targets, selectedTarget } = this.state;
     return (
       <View style={{ flex: 1, position: 'relative' }}>
