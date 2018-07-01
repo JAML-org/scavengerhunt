@@ -26,6 +26,16 @@ class HuntDetails extends React.Component {
       const { getParam } = this.props.navigation;
       const huntName = getParam('huntName');
 
+      //Get huntLocationsId to create target object
+      const huntLocationsID = getParam('huntLocationsID');
+
+      //Create target object
+      let targets = Object.assign(
+        ...huntLocationsID.map(target => ({ [target]: false }))
+      );
+
+      console.log(targets)
+
       //Get signed in user
       let currentPlayer = await firebase.auth().currentUser.uid;
       //Route to Games in Firebase
@@ -35,7 +45,7 @@ class HuntDetails extends React.Component {
       let newGame = await games.push();
       //Add game to Games route
       newGame.set({
-        players: { [currentPlayer]: 0 },
+        players: { [currentPlayer]: targets },
         theme: huntName,
       });
 

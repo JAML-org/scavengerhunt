@@ -2,20 +2,20 @@ import React from 'react';
 import { View, Image, TouchableHighlight, StyleSheet } from 'react-native';
 
 const GameTargetsViews = (props) => {
-
+  const {targets, selectedTarget, selectTarget} = props
   return (
     <View style={{ paddingTop: 20, flexDirection: 'row' }}>
-      {props.targets.map((target, i) => {
+      {targets.map((target, i) => {
         return (
           <TouchableHighlight
             style={
-              props.selectedTarget.name === target.name
+              selectedTarget.name === target.name
                 ? styles.active
                 : styles.inactive
             }
             key={i}
             onPress={() =>
-              props.selectTarget({
+              selectTarget({
                 name: target.name,
                 latitude: target.coords[0],
                 longitude: target.coords[1],

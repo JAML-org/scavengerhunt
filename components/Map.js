@@ -15,8 +15,8 @@ export default class Map extends Component {
       distance: 5,
       selectedTarget: {},
       targets: [],
-      modalT: true,
-      modalS: false
+      modalTarget: true,
+      modalScore: false
     };
 
     this.inPerimeter = this.inPerimeter.bind(this);
@@ -43,6 +43,7 @@ export default class Map extends Component {
   }
 
   selectTarget(target) {
+    console.log(target)
     this.setState({ selectedTarget: target });
   }
 
@@ -89,6 +90,7 @@ export default class Map extends Component {
     const { getParam } = this.props.navigation;
     let currentGameId = getParam('newGameId');
     let currentPlayerId = getParam('currentPlayer');
+
     try {
       //find the current game
       let currentGame = await firebase
@@ -149,23 +151,24 @@ export default class Map extends Component {
 
   render() {
 
-    const { targets, selectedTarget } = this.state;
+    const { targets, selectedTarget, modalScore, modalTarget, latitude, longitude } = this.state;
+    console.log(targets)
     return (
       <View style={{ flex: 1, position: 'relative' }}>
-        <GameMap latitude={this.state.latitude} longitude={this.state.longitude} />
+        <GameMap latitude={latitude} longitude={longitude} />
         <View style={styles.bottomView}>
           <View style={styles.buttonList}>
             <GameButton iconName="target" buttonName="TARGETS"
-              onPress={() => this.setState({ modalT: !this.state.modalT })} />
+              onPress={() => this.setState({ modalTarget: !modalTarget })} />
             <GameButton iconName="trophy" buttonName="SCORES"
-              onPress={() => this.setState({ modalS: !this.state.modalS })} />
-            <GameButton iconName="radar" buttonName="RADAR" />
+              onPress={() => this.setState({ modalScore: !modalScore })} />
+            {/* <GameButton iconName="radar" buttonName="RADAR" /> */}
           </View>
         </View>
-        <GameModal isOpen={this.state.modalT} onClosed={() => this.setState({ modalT: false })}>
+        <GameModal isOpen={modalTarget} onClosed={() => this.setState({ modalTarget: false })}>
           <GameTargetsView targets={targets} selectedTarget={selectedTarget} selectTarget={this.selectTarget} />
         </GameModal>
-        <GameModal isOpen={this.state.modalS} onClosed={() => this.setState({ modalS: false })}>
+        <GameModal isOpen={modalScore} onClosed={() => this.setState({ modalScore: false })}>
           <Text>These are the scores.</Text>
         </GameModal>
       </View>
