@@ -1,43 +1,36 @@
 import React from 'react';
-import {
-  ScrollView,
-  View,
-  Image,
-  TouchableHighlight,
-  StyleSheet,
-} from 'react-native';
+import { View, Image, TouchableHighlight, StyleSheet } from 'react-native';
 
 const GameTargetsViews = props => {
   const { targets, selectedTarget, selectTarget } = props;
+
   return (
-    <ScrollView horizontal={true}>
-      <View style={{ paddingTop: 20, flexDirection: 'row' }}>
-        {targets.map((target, i) => {
-          return (
-            <TouchableHighlight
-              style={
-                selectedTarget.name === target.name
-                  ? styles.active
-                  : styles.inactive
-              }
-              key={i}
-              onPress={() =>
-                selectTarget({
-                  name: target.name,
-                  latitude: target.coords[0],
-                  longitude: target.coords[1],
-                })
-              }
-            >
-              <Image
-                style={{ width: 80, height: 80 }}
-                source={{ uri: target.image }}
-              />
-            </TouchableHighlight>
-          );
-        })}
-      </View>
-    </ScrollView>
+    <View style={{ flexDirection: 'row' }}>
+      {targets.map((target, i) => {
+        return (
+          <TouchableHighlight
+            style={
+              selectedTarget.name === target.name
+                ? styles.active
+                : styles.inactive
+            }
+            key={i}
+            onPress={() =>
+              selectTarget({
+                name: target.name,
+                latitude: target.coords[0],
+                longitude: target.coords[1],
+              })
+            }
+          >
+            <Image
+              style={{ width: 80, height: 80 }}
+              source={{ uri: target.image }}
+            />
+          </TouchableHighlight>
+        );
+      })}
+    </View>
   );
 };
 
