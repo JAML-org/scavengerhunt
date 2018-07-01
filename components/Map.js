@@ -11,6 +11,7 @@ import * as firebase from 'firebase';
 import GameMap from './GameMap';
 import GameButton from './GameButton';
 import GameTargetsView from './GameTargetsView';
+import GameModal from './GameModal'
 
 export default class Map extends Component {
   constructor() {
@@ -22,12 +23,15 @@ export default class Map extends Component {
       selectedTarget: {},
       targets: [],
     };
+    // this.targetsRef = React.createRef();
+    // this.scoresRef = React.createRef();
 
     this.inPerimeter = this.inPerimeter.bind(this);
     this.renderList = this.renderList.bind(this);
     this.selectTarget = this.selectTarget.bind(this);
     this.updateScore = this.updateScore.bind(this);
     this.getScores = this.getScores.bind(this);
+
   }
 
   componentDidMount() {
@@ -150,9 +154,8 @@ export default class Map extends Component {
   }
 
   render() {
-    let screen = Dimensions.get('window');
+    console.log("TARGETS REF===>", this.targetsRef)
     const { targets, selectedTarget } = this.state;
-    console.log()
     return (
       <View style={{ flex: 1, position: 'relative' }}>
         <GameMap latitude={this.state.latitude} longitude={this.state.longitude} />
@@ -160,54 +163,15 @@ export default class Map extends Component {
           <View style={styles.buttonList}>
             <GameButton iconName="target" buttonName="TARGETS" onPress={() => this.refs.targets.open()} />
             <GameButton iconName="trophy" buttonName="SCORES" onPress={() => this.refs.scores.open()} />
-            <GameButton iconName="radar" buttonName="RADAR" onPress={() => this.refs.radar.open()} />
+            <GameButton iconName="radar" buttonName="RADAR" />
           </View>
         </View>
-        <Modal
-          style={styles.modal}
-          position={'bottom'}
-          ref={'targets'}
-          swipeArea={20}
-          isOpen={true}
-        >
-          <ScrollView horizontal={true} style={{ width: screen.width }}>
-            <GameTargetsView targets={targets} selectedTarget={selectedTarget} selectTarget={this.selectTarget} />
-          </ScrollView>
-        </Modal>
-        <Modal
-          style={styles.modal}
-          position={'bottom'}
-          ref={'scores'}
-          swipeArea={20}
-        >
-          <ScrollView>
-            <View style={{ width: screen.width, paddingLeft: 10 }}>
-              <Text>These are the scores.</Text>
-            </View>
-          </ScrollView>
-        </Modal>
-
-        <Modal
-          style={styles.modal}
-          position={'bottom'}
-          ref={'radar'}
-          swipeArea={20}
-          onOpened={() => this.setState({ isOpen: true })}
-          onClosed={() => this.setState({ isOpen: false })}
-        >
-          <View style={{ width: screen.width, paddingLeft: 10 }}>
-            <Text>
-              {this.inPerimeter(
-                {
-                  latitude: this.state.latitude,
-                  longitude: this.state.longitude,
-                },
-                this.state.selectedTarget
-              )
-              }
-            </Text>
-          </View>
-        </Modal>
+        <GameModal refName={"targets"}>
+          <GameTargetsView targets={targets} selectedTarget={selectedTarget} selectTarget={this.selectTarget} />
+        </GameModal>
+        <GameModal refName={"scoresRef"}>
+          <Text>These are the scores.</Text>
+        </GameModal>
       </View>
     );
   }
@@ -225,32 +189,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     paddingTop: 10,
     paddingBottom: 10,
-  },
-  btn: {
-    backgroundColor: '#3B5998',
-    color: 'white',
-    padding: 10,
-  },
-  modal: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 150,
-  },
-  active: {
-    overflow: 'hidden',
-    borderRadius: 40,
-    width: 80,
-    height: 80,
-    paddingBottom: 30,
-    marginLeft: 20,
-    opacity: 0.5,
-  },
-  inactive: {
-    overflow: 'hidden',
-    borderRadius: 40,
-    width: 80,
-    height: 80,
-    paddingBottom: 30,
-    marginLeft: 20,
   },
 });
