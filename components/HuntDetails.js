@@ -171,7 +171,7 @@ class HuntDetails extends React.Component {
           />
           <Button
             title="Pick a Different Theme"
-            onPress={() => navigate('PursuitListi')}
+            onPress={() => navigate('PursuitList')}
           />
         </View>
       </ImageBackground>
