@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './style';
-import { View } from 'react-native';
+import { View} from 'react-native';
 import { Icon, Text } from 'react-native-elements';
 
 const HuntTargets = props => {

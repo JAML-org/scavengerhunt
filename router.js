@@ -1,29 +1,57 @@
-import { createStackNavigator } from 'react-navigation';
+import { createSwitchNavigator, createStackNavigator } from 'react-navigation';
 import MenuContainer from './components/Menu';
+import SplashScreen from './components/Splash';
 import UserLoginForm from './components/UserLoginForm';
-import RegForm from './components/RegForm';
+import SignUpForm from './components/SignUpForm';
+import Profile from './components/Profile';
+import HowToPlay from './components/HowToPlay';
+import JoinHunt from './components/JoinHunt';
+import PursuitList from './components/PursuitList';
+import HuntDetails from './components/HuntDetails';
+import Main from './components/Main';
+import Friends from './components/Friends';
+import MyHuntList from './components/MyHuntList';
+import Map from './components/Map';
+import InviteFriends from './components/InviteFriends';
 
-export const AppStack = createStackNavigator(
+const UnLoggedInStack = createSwitchNavigator(
   {
+    SplashScreen: {
+      screen: SplashScreen,
+    },
     UserLogin: {
       screen: UserLoginForm,
     },
-    RegForm: {
-      screen: RegForm,
+    SignUp: {
+      screen: SignUpForm,
     },
   },
   {
-    headerMode: 'float',
+    headerMode: 'none',
   }
 );
 
+export const LoggedInStack = createStackNavigator({
+  Menu: { screen: MenuContainer },
+  Main: { screen: Main },
+  Profile: { screen: Profile },
+  Map: { screen: Map },
+  MyHuntList: { screen: MyHuntList },
+  JoinHunt: { screen: JoinHunt },
+  Friends: { screen: Friends },
+  HowToPlay: { screen: HowToPlay },
+  PursuitList: { screen: PursuitList },
+  HuntDetails: { screen: HuntDetails },
+  InviteFriends: { screen: InviteFriends },
+});
+
 export const RootStack = createStackNavigator(
   {
-    AppStack: { screen: AppStack },
-    MenuStack: { screen: MenuContainer },
+    UnLoggedInStack: { screen: UnLoggedInStack },
+    LoggedInStack: { screen: LoggedInStack },
   },
   {
     headerMode: 'none',
-    initialRouteName: 'MenuStack',
+    initialRouteName: 'UnLoggedInStack',
   }
 );
