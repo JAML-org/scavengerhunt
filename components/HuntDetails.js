@@ -4,7 +4,7 @@ import { View, Button, ImageBackground } from 'react-native';
 import { Text } from 'react-native-elements';
 import { MapView } from 'expo';
 import * as firebase from 'firebase';
-import * as mapStyle from './mapStyle.json';
+// import * as mapStyle from './mapStyle.json';
 
 class HuntDetails extends React.Component {
   constructor() {
@@ -156,7 +156,7 @@ class HuntDetails extends React.Component {
           }}
           <MapView
             style={styles.map}
-            customMapStyle={mapStyle}
+            // customMapStyle={mapStyle}
             initialRegion={{
               latitude: center.latitude || 40.7051283,
               longitude: center.longitude || -74.0089738,

@@ -7,6 +7,7 @@ const GameModal = props => {
 
   return (
     <Modal
+      onOpened={props.onOpened}
       style={styles.modal}
       position={'bottom'}
       swipeArea={20}
