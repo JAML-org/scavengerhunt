@@ -92,28 +92,15 @@ export default class Map extends Component {
     let selectedTarget = this.state.selectedTarget;
     console.log('THIS IS THE CURRENT TARGET', selectedTarget.id);
     try {
-      //find the current game
+      //find the current game for player
       let currentGame = await firebase
         .database()
         .ref(`/Games/${currentGameId}/players/${currentPlayerId}`);
 
-      //get previousScore
-      let targetList = await currentGame
-        .child(`${currentPlayerId}`)
-        .once('value');
-      console.log('OBJECT THING! ====', targetList);
-
+      //Mark target as found
       currentGame.update({
         [+selectedTarget.id]: true,
       });
-
-      // let previousScore = await previousScoreObj.val();
-
-      // //update Player's score
-      // let currentScore = previousScore + 10;
-      // currentGame.update({
-      //   [currentPlayerId]: currentScore,
-      // });
     } catch (error) {
       console.error(error);
     }
