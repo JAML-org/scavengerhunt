@@ -4,6 +4,7 @@ import { View, Button, ImageBackground } from 'react-native';
 import { Text } from 'react-native-elements';
 import { MapView } from 'expo';
 import * as firebase from 'firebase';
+import * as mapStyle from './mapStyle.json';
 
 class HuntDetails extends React.Component {
   constructor() {
@@ -26,16 +27,24 @@ class HuntDetails extends React.Component {
       const { getParam } = this.props.navigation;
       const huntName = getParam('huntName');
 
+      //Get huntLocationsId to create target object
+      const huntLocationsID = getParam('huntLocationsID');
+
       //Get signed in user
       let currentPlayer = await firebase.auth().currentUser.uid;
       //Route to Games in Firebase
       let games = await firebase.database().ref('/Games');
 
+      //Create target object
+      let targets = Object.assign(
+        ...huntLocationsID.map(target => ({ [target]: false }))
+      );
+
       //Generate newgame ID
       let newGame = await games.push();
       //Add game to Games route
       newGame.set({
-        players: { [currentPlayer]: 0 },
+        players: { [currentPlayer]: targets },
         theme: huntName,
       });
 
@@ -68,10 +77,11 @@ class HuntDetails extends React.Component {
     try {
       let response = await firebase.database().ref('/Locations');
       let snapshot = await response.once('value');
+
       this.setState({
         locations: snapshot.val(),
       });
-      //
+
       const huntLocations = huntLocationsID.map(locationID => {
         return this.state.locations[locationID];
       });
@@ -146,6 +156,7 @@ class HuntDetails extends React.Component {
           }}
           <MapView
             style={styles.map}
+            customMapStyle={mapStyle}
             initialRegion={{
               latitude: center.latitude || 40.7051283,
               longitude: center.longitude || -74.0089738,
@@ -170,8 +181,8 @@ class HuntDetails extends React.Component {
             }}
           />
           <Button
-            title="Pick a Different Theme"
-            onPress={() => navigate('PursuitListi')}
+            title="Pick a Different Pursuit"
+            onPress={() => navigate('PursuitList')}
           />
         </View>
       </ImageBackground>

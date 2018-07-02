@@ -1,37 +1,39 @@
 import React from 'react';
-import { View, Image, TouchableHighlight, StyleSheet } from 'react-native';
+import { View, Image, TouchableHighlight, StyleSheet, Button } from 'react-native';
 
-const GameTargetsViews = (props) => {
+const GameTargetsViews = props => {
+  const { targets, selectedTarget, selectTarget } = props;
 
   return (
-    <View style={{ paddingTop: 20, flexDirection: 'row' }}>
-      {props.targets.map((target, i) => {
+    <View style={{ flexDirection: 'row' }}>
+      {targets.map((target, i) => {
         return (
           <TouchableHighlight
             style={
-              props.selectedTarget.name === target.name
+              selectedTarget.name === target[0].name
                 ? styles.active
                 : styles.inactive
             }
             key={i}
             onPress={() =>
-              props.selectTarget({
-                name: target.name,
-                latitude: target.coords[0],
-                longitude: target.coords[1],
+              selectTarget({
+                id: target[1],
+                name: target[0].name,
+                latitude: target[0].coords[0],
+                longitude: target[0].coords[1],
               })
             }
           >
             <Image
               style={{ width: 80, height: 80 }}
-              source={{ uri: target.image }}
+              source={{ uri: target[0].image }}
             />
           </TouchableHighlight>
         );
       })}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   active: {
@@ -50,6 +52,6 @@ const styles = StyleSheet.create({
     height: 80,
     paddingBottom: 30,
     marginLeft: 20,
-  }
-})
-export default GameTargetsViews
+  },
+});
+export default GameTargetsViews;
