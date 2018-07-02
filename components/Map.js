@@ -46,7 +46,15 @@ export default class Map extends Component {
       .ref(`/Games/${currentGameId}/players/${currentPlayerId}`)
       .once('value')
       .then(snap => snap.val());
-    this.setState({ targetStatus });
+    this.setState({
+      targetStatus: {
+        a: false,
+        b: true,
+        c: true,
+        d: true,
+        e: true,
+      },
+    });
 
     this.renderList();
   }
@@ -126,6 +134,7 @@ export default class Map extends Component {
   }
 
   async gameStatus() {
+    console.log('GAMESTATUS');
     //check for existence of winner field in game
     const { getParam } = this.props.navigation;
     let currentGameId = getParam('newGameId');
@@ -136,10 +145,13 @@ export default class Map extends Component {
         .ref(`/Games/${currentGameId}/`);
       // .once('value')
       // .then(snap => snap.val());
-      const winner = await currentGame.once('value').then(snap => snap.val());
+      const winner = await currentGame.once('value').then(snap => snap.val())
+        .winner;
+
       if (!winner) {
+        console.log('WINNERRRRR', winner);
         const vals = Object.values(this.state.targetStatus).every(val => val);
-        if (vals) this.gameOver(currentGame);
+        if (vals) this.gameOver(currentGameId);
       }
       return winner;
     } catch (error) {
@@ -147,9 +159,18 @@ export default class Map extends Component {
     }
   }
 
-  gameOver(currentGame) {
-    const { getParam } = this.props.navigation;
-    
+  async gameOver(currentGameId) {
+    const currentGame = await firebase
+      .database()
+      .ref(`/Games/${currentGameId}/`);
+    console.log('GAMEOVER', currentGame);
+    const game = await currentGame.once('value').then(snap => snap.val());
+    const playerId = this.props.navigation.getParam('currentPlayer');
+    console.log('PLAYERID+++', playerId);
+    console.log(
+      'SETTTTINGGG',
+      await currentGame.set({ ...game, winner: playerId })
+    );
   }
 
   async renderList() {
@@ -197,6 +218,7 @@ export default class Map extends Component {
 
     const playerId = this.props.navigation.getParam('currentPlayer');
     const gameId = this.props.navigation.getParam('newGameId');
+    this.gameStatus();
     return (
       <View style={{ flex: 1, position: 'relative' }}>
         <GameMap latitude={latitude} longitude={longitude} />
