@@ -25,6 +25,7 @@ export default class Map extends Component {
     this.selectTarget = this.selectTarget.bind(this);
     this.updateScore = this.updateScore.bind(this);
     this.getScores = this.getScores.bind(this);
+    this.checkTargetList = this.checkTargetList.bind(this);
   }
 
   componentDidMount() {
@@ -85,17 +86,28 @@ export default class Map extends Component {
     return color;
   }
 
+  async checkTargetList(gameId, playerId) {
+    let gameStatus = await firebase
+      .database()
+      .ref(`/Games/${gameId}/players/${playerId}`).once('value')
+      let statusArr = gameStatus.val()
+    console.log('THIS IS GAME STATUS=============', gameStatus);
+    console.log('THIS IS STAT ARR===========', statusArr)
+  }
+
   async updateScore() {
     const { getParam } = this.props.navigation;
     let currentGameId = getParam('newGameId');
     let currentPlayerId = getParam('currentPlayer');
     let selectedTarget = this.state.selectedTarget;
-    console.log('THIS IS THE CURRENT TARGET', selectedTarget.id);
+
     try {
       //find the current game for player
       let currentGame = await firebase
         .database()
         .ref(`/Games/${currentGameId}/players/${currentPlayerId}`);
+
+      this.checkTargetList(currentGameId, currentPlayerId);
 
       //Mark target as found
       currentGame.update({
@@ -109,7 +121,7 @@ export default class Map extends Component {
   async getScores() {
     //go into Games
     //match playerID to user
-    //Sort based on points
+    //Sort based on points`
   }
 
   gameStatus() {

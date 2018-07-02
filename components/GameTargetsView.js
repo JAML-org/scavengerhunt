@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, TouchableHighlight, StyleSheet } from 'react-native';
+import { View, Image, TouchableHighlight, StyleSheet, Button } from 'react-native';
 
 const GameTargetsViews = props => {
   const { targets, selectedTarget, selectTarget } = props;
@@ -7,7 +7,6 @@ const GameTargetsViews = props => {
   return (
     <View style={{ flexDirection: 'row' }}>
       {targets.map((target, i) => {
-        
         return (
           <TouchableHighlight
             style={
@@ -19,7 +18,7 @@ const GameTargetsViews = props => {
             onPress={() =>
               selectTarget({
                 id: target[1],
-                name: target.name,
+                name: target[0].name,
                 latitude: target[0].coords[0],
                 longitude: target[0].coords[1],
               })
