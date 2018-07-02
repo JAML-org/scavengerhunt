@@ -4,7 +4,8 @@ import * as firebase from 'firebase';
 import GameMap from './GameMap';
 import GameButton from './GameButton';
 import GameTargetsView from './GameTargetsView';
-import GameModal from './GameModal'
+import GameModal from './GameModal';
+import HotCold from './HotCold';
 
 export default class Map extends Component {
   constructor() {
@@ -16,7 +17,7 @@ export default class Map extends Component {
       selectedTarget: {},
       targets: [],
       modalTarget: true,
-      modalScore: false
+      modalScore: false,
     };
 
     this.inPerimeter = this.inPerimeter.bind(this);
@@ -24,7 +25,6 @@ export default class Map extends Component {
     this.selectTarget = this.selectTarget.bind(this);
     this.updateScore = this.updateScore.bind(this);
     this.getScores = this.getScores.bind(this);
-
   }
 
   componentDidMount() {
@@ -37,13 +37,12 @@ export default class Map extends Component {
     this.renderList();
   }
 
-
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID);
   }
 
   selectTarget(target) {
-    console.log(target)
+    // console.log('this is target!!', target)
     this.setState({ selectedTarget: target });
   }
 
@@ -70,16 +69,16 @@ export default class Map extends Component {
     let color;
 
     if (distance <= this.state.distance / 1000) {
-      color = 'red'
+      color = 'red';
       radarMessage = "you've found it";
       this.updateScore();
     }
     if (distance > 0.005 && distance <= 0.05) {
-      color = 'orange'
+      color = 'orange';
       radarMessage = 'warm';
     }
     if (distance > 0.05) {
-      color = 'blue'
+      color = 'blue';
       radarMessage = 'cold';
     }
     // this.setState({ proximity: color })
@@ -90,18 +89,24 @@ export default class Map extends Component {
     const { getParam } = this.props.navigation;
     let currentGameId = getParam('newGameId');
     let currentPlayerId = getParam('currentPlayer');
-
+    let selectedTarget = this.state.selectedTarget;
+    console.log('THIS IS THE CURRENT TARGET', selectedTarget.id);
     try {
       //find the current game
       let currentGame = await firebase
         .database()
-        .ref(`/Games/${currentGameId}/players/`);
+        .ref(`/Games/${currentGameId}/players/${currentPlayerId}`);
 
       //get previousScore
-      let previousScoreObj = await currentGame
+      let targetList = await currentGame
         .child(`${currentPlayerId}`)
         .once('value');
-        console.log('OBJECT THING! ====', previousScoreObj)
+      console.log('OBJECT THING! ====', targetList);
+
+      currentGame.update({
+        [+selectedTarget.id]: true,
+      });
+
       // let previousScore = await previousScoreObj.val();
 
       // //update Player's score
@@ -120,6 +125,10 @@ export default class Map extends Component {
     //Sort based on points
   }
 
+  gameStatus() {
+    //check for existence of winner field in game
+  }
+
   async renderList() {
     const { getParam } = this.props.navigation;
     const huntName = getParam('huntName', 'NO-HUNT');
@@ -136,10 +145,10 @@ export default class Map extends Component {
       const huntsVal = hunts.val();
       const locations = targets.val();
       const huntLocationArr = huntsVal[huntName].locations;
-      console.log('THE HUNTS!=====', huntLocationArr)
+
       for (let i = 0; i < huntLocationArr.length; i++) {
         let target = locations[+huntLocationArr[i]];
-        list.push(target);
+        list.push([target, huntLocationArr[i]]);
       }
     } catch (error) {
       console.error(error);
@@ -149,26 +158,61 @@ export default class Map extends Component {
     });
   }
 
-
   render() {
-
-    const { targets, selectedTarget, modalScore, modalTarget, latitude, longitude } = this.state;
+    const {
+      targets,
+      selectedTarget,
+      modalScore,
+      modalTarget,
+      latitude,
+      longitude,
+    } = this.state;
     return (
       <View style={{ flex: 1, position: 'relative' }}>
         <GameMap latitude={latitude} longitude={longitude} />
+        <HotCold
+          inPerimeter={this.inPerimeter}
+          latitude={latitude}
+          longitude={longitude}
+          selectedTarget={selectedTarget}
+        />
         <View style={styles.bottomView}>
           <View style={styles.buttonList}>
-            <GameButton iconName="target" buttonName="TARGETS"
-              onPress={() => this.setState({ modalTarget: !modalTarget })} />
-            <GameButton iconName="trophy" buttonName="SCORES"
-              onPress={() => this.setState({ modalScore: !modalScore })} />
+            <GameButton
+              iconName="target"
+              buttonName="TARGETS"
+              onPress={() => this.setState({ modalTarget: !modalTarget })}
+            />
+            <GameButton
+              iconName="trophy"
+              buttonName="SCORES"
+              onPress={() => this.setState({ modalScore: !modalScore })}
+            />
             {/* <GameButton iconName="radar" buttonName="RADAR" /> */}
           </View>
         </View>
-        <GameModal isOpen={modalTarget} onClosed={() => this.setState({ modalTarget: false })}>
-          <GameTargetsView targets={targets} selectedTarget={selectedTarget} selectTarget={this.selectTarget} />
+        <GameModal
+          isOpen={modalTarget}
+          onClosed={() =>
+            this.setState({
+              modalTarget: false,
+            })
+          }
+        >
+          <GameTargetsView
+            targets={targets}
+            selectedTarget={selectedTarget}
+            selectTarget={this.selectTarget}
+          />
         </GameModal>
-        <GameModal isOpen={modalScore} onClosed={() => this.setState({ modalScore: false })}>
+        <GameModal
+          isOpen={modalScore}
+          onClosed={() =>
+            this.setState({
+              modalScore: false,
+            })
+          }
+        >
           <Text>These are the scores.</Text>
         </GameModal>
       </View>

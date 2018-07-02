@@ -7,25 +7,27 @@ const GameTargetsViews = props => {
   return (
     <View style={{ flexDirection: 'row' }}>
       {targets.map((target, i) => {
+        
         return (
           <TouchableHighlight
             style={
-              selectedTarget.name === target.name
+              selectedTarget.name === target[0].name
                 ? styles.active
                 : styles.inactive
             }
             key={i}
             onPress={() =>
               selectTarget({
+                id: target[1],
                 name: target.name,
-                latitude: target.coords[0],
-                longitude: target.coords[1],
+                latitude: target[0].coords[0],
+                longitude: target[0].coords[1],
               })
             }
           >
             <Image
               style={{ width: 80, height: 80 }}
-              source={{ uri: target.image }}
+              source={{ uri: target[0].image }}
             />
           </TouchableHighlight>
         );
