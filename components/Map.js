@@ -143,14 +143,14 @@ export default class Map extends Component {
       const currentGame = await firebase
         .database()
         .ref(`/Games/${currentGameId}/`);
-      // .once('value')
-      // .then(snap => snap.val());
+
       const winner = await currentGame.once('value').then(snap => snap.val())
         .winner;
 
-      if (!winner) {
-        console.log('WINNERRRRR', winner);
-        const vals = Object.values(this.state.targetStatus).every(val => val);
+      if (!winner && Object.keys(this.state.targetStatus).length) {
+        const vals = Object.values(this.state.targetStatus).every(
+          val => val === true
+        );
         if (vals) this.gameOver(currentGameId);
       }
       return winner;
@@ -160,17 +160,22 @@ export default class Map extends Component {
   }
 
   async gameOver(currentGameId) {
+    const { navigate, getParam } = this.props.navigation;
     const currentGame = await firebase
       .database()
       .ref(`/Games/${currentGameId}/`);
-    console.log('GAMEOVER', currentGame);
+    const playerId = getParam('currentPlayer');
+
     const game = await currentGame.once('value').then(snap => snap.val());
-    const playerId = this.props.navigation.getParam('currentPlayer');
-    console.log('PLAYERID+++', playerId);
-    console.log(
-      'SETTTTINGGG',
-      await currentGame.set({ ...game, winner: playerId })
-    );
+    await currentGame.set({ ...game, winner: playerId });
+
+    const currentPlayer = await firebase
+      .database()
+      .ref(`/Users/${playerId}/Games/`);
+
+    await currentPlayer.update({ [currentGameId]: playerId });
+
+    navigate('Win', {playerId});
   }
 
   async renderList() {
@@ -240,7 +245,6 @@ export default class Map extends Component {
               buttonName="SCORES"
               onPress={() => this.setState({ modalScore: !modalScore })}
             />
-            {/* <GameButton iconName="radar" buttonName="RADAR" /> */}
           </View>
         </View>
         <GameModal
