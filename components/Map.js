@@ -89,7 +89,7 @@ export default class Map extends Component {
       this.updateScore();
     }
     if (distance > 0.005 && distance <= 0.05) {
-      color = '#8c41f4';
+      color = '#f45c42';
       //warm
     }
     if (distance > 0.05) {
