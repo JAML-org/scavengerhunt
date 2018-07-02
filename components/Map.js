@@ -25,8 +25,6 @@ export default class Map extends Component {
     this.renderList = this.renderList.bind(this);
     this.selectTarget = this.selectTarget.bind(this);
     this.updateScore = this.updateScore.bind(this);
-    // this.getScores = this.getScores.bind(this);
-    // this.checkTargetList = this.checkTargetList.bind(this);
   }
 
   componentDidMount() {
