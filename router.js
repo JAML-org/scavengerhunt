@@ -13,6 +13,7 @@ import Friends from './components/Friends';
 import MyHuntList from './components/MyHuntList';
 import Map from './components/Map';
 import InviteFriends from './components/InviteFriends';
+import Win from './components/Win'
 
 const UnLoggedInStack = createSwitchNavigator(
   {
@@ -44,6 +45,7 @@ export const LoggedInStack = createStackNavigator(
     PursuitList: { screen: PursuitList },
     HuntDetails: { screen: HuntDetails },
     InviteFriends: { screen: InviteFriends },
+    Win: { screen: Win },
   },
   {
     headerMode: 'none',

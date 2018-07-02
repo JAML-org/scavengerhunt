@@ -28,6 +28,8 @@ export default class Map extends Component {
     this.renderList = this.renderList.bind(this);
     this.selectTarget = this.selectTarget.bind(this);
     this.updateScore = this.updateScore.bind(this);
+    this.gameStatus = this.gameStatus.bind(this);
+    this.gameOver = this.gameOver.bind(this);
   }
 
   async componentDidMount() {
@@ -124,12 +126,49 @@ export default class Map extends Component {
     }
   }
 
-  gameStatus() {
+  async gameStatus() {
+    console.log('GAMESTATUS');
     //check for existence of winner field in game
+    const { getParam } = this.props.navigation;
+    let currentGameId = getParam('newGameId');
+
+    try {
+      const currentGame = await firebase
+        .database()
+        .ref(`/Games/${currentGameId}/`);
+
+      const winner = await currentGame.once('value').then(snap => snap.val())
+        .winner;
+
+      if (!winner && Object.keys(this.state.targetStatus).length) {
+        const vals = Object.values(this.state.targetStatus).every(
+          val => val === true
+        );
+        if (vals) this.gameOver(currentGameId);
+      }
+      return winner;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  gameOver() {
-    //Add winner to game and to all users in game
+  async gameOver(currentGameId) {
+    const { navigate, getParam } = this.props.navigation;
+    const currentGame = await firebase
+      .database()
+      .ref(`/Games/${currentGameId}/`);
+    const playerId = getParam('currentPlayer');
+
+    const game = await currentGame.once('value').then(snap => snap.val());
+    await currentGame.set({ ...game, winner: playerId });
+
+    const currentPlayer = await firebase
+      .database()
+      .ref(`/Users/${playerId}/Games/`);
+
+    await currentPlayer.update({ [currentGameId]: playerId });
+
+    navigate('Win', { playerId });
   }
 
   //COMMENT WHAT RENDER LIST DOES!!
@@ -176,9 +215,9 @@ export default class Map extends Component {
       longitude,
     } = this.state;
 
-
-    const playerId = this.props.navigation.getParam('currentPlayer')
-    const gameId = this.props.navigation.getParam('newGameId')
+    const playerId = this.props.navigation.getParam('currentPlayer');
+    const gameId = this.props.navigation.getParam('newGameId');
+    this.gameStatus();
     return (
       <View style={{ flex: 1, position: 'relative' }}>
         <GameMap latitude={latitude} longitude={longitude} />
@@ -201,7 +240,6 @@ export default class Map extends Component {
               buttonName="SCORES"
               onPress={() => this.setState({ modalScore: !modalScore })}
             />
-            {/* <GameButton iconName="radar" buttonName="RADAR" /> */}
           </View>
         </View>
         <GameModal

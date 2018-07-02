@@ -47,6 +47,7 @@ class HuntDetails extends React.Component {
       newGame.set({
         players: { [currentPlayer]: targets },
         theme: huntName,
+
       });
 
       //Route to currentUser games
