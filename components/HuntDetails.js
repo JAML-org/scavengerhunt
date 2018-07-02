@@ -39,6 +39,7 @@ class HuntDetails extends React.Component {
       let targets = Object.assign(
         ...huntLocationsID.map(target => ({ [target]: false }))
       );
+      //^ DO WE NEED TO OBJECT.ASSIGN HERE???
 
       //Generate newgame ID
       let newGame = await games.push();

@@ -4,6 +4,8 @@ import { View, ImageBackground } from 'react-native';
 import { Icon, Text, Divider } from 'react-native-elements';
 import * as firebase from 'firebase';
 
+//Abstract mapping of hunts into it's own component
+
 class PursuitList extends React.Component {
   constructor() {
     super();

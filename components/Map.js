@@ -8,6 +8,8 @@ import GameModal from './GameModal';
 import HotCold from './HotCold';
 import GameScores from './GameScores';
 
+//Default sensitivity of lat and long needs to be smallish
+
 export default class Map extends Component {
   constructor() {
     super();
@@ -60,10 +62,10 @@ export default class Map extends Component {
 
   //translates the distance btwn two coordinates from longitude/latitude to kilometers
   distanceInKM(point1, point2) {
-    let lat1 = point1.latitude;
-    let lon1 = point1.longitude;
-    let lat2 = point2.latitude;
-    let lon2 = point2.longitude;
+    let lat1 = point1[0];
+    let lon1 = point1[1];
+    let lat2 = point2[0];
+    let lon2 = point2[1];
 
     let p = 0.017453292519943295;
     let c = Math.cos;
@@ -75,26 +77,25 @@ export default class Map extends Component {
   }
 
   inPerimeter(userCoords, targetCoords) {
-    const distance = this.distanceInKM(userCoords, targetCoords);
-    console.log('THE CURRENT TARGET', targetCoords);
-    let radarMessage = '';
-    let color;
 
+    const distance = this.distanceInKM(userCoords, targetCoords);
+
+    let color = "#000"
+    console.log("DISTANCE", distance)
     if (distance <= this.state.distance / 1000) {
-      color = 'red';
-      radarMessage = "you've found it";
+      color = '#f44141';
+      //found it
 
       this.updateScore();
     }
     if (distance > 0.005 && distance <= 0.05) {
-      color = 'orange';
-      radarMessage = 'warm';
+      color = '#8c41f4';
+      //warm
     }
     if (distance > 0.05) {
-      color = 'blue';
-      radarMessage = 'cold';
+      color = '#426bf4';
+      //cold
     }
-    // this.setState({ proximity: color })
     return color;
   }
 
@@ -110,14 +111,12 @@ export default class Map extends Component {
         .database()
         .ref(`/Games/${currentGameId}/players/${currentPlayerId}`);
 
-      this.checkTargetList(currentGameId, currentPlayerId);
-
       //Mark target as found
       currentGame.update({
         [selectedTarget.id]: true,
       });
       this.setState({
-        targetStatus: {...this.state.targetStatus, [selectedTarget.id]: true},
+        targetStatus: { ...this.state.targetStatus, [selectedTarget.id]: true },
         selectedTarget: {}
       })
     } catch (error) {
@@ -133,6 +132,7 @@ export default class Map extends Component {
     //Add winner to game and to all users in game
   }
 
+  //COMMENT WHAT RENDER LIST DOES!!
   async renderList() {
     const { getParam } = this.props.navigation;
     const huntName = getParam('huntName', 'NO-HUNT');
@@ -184,6 +184,7 @@ export default class Map extends Component {
         <GameMap latitude={latitude} longitude={longitude} />
         <HotCold
           inPerimeter={this.inPerimeter}
+          distanceInKM={this.distanceInKM}
           latitude={latitude}
           longitude={longitude}
           selectedTarget={selectedTarget}
