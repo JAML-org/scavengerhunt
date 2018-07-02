@@ -14,9 +14,9 @@ export default class GameScores extends Component {
   async componentDidMount() {
     try {
       const scoresAndPlayers = await firebase.database().ref(`/Games/${this.props.gameId}/players`).once('value').then(snap => snap.val())
-      const playerNames = await Object.keys(scoresAndPlayers)
+      const playerIds = await Object.keys(scoresAndPlayers)
       const playerProfile = await firebase.database().ref(`/Users`).once('value').then(snap => snap.val())
-      const scoreBoard = playerNames.map(id => ({
+      const scoreBoard = playerIds.map(id => ({
         avatar: playerProfile[id].avatar,
         name: playerProfile[id].name,
         score: scoresAndPlayers[id].filter(s => s === true).length
