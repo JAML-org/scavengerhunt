@@ -89,10 +89,15 @@ export default class Map extends Component {
   async checkTargetList(gameId, playerId) {
     let gameStatus = await firebase
       .database()
-      .ref(`/Games/${gameId}/players/${playerId}`).once('value')
-      let statusArr = gameStatus.val()
-    console.log('THIS IS GAME STATUS=============', gameStatus);
-    console.log('THIS IS STAT ARR===========', statusArr)
+      .ref(`/Games/${gameId}/players/${playerId}`)
+      .once('value');
+    let statusArr = await gameStatus.val();
+
+    let trueCount = 0;
+    statusArr.forEach(val => {val ? trueCount++ : trueCount;}
+    );
+    
+    return trueCount;
   }
 
   async updateScore() {
@@ -120,12 +125,16 @@ export default class Map extends Component {
 
   async getScores() {
     //go into Games
-    //match playerID to user
+    //call checkTargetList()
     //Sort based on points`
   }
 
   gameStatus() {
     //check for existence of winner field in game
+  }
+
+  gameOver() {
+    //Add winner to game and to all users in game
   }
 
   async renderList() {
