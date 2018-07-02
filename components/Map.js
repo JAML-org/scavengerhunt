@@ -26,6 +26,8 @@ export default class Map extends Component {
     this.renderList = this.renderList.bind(this);
     this.selectTarget = this.selectTarget.bind(this);
     this.updateScore = this.updateScore.bind(this);
+    this.gameStatus = this.gameStatus.bind(this);
+    this.gameOver = this.gameOver.bind(this);
   }
 
   async componentDidMount() {
@@ -110,27 +112,44 @@ export default class Map extends Component {
         .database()
         .ref(`/Games/${currentGameId}/players/${currentPlayerId}`);
 
-      this.checkTargetList(currentGameId, currentPlayerId);
-
       //Mark target as found
       currentGame.update({
         [selectedTarget.id]: true,
       });
       this.setState({
-        targetStatus: {...this.state.targetStatus, [selectedTarget.id]: true},
-        selectedTarget: {}
-      })
+        targetStatus: { ...this.state.targetStatus, [selectedTarget.id]: true },
+        selectedTarget: {},
+      });
     } catch (error) {
       console.error(error);
     }
   }
 
-  gameStatus() {
+  async gameStatus() {
     //check for existence of winner field in game
+    const { getParam } = this.props.navigation;
+    let currentGameId = getParam('newGameId');
+
+    try {
+      const currentGame = await firebase
+        .database()
+        .ref(`/Games/${currentGameId}/`);
+      // .once('value')
+      // .then(snap => snap.val());
+      const winner = await currentGame.once('value').then(snap => snap.val());
+      if (!winner) {
+        const vals = Object.values(this.state.targetStatus).every(val => val);
+        if (vals) this.gameOver(currentGame);
+      }
+      return winner;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  gameOver() {
-    //Add winner to game and to all users in game
+  gameOver(currentGame) {
+    const { getParam } = this.props.navigation;
+    
   }
 
   async renderList() {
@@ -176,9 +195,8 @@ export default class Map extends Component {
       longitude,
     } = this.state;
 
-
-    const playerId = this.props.navigation.getParam('currentPlayer')
-    const gameId = this.props.navigation.getParam('newGameId')
+    const playerId = this.props.navigation.getParam('currentPlayer');
+    const gameId = this.props.navigation.getParam('newGameId');
     return (
       <View style={{ flex: 1, position: 'relative' }}>
         <GameMap latitude={latitude} longitude={longitude} />
