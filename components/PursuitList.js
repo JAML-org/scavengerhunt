@@ -52,7 +52,7 @@ class PursuitList extends React.Component {
                       navigate('HuntDetails', {
                         hunt: hunts[hunt],
                         huntName: hunt,
-                        huntLocationsID: hunts[hunt].locations,
+                        huntLocationsID: hunts[hunt].locations2,
                       })
                     }
                   />
