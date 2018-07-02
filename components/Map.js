@@ -6,6 +6,7 @@ import GameButton from './GameButton';
 import GameTargetsView from './GameTargetsView';
 import GameModal from './GameModal';
 import HotCold from './HotCold';
+import GameScores from './GameScores';
 
 export default class Map extends Component {
   constructor() {
@@ -24,8 +25,8 @@ export default class Map extends Component {
     this.renderList = this.renderList.bind(this);
     this.selectTarget = this.selectTarget.bind(this);
     this.updateScore = this.updateScore.bind(this);
-    this.getScores = this.getScores.bind(this);
-    this.checkTargetList = this.checkTargetList.bind(this);
+    // this.getScores = this.getScores.bind(this);
+    // this.checkTargetList = this.checkTargetList.bind(this);
   }
 
   componentDidMount() {
@@ -86,20 +87,6 @@ export default class Map extends Component {
     return color;
   }
 
-  async checkTargetList(gameId, playerId) {
-    let gameStatus = await firebase
-      .database()
-      .ref(`/Games/${gameId}/players/${playerId}`)
-      .once('value');
-    let statusArr = await gameStatus.val();
-
-    let trueCount = 0;
-    statusArr.forEach(val => {val ? trueCount++ : trueCount;}
-    );
-    
-    return trueCount;
-  }
-
   async updateScore() {
     const { getParam } = this.props.navigation;
     let currentGameId = getParam('newGameId');
@@ -121,12 +108,6 @@ export default class Map extends Component {
     } catch (error) {
       console.error(error);
     }
-  }
-
-  async getScores() {
-    //go into Games
-    //call checkTargetList()
-    //Sort based on points`
   }
 
   gameStatus() {
@@ -175,6 +156,8 @@ export default class Map extends Component {
       latitude,
       longitude,
     } = this.state;
+    const playerId = this.props.navigation.getParam('currentPlayer')
+    const gameId = this.props.navigation.getParam('newGameId')
     return (
       <View style={{ flex: 1, position: 'relative' }}>
         <GameMap latitude={latitude} longitude={longitude} />
@@ -221,7 +204,7 @@ export default class Map extends Component {
             })
           }
         >
-          <Text>These are the scores.</Text>
+          <GameScores gameId={gameId} playerId={playerId} />
         </GameModal>
       </View>
     );
