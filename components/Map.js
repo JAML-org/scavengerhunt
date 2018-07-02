@@ -1,60 +1,11 @@
 import React, { Component } from 'react';
-import { MapView } from 'expo';
-import Modal from 'react-native-modalbox';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Dimensions,
-  Image,
-  TouchableHighlight,
-  TouchableOpacity,
-} from 'react-native';
-import { Icon } from 'react-native-elements';
+import { View, Text, StyleSheet } from 'react-native';
 import * as firebase from 'firebase';
-
-const styles = StyleSheet.create({
-  bottomView: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    paddingBottom: 10,
-  },
-  buttonList: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
-  btn: {
-    backgroundColor: '#3B5998',
-    color: 'white',
-    padding: 10,
-  },
-  modal: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 150,
-  },
-  active: {
-    overflow: 'hidden',
-    borderRadius: 40,
-    width: 80,
-    height: 80,
-    paddingBottom: 30,
-    marginLeft: 20,
-    opacity: 0.5,
-  },
-  inactive: {
-    overflow: 'hidden',
-    borderRadius: 40,
-    width: 80,
-    height: 80,
-    paddingBottom: 30,
-    marginLeft: 20,
-  },
-});
+import GameMap from './GameMap';
+import GameButton from './GameButton';
+import GameTargetsView from './GameTargetsView';
+import GameModal from './GameModal';
+import HotCold from './HotCold';
 
 export default class Map extends Component {
   constructor() {
@@ -63,15 +14,18 @@ export default class Map extends Component {
       latitude: 0,
       longitude: 0,
       distance: 5,
-      selectedTarget: {}, // {name: '', latitude: , longitude: }
+      selectedTarget: {},
       targets: [],
-      isOpen: false,
+      modalTarget: true,
+      modalScore: false,
     };
+
     this.inPerimeter = this.inPerimeter.bind(this);
     this.renderList = this.renderList.bind(this);
     this.selectTarget = this.selectTarget.bind(this);
     this.updateScore = this.updateScore.bind(this);
     this.getScores = this.getScores.bind(this);
+    this.checkTargetList = this.checkTargetList.bind(this);
   }
 
   componentDidMount() {
@@ -89,6 +43,7 @@ export default class Map extends Component {
   }
 
   selectTarget(target) {
+    // console.log('this is target!!', target)
     this.setState({ selectedTarget: target });
   }
 
@@ -112,39 +67,56 @@ export default class Map extends Component {
     const distance = this.distanceInKM(userCoords, targetCoords);
 
     let radarMessage = '';
+    let color;
+
     if (distance <= this.state.distance / 1000) {
+      color = 'red';
       radarMessage = "you've found it";
       this.updateScore();
     }
     if (distance > 0.005 && distance <= 0.05) {
+      color = 'orange';
       radarMessage = 'warm';
     }
     if (distance > 0.05) {
+      color = 'blue';
       radarMessage = 'cold';
     }
-    return radarMessage;
+    // this.setState({ proximity: color })
+    return color;
+  }
+
+  async checkTargetList(gameId, playerId) {
+    let gameStatus = await firebase
+      .database()
+      .ref(`/Games/${gameId}/players/${playerId}`)
+      .once('value');
+    let statusArr = await gameStatus.val();
+
+    let trueCount = 0;
+    statusArr.forEach(val => {val ? trueCount++ : trueCount;}
+    );
+    
+    return trueCount;
   }
 
   async updateScore() {
     const { getParam } = this.props.navigation;
     let currentGameId = getParam('newGameId');
     let currentPlayerId = getParam('currentPlayer');
+    let selectedTarget = this.state.selectedTarget;
+
     try {
-      //find the current game
+      //find the current game for player
       let currentGame = await firebase
         .database()
-        .ref(`/Games/${currentGameId}/players/`);
+        .ref(`/Games/${currentGameId}/players/${currentPlayerId}`);
 
-      //get previousScore
-      let previousScoreObj = await currentGame
-        .child(`${currentPlayerId}`)
-        .once('value');
-      let previousScore = await previousScoreObj.val();
+      this.checkTargetList(currentGameId, currentPlayerId);
 
-      //update Player's score
-      let currentScore = previousScore + 10;
+      //Mark target as found
       currentGame.update({
-        [currentPlayerId]: currentScore,
+        [+selectedTarget.id]: true,
       });
     } catch (error) {
       console.error(error);
@@ -153,8 +125,16 @@ export default class Map extends Component {
 
   async getScores() {
     //go into Games
-    //match playerID to user
-    //Sort based on points
+    //call checkTargetList()
+    //Sort based on points`
+  }
+
+  gameStatus() {
+    //check for existence of winner field in game
+  }
+
+  gameOver() {
+    //Add winner to game and to all users in game
   }
 
   async renderList() {
@@ -176,7 +156,7 @@ export default class Map extends Component {
 
       for (let i = 0; i < huntLocationArr.length; i++) {
         let target = locations[+huntLocationArr[i]];
-        list.push(target);
+        list.push([target, huntLocationArr[i]]);
       }
     } catch (error) {
       console.error(error);
@@ -187,137 +167,78 @@ export default class Map extends Component {
   }
 
   render() {
-    let screen = Dimensions.get('window');
-    const { targets, isOpen } = this.state;
-    console.log('isOpen', isOpen);
-
+    const {
+      targets,
+      selectedTarget,
+      modalScore,
+      modalTarget,
+      latitude,
+      longitude,
+    } = this.state;
     return (
       <View style={{ flex: 1, position: 'relative' }}>
-        <MapView
-          style={{ flex: 1 }}
-          initialRegion={{
-            latitude: 40.705076,
-            longitude: -74.00916,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        >
-          <MapView.Marker
-            pinColor="#000000"
-            coordinate={{
-              latitude: this.state.latitude,
-              longitude: this.state.longitude,
-            }}
-          />
-        </MapView>
+        <GameMap latitude={latitude} longitude={longitude} />
+        <HotCold
+          inPerimeter={this.inPerimeter}
+          latitude={latitude}
+          longitude={longitude}
+          selectedTarget={selectedTarget}
+        />
         <View style={styles.bottomView}>
           <View style={styles.buttonList}>
-            <View>
-              <Icon
-                name="target"
-                color="black"
-                reverse
-                type="material-community"
-                onPress={() => this.refs.targets.open()}
-                style={styles.btn}
-              />
-              <Text>TARGETS</Text>
-            </View>
-            <View>
-              <Icon
-                name="trophy"
-                color="black"
-                reverse
-                type="material-community"
-                onPress={() => this.refs.scores.open()}
-                style={styles.btn}
-              />
-              <Text>SCORES</Text>
-            </View>
-            <View>
-              <Icon
-                name="radar"
-                color="black"
-                reverse
-                type="material-community"
-                onPress={() => { this.refs.radar.open() }}
-                style={styles.btn}
-              />
-              <Text>RADAR</Text>
-            </View>
+            <GameButton
+              iconName="target"
+              buttonName="TARGETS"
+              onPress={() => this.setState({ modalTarget: !modalTarget })}
+            />
+            <GameButton
+              iconName="trophy"
+              buttonName="SCORES"
+              onPress={() => this.setState({ modalScore: !modalScore })}
+            />
+            {/* <GameButton iconName="radar" buttonName="RADAR" /> */}
           </View>
         </View>
-        <Modal
-          style={styles.modal}
-          position={'bottom'}
-          ref={'targets'}
-          swipeArea={20}
-          isOpen={true}
+        <GameModal
+          isOpen={modalTarget}
+          onClosed={() =>
+            this.setState({
+              modalTarget: false,
+            })
+          }
         >
-          <ScrollView horizontal={true} style={{ width: screen.width }}>
-            <View style={{ paddingTop: 20, flexDirection: 'row' }}>
-              {targets.map((target, i) => {
-                return (
-                  <TouchableHighlight
-                    style={
-                      this.state.selectedTarget.name === target.name
-                        ? styles.active
-                        : styles.inactive
-                    }
-                    key={i}
-                    onPress={() =>
-                      this.selectTarget({
-                        name: target.name,
-                        latitude: target.coords[0],
-                        longitude: target.coords[1],
-                      })
-                    }
-                  >
-                    <Image
-                      style={{ width: 80, height: 80 }}
-                      source={{ uri: target.image }}
-                    />
-                  </TouchableHighlight>
-                );
-              })}
-            </View>
-          </ScrollView>
-        </Modal>
-        <Modal
-          style={styles.modal}
-          position={'bottom'}
-          ref={'scores'}
-          swipeArea={20}
+          <GameTargetsView
+            targets={targets}
+            selectedTarget={selectedTarget}
+            selectTarget={this.selectTarget}
+          />
+        </GameModal>
+        <GameModal
+          isOpen={modalScore}
+          onClosed={() =>
+            this.setState({
+              modalScore: false,
+            })
+          }
         >
-          <ScrollView>
-            <View style={{ width: screen.width, paddingLeft: 10 }}>
-              <Text>These are the scores.</Text>
-            </View>
-          </ScrollView>
-        </Modal>
-
-        <Modal
-          style={styles.modal}
-          position={'bottom'}
-          ref={'radar'}
-          swipeArea={20}
-          onOpened={() => this.setState({ isOpen: true })}
-          onClosed={() => this.setState({ isOpen: false })}
-        >
-          <View style={{ width: screen.width, paddingLeft: 10 }}>
-            <Text>
-              {this.inPerimeter(
-                {
-                  latitude: this.state.latitude,
-                  longitude: this.state.longitude,
-                },
-                this.state.selectedTarget
-              )
-              }
-            </Text>
-          </View>
-        </Modal>
+          <Text>These are the scores.</Text>
+        </GameModal>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  bottomView: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    paddingBottom: 10,
+  },
+  buttonList: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+});

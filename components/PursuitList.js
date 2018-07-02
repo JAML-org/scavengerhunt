@@ -36,7 +36,7 @@ class PursuitList extends React.Component {
           <View style={styles.listContainer}>
             <View style={{ width: '100%', height: '25%' }}>
               <Text h4 style={styles.header}>
-                Choose a Theme
+                Choose a Pursuit
               </Text>
               <Divider />
             </View>
