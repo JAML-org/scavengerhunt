@@ -19,7 +19,7 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-
+console.disableYellowBox = true;
 const App = () => <RootStack />;
 
 export default App;
