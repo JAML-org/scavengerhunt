@@ -1,8 +1,16 @@
 import React from 'react';
-import { View, Image, TouchableHighlight, StyleSheet, Button } from 'react-native';
+import {
+  View,
+  Image,
+  TouchableHighlight,
+  StyleSheet,
+  Button,
+} from 'react-native';
+import { Icon } from 'react-native-elements';
+import { colors } from './style';
 
 const GameTargetsViews = props => {
-  const { targets, selectedTarget, selectTarget } = props;
+  const { targets, selectedTarget, selectTarget, targetStatus } = props;
 
   return (
     <View style={{ flexDirection: 'row' }}>
@@ -10,24 +18,32 @@ const GameTargetsViews = props => {
         return (
           <TouchableHighlight
             style={
-              selectedTarget.name === target[0].name
+              selectedTarget.name === target.name
                 ? styles.active
                 : styles.inactive
             }
             key={i}
-            onPress={() =>
-              selectTarget({
-                id: target[1],
-                name: target[0].name,
-                latitude: target[0].coords[0],
-                longitude: target[0].coords[1],
-              })
-            }
+            onPress={() => {
+              // console.log(target)
+              return (
+                !targetStatus[target.id] &&
+                selectTarget({
+                  id: target.id,
+                  name: target.name,
+                  latitude: target.coords[0],
+                  longitude: target.coords[1],
+                })
+              );
+            }}
           >
-            <Image
-              style={{ width: 80, height: 80 }}
-              source={{ uri: target[0].image }}
-            />
+            {targetStatus[target.id] ? (
+              <Icon name="check" reverse color={colors.mediumblue} size={30} />
+            ) : (
+              <Image
+                style={{ width: 80, height: 80 }}
+                source={{ uri: target.image }}
+              />
+            )}
           </TouchableHighlight>
         );
       })}

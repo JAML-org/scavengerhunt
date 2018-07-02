@@ -19,6 +19,7 @@ export default class Map extends Component {
       targets: [],
       modalTarget: true,
       modalScore: false,
+      targetStatus: {},
     };
 
     this.inPerimeter = this.inPerimeter.bind(this);
@@ -27,13 +28,24 @@ export default class Map extends Component {
     this.updateScore = this.updateScore.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const { getParam } = this.props.navigation;
+    let currentGameId = getParam('newGameId');
+    let currentPlayerId = getParam('currentPlayer');
     this.watchID = navigator.geolocation.watchPosition(position => {
       this.setState({
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
       });
     });
+
+    let targetStatus = await firebase
+      .database()
+      .ref(`/Games/${currentGameId}/players/${currentPlayerId}`)
+      .once('value')
+      .then(snap => snap.val());
+    this.setState({ targetStatus });
+
     this.renderList();
   }
 
@@ -64,13 +76,14 @@ export default class Map extends Component {
 
   inPerimeter(userCoords, targetCoords) {
     const distance = this.distanceInKM(userCoords, targetCoords);
-
+    console.log('THE CURRENT TARGET', targetCoords);
     let radarMessage = '';
     let color;
 
     if (distance <= this.state.distance / 1000) {
       color = 'red';
       radarMessage = "you've found it";
+
       this.updateScore();
     }
     if (distance > 0.005 && distance <= 0.05) {
@@ -101,8 +114,12 @@ export default class Map extends Component {
 
       //Mark target as found
       currentGame.update({
-        [+selectedTarget.id]: true,
+        [selectedTarget.id]: true,
       });
+      this.setState({
+        targetStatus: {...this.state.targetStatus, [selectedTarget.id]: true},
+        selectedTarget: {}
+      })
     } catch (error) {
       console.error(error);
     }
@@ -121,21 +138,25 @@ export default class Map extends Component {
     const huntName = getParam('huntName', 'NO-HUNT');
     let list = [];
     try {
-      const hunts = await firebase
+      const huntsVal = await firebase
         .database()
         .ref('/Hunts')
-        .once('value');
-      const targets = await firebase
+        .once('value')
+        .then(snap => snap.val());
+      const locations = await firebase
         .database()
-        .ref('/Locations')
-        .once('value');
-      const huntsVal = hunts.val();
-      const locations = targets.val();
-      const huntLocationArr = huntsVal[huntName].locations;
+        .ref('/Locations2')
+        .once('value')
+        .then(snap => snap.val());
+
+      const huntLocationArr = huntsVal[huntName].locations2;
 
       for (let i = 0; i < huntLocationArr.length; i++) {
-        let target = locations[+huntLocationArr[i]];
-        list.push([target, huntLocationArr[i]]);
+        let target = {
+          ...locations[huntLocationArr[i]],
+          id: huntLocationArr[i],
+        };
+        list.push(target);
       }
     } catch (error) {
       console.error(error);
@@ -154,6 +175,8 @@ export default class Map extends Component {
       latitude,
       longitude,
     } = this.state;
+
+
     const playerId = this.props.navigation.getParam('currentPlayer')
     const gameId = this.props.navigation.getParam('newGameId')
     return (
@@ -192,6 +215,7 @@ export default class Map extends Component {
             targets={targets}
             selectedTarget={selectedTarget}
             selectTarget={this.selectTarget}
+            targetStatus={this.state.targetStatus}
           />
         </GameModal>
         <GameModal

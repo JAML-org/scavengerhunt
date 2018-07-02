@@ -75,7 +75,7 @@ class HuntDetails extends React.Component {
     const { getParam } = this.props.navigation;
     const huntLocationsID = getParam('huntLocationsID', 'NO-HUNT-LOCATION-ID');
     try {
-      let response = await firebase.database().ref('/Locations');
+      let response = await firebase.database().ref('/Locations2');
       let snapshot = await response.once('value');
 
       this.setState({
