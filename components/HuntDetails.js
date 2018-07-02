@@ -31,7 +31,8 @@ class HuntDetails extends React.Component {
       const huntLocationsID = getParam('huntLocationsID');
 
       //Get signed in user
-      let currentPlayer = await firebase.auth().currentUser.uid;
+      // let currentPlayer = await firebase.auth().currentUser.uid;
+      let currentPlayer = '0Uu98KnCIrUNCqJUdn0Fl8ZegYS2';
       //Route to Games in Firebase
       let games = await firebase.database().ref('/Games');
 
@@ -46,6 +47,7 @@ class HuntDetails extends React.Component {
       newGame.set({
         players: { [currentPlayer]: targets },
         theme: huntName,
+
       });
 
       //Route to currentUser games
