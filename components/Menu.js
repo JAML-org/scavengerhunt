@@ -15,6 +15,10 @@ import InviteFriends from './InviteFriends';
 import Win from './Win'
 import { colors } from './style';
 
+const Hidden = () => {
+  return null
+}
+
 const Menu = createDrawerNavigator(
   {
     Main: { screen: Main },
@@ -24,12 +28,33 @@ const Menu = createDrawerNavigator(
     JoinHunt: { screen: JoinHunt },
     Friends: { screen: Friends },
     HowToPlay: { screen: HowToPlay },
-    Map: { screen: Map },
-    HuntDetails: { screen: HuntDetails },
-    InviteFriends: { screen: InviteFriends },
-    Win: { screen: Win}
+    Map: {
+      screen: Map,
+      navigationOptions: {
+        drawerLabel: <Hidden />
+      }
+    },
+    HuntDetails: {
+      screen: HuntDetails,
+      navigationOptions: {
+        drawerLabel: <Hidden />
+      }
+    },
+    InviteFriends: {
+      screen: InviteFriends,
+      navigationOptions: {
+        drawerLabel: <Hidden />
+      }
+    },
+    Win: {
+      screen: Win,
+      navigationOptions: {
+        drawerLabel: <Hidden />
+      }
+    }
   },
-  {
+  { // maybe use
+    // contentComponent: MyCustomDrawerItems
     drawerWidth: 300,
     drawerPosition: 'left',
     initialRouteName: 'Main',
