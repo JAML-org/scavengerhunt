@@ -90,6 +90,12 @@ const styles = StyleSheet.create({
   },
   blurbText: {
     fontSize: 15
+  },
+  win: {
+    flex:1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 

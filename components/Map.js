@@ -23,7 +23,7 @@ export default class Map extends Component {
       modalTarget: true,
       modalScore: false,
       targetStatus: {},
-      appReady: false
+      appReady: false,
     };
 
     this.inPerimeter = this.inPerimeter.bind(this);
@@ -51,7 +51,7 @@ export default class Map extends Component {
       .once('value')
       .then(snap => snap.val());
     this.setState({
-      targetStatus: { a: false, b: true, c: true, d: true, e: true },
+      targetStatus,
     });
 
     this.renderList();
@@ -180,7 +180,7 @@ export default class Map extends Component {
       .ref(`/Users/${playerId}`)
       .once('value')
       .then(snap => snap.val());
-    console.log('THIS IS THE PLAYER', player)
+    console.log('THIS IS THE PLAYER', player);
     navigate('Win', { player });
   }
 
@@ -231,13 +231,11 @@ export default class Map extends Component {
     const playerId = this.props.navigation.getParam('currentPlayer');
     const gameId = this.props.navigation.getParam('newGameId');
     this.gameStatus();
-    return (
-      !this.state.appReady 
-      ? 
-      <View style={styles.loadingScreen}> 
-        <Bubbles size={15} color="#FFF" /> 
-      </View> 
-      :
+    return !this.state.appReady ? (
+      <View style={styles.loadingScreen}>
+        <Bubbles size={15} color="#FFF" />
+      </View>
+    ) : (
       <View style={{ flex: 1, position: 'relative' }}>
         <GameMap latitude={latitude} longitude={longitude} />
         <HotCold
@@ -309,5 +307,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#9ffae4',
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
 });

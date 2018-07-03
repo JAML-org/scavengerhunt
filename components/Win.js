@@ -13,38 +13,34 @@ import * as firebase from 'firebase';
 const Win = props => {
   const { navigate, getParam } = props.navigation;
 
-  // const player = getParam('player');
-  const player = {
-    name: 'Angel',
-    username: 'Enju',
-    avatar:
-      'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/46.png https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/46.png',
-  };
-  console.log(player);
+  const player = getParam('player');
+
   return (
     <ImageBackground
       source={require('../urban-pursuit-leaf-bg.jpg')}
       style={styles.bgImage}
     >
       <View style={styles.container}>
-        <Icon
-          name="crown"
-          type="foundation"
-          color={colors.mediumblue}
-          size={80}
-        />
-        <Avatar xlarge rounded source={{ uri: player.avatar }} />
-        <Text h3>Winner is</Text>
-        <Text h1 style={styles.header}>
-          {player.name}
-        </Text>
-        <Text>({player.username})</Text>
-        <TouchableOpacity
-          style={[styles.btn, mainStyling.row]}
-          onPress={() => navigate('PursuitList')}
-        >
-          <Text style={styles.btnText}>PLAY AGAIN</Text>
-        </TouchableOpacity>
+        <View style={styles.win}>
+          <Icon
+            name="crown"
+            type="foundation"
+            color={colors.mediumblue}
+            size={80}
+          />
+          <Avatar xlarge rounded source={{ uri: player.avatar }} />
+          <Text h3>Winner is</Text>
+          <Text h1 style={styles.header}>
+            {player.name}
+          </Text>
+          <Text>({player.username})</Text>
+          <TouchableOpacity
+            style={[styles.btn, mainStyling.row]}
+            onPress={() => navigate('PursuitList')}
+          >
+            <Text style={styles.btnText}>PLAY AGAIN</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </ImageBackground>
   );
