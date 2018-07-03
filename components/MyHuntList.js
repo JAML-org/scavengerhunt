@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, ImageBackground, ScrollView } from 'react-native';
-import { Icon, Divider, Text, List } from 'react-native-elements'
+import { Icon, Divider, Text, List, ListItem } from 'react-native-elements'
 import styles from './style';
 
 const dummyData = [
-  { id: 7, icon: "filmstrip", name: "Film Locations", huntNo: 1 },
-  { id: 2, icon: "food-variant", name: "Famous Eats", huntNo: 2 },
-  { id: 3, icon: "guitar-electric", name: "Music", huntNo: 3 },
-  { id: 3, icon: "guitar-electric", name: "Music", huntNo: 4 },
+  { id: 7, icon: "filmstrip", name: "Film Locations", pursuitNo: "pursuit 1" },
+  { id: 2, icon: "food-variant", name: "Famous Eats", pursuitNo: "pursuit 2" },
+  { id: 3, icon: "guitar-electric", name: "Music", pursuitNo: "pursuit 3" },
+  { id: 3, icon: "guitar-electric", name: "Music", pursuitNo: "pursuit 4" },
 ]
 
 const dummyStyling = StyleSheet.create({
@@ -42,34 +42,29 @@ export default class MyHuntList extends Component {
         style={styles.bgImage}
       >
         <View style={dummyStyling.container}>
-          <View style={dummyStyling.listContainer}>
-            <View style={{ width: '100%', height: '25%' }}>
-              <Text h4 style={styles.header}>
-                Continue A Pursuit
+          <View style={{ width: '100%', height: '25%' }}>
+            <Text h4 style={styles.header}>
+              Continue A Pursuit
               </Text>
-              <Divider />
-            </View>
-            <ScrollView>
+          </View>
+          <Divider />
+          <ScrollView style={styles.container3}>
+            <List>
               {
                 dummyData.map(dummy => {
                   return (
-                    <List key={dummy.id}>
-                      <Icon
-                        raised
-                        size={40}
-                        name={dummy.icon}
-                        type="material-community"
-                        style={styles.btn}
-                      />
-                      <Text style={styles.textCenter}>{dummy.name}</Text>
-                      <Text>Pursuit Number: {dummy.huntNo}</Text>
-                    </List>
+                    <ListItem
+                      key={dummy.pursuitNo}
+                      title={dummy.name}
+                      subtitle={dummy.pursuitNo}
+                      leftIcon={{ name: dummy.icon, type: "material-community" }}
+                    />
                   )
                 }
                 )
               }
-            </ScrollView>
-          </View>
+            </List>
+          </ScrollView>
         </View>
       </ImageBackground>
     );
