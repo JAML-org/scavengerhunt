@@ -1,26 +1,19 @@
 import React, { Component } from 'react';
 import { Text, Divider } from 'react-native-elements';
 import FriendsList from './FriendsList';
-import { StyleSheet, View, ImageBackground } from 'react-native';
-import styles from './style';
+import { StyleSheet, View, ImageBackground, ScrollView } from 'react-native';
+import stylesFromJs from './style';
 
 export default class Friends extends Component {
-  constructor() {
-    super();
-    this.state = {
-      searchedFriend: '',
-      selectedFriend: [],
-    };
-  }
 
   render() {
     return (
       <ImageBackground
         source={require('../urban-pursuit-leaf-bg.jpg')}
-        style={styles.bgImage}
+        style={stylesFromJs.bgImage}
       >
         <View style={styles.container}>
-          <Text h4>Add Friends</Text>
+          <Text h4>Friends</Text>
           <Divider />
           <FriendsList />
         </View>
@@ -28,3 +21,13 @@ export default class Friends extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingTop: 15,
+    paddingBottom: 15
+  },
+})
