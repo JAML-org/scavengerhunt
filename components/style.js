@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   blurbText: {
-    fontSize: 15
+    fontSize: 18
   },
   win: {
     flex:1,

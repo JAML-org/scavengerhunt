@@ -2,7 +2,6 @@ import React from 'react';
 import styles, { colors } from './style';
 import {
   View,
-  Button,
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
@@ -11,7 +10,7 @@ import { Text } from 'react-native-elements';
 import { MapView } from 'expo';
 import * as firebase from 'firebase';
 import { Bubbles } from 'react-native-loader';
-// import * as mapStyle from './mapStyle.json';
+
 
 class HuntDetails extends React.Component {
   constructor() {
