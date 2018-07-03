@@ -75,10 +75,10 @@ export default class JoinHunt extends Component {
                 ))}
               </List>
             ) : (
-              <Text h4 style={{ color: 'white' }}>
-                Sorry no Invites
+                <Text h4 style={{ color: 'white' }}>
+                  Sorry no Invites
               </Text>
-            )}
+              )}
           </View>
           <View style={styling.buttonList}>
             <View>
