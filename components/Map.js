@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { Bubbles } from 'react-native-loader';
 import * as firebase from 'firebase';
 import GameMap from './GameMap';
 import GameButton from './GameButton';
@@ -22,6 +23,7 @@ export default class Map extends Component {
       modalTarget: true,
       modalScore: false,
       targetStatus: {},
+      appReady: false
     };
 
     this.inPerimeter = this.inPerimeter.bind(this);
@@ -53,6 +55,12 @@ export default class Map extends Component {
     });
 
     this.renderList();
+
+    setTimeout(() => {
+      this.setState({
+        appReady: true,
+      });
+    }, 3000);
   }
 
   componentWillUnmount() {
@@ -224,6 +232,12 @@ export default class Map extends Component {
     const gameId = this.props.navigation.getParam('newGameId');
     this.gameStatus();
     return (
+      !this.state.appReady 
+      ? 
+      <View style={styles.loadingScreen}> 
+        <Bubbles size={15} color="#FFF" /> 
+      </View> 
+      :
       <View style={{ flex: 1, position: 'relative' }}>
         <GameMap latitude={latitude} longitude={longitude} />
         <HotCold
@@ -290,4 +304,10 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
   },
+  loadingScreen: {
+    flex: 1,
+    backgroundColor: '#9ffae4',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });
