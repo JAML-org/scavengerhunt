@@ -10,8 +10,8 @@ const GameMap = (props) => {
       initialRegion={{
         latitude: 40.705076,
         longitude: -74.00916,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
+        latitudeDelta: 0.0422,
+        longitudeDelta: 0.0221,
       }}
     >
       <MapView.Marker

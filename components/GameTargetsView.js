@@ -1,37 +1,55 @@
 import React from 'react';
-import { View, Image, TouchableHighlight, StyleSheet } from 'react-native';
+import {
+  View,
+  Image,
+  TouchableHighlight,
+  StyleSheet,
+  Button,
+} from 'react-native';
+import { Icon } from 'react-native-elements';
+import { colors } from './style';
 
-const GameTargetsViews = (props) => {
+const GameTargetsViews = props => {
+  const { targets, selectedTarget, selectTarget, targetStatus } = props;
 
   return (
-    <View style={{ paddingTop: 20, flexDirection: 'row' }}>
-      {props.targets.map((target, i) => {
+    <View style={{ flexDirection: 'row' }}>
+      {targets.map((target, i) => {
         return (
           <TouchableHighlight
             style={
-              props.selectedTarget.name === target.name
+              selectedTarget.name === target.name
                 ? styles.active
                 : styles.inactive
             }
             key={i}
-            onPress={() =>
-              props.selectTarget({
-                name: target.name,
-                latitude: target.coords[0],
-                longitude: target.coords[1],
-              })
-            }
+            onPress={() => {
+              // console.log(target)
+              return (
+                !targetStatus[target.id] &&
+                selectTarget({
+                  id: target.id,
+                  name: target.name,
+                  latitude: target.coords[0],
+                  longitude: target.coords[1],
+                })
+              );
+            }}
           >
-            <Image
-              style={{ width: 80, height: 80 }}
-              source={{ uri: target.image }}
-            />
+            {targetStatus[target.id] ? (
+              <Icon name="check" reverse color={colors.mediumblue} size={30} />
+            ) : (
+              <Image
+                style={{ width: 80, height: 80 }}
+                source={{ uri: target.image }}
+              />
+            )}
           </TouchableHighlight>
         );
       })}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   active: {
@@ -50,6 +68,6 @@ const styles = StyleSheet.create({
     height: 80,
     paddingBottom: 30,
     marginLeft: 20,
-  }
-})
-export default GameTargetsViews
+  },
+});
+export default GameTargetsViews;

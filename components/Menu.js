@@ -9,23 +9,25 @@ import Main from './Main';
 import Friends from './Friends';
 import MyHuntList from './MyHuntList';
 import Map from './Map';
-import { Image } from 'react-native';
+import { View, Image } from 'react-native';
 import { Icon, Header } from 'react-native-elements';
 import InviteFriends from './InviteFriends';
+import Win from './Win'
 import { colors } from './style';
 
 const Menu = createDrawerNavigator(
   {
     Main: { screen: Main },
     Profile: { screen: Profile },
+    PursuitList: { screen: PursuitList },
     MyHuntList: { screen: MyHuntList },
     JoinHunt: { screen: JoinHunt },
     Friends: { screen: Friends },
     HowToPlay: { screen: HowToPlay },
     Map: { screen: Map },
-    PursuitList: { screen: PursuitList },
     HuntDetails: { screen: HuntDetails },
     InviteFriends: { screen: InviteFriends },
+    Win: { screen: Win}
   },
   {
     drawerWidth: 300,
@@ -43,22 +45,37 @@ const MenuContainer = () => {
         leftComponent={
           <Icon
             name="menu"
+            size={32}
             onPress={() => {
               pressMenu.dispatch(DrawerActions.toggleDrawer());
             }}
           />
         }
         centerComponent={
-          <Image
-            source={require('../urban-pursuit-logo.jpg')}
+          <View
             style={{
               flex: 1,
-              width: 150,
-              height: 100,
-              resizeMode: Image.resizeMode.contain,
+              alignItems: 'flex-end',
             }}
-          />
+          >
+            <Image
+              source={require('../urban-pursuit-logo.jpg')}
+              style={{
+                // alignItems: 'flex-end',
+                width: 150,
+                height: 100,
+                resizeMode: Image.resizeMode.contain,
+              }}
+            />
+          </View>
         }
+        outerContainerStyles={{
+          height: 100,
+        }}
+        innerContainerStyles={{
+          // justifyContent: 'center',
+          alignItems: 'flex-end',
+        }}
       />
       <Menu
         ref={navigatorRef => {

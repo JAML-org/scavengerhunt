@@ -4,6 +4,8 @@ import { View, ImageBackground } from 'react-native';
 import { Icon, Text, Divider } from 'react-native-elements';
 import * as firebase from 'firebase';
 
+//Abstract mapping of hunts into it's own component
+
 class PursuitList extends React.Component {
   constructor() {
     super();
@@ -36,7 +38,7 @@ class PursuitList extends React.Component {
           <View style={styles.listContainer}>
             <View style={{ width: '100%', height: '25%' }}>
               <Text h4 style={styles.header}>
-                Choose a Theme
+                Choose a Pursuit
               </Text>
               <Divider />
             </View>
@@ -52,7 +54,7 @@ class PursuitList extends React.Component {
                       navigate('HuntDetails', {
                         hunt: hunts[hunt],
                         huntName: hunt,
-                        huntLocationsID: hunts[hunt].locations,
+                        huntLocationsID: hunts[hunt].locations2,
                       })
                     }
                   />

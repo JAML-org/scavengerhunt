@@ -4,7 +4,11 @@ import * as firebase from 'firebase';
 import GameMap from './GameMap';
 import GameButton from './GameButton';
 import GameTargetsView from './GameTargetsView';
-import GameModal from './GameModal'
+import GameModal from './GameModal';
+import HotCold from './HotCold';
+import GameScores from './GameScores';
+
+//Default sensitivity of lat and long needs to be smallish
 
 export default class Map extends Component {
   constructor() {
@@ -15,43 +19,55 @@ export default class Map extends Component {
       distance: 5,
       selectedTarget: {},
       targets: [],
-      modalT: true,
-      modalS: false
+      modalTarget: true,
+      modalScore: false,
+      targetStatus: {},
     };
 
     this.inPerimeter = this.inPerimeter.bind(this);
     this.renderList = this.renderList.bind(this);
     this.selectTarget = this.selectTarget.bind(this);
     this.updateScore = this.updateScore.bind(this);
-    this.getScores = this.getScores.bind(this);
-
+    this.gameStatus = this.gameStatus.bind(this);
+    this.gameOver = this.gameOver.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const { getParam } = this.props.navigation;
+    let currentGameId = getParam('newGameId');
+    let currentPlayerId = getParam('currentPlayer');
     this.watchID = navigator.geolocation.watchPosition(position => {
       this.setState({
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
       });
     });
+
+    let targetStatus = await firebase
+      .database()
+      .ref(`/Games/${currentGameId}/players/${currentPlayerId}`)
+      .once('value')
+      .then(snap => snap.val());
+    this.setState({ targetStatus });
+
     this.renderList();
   }
-
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID);
   }
 
   selectTarget(target) {
+    // console.log('this is target!!', target)
     this.setState({ selectedTarget: target });
   }
 
   //translates the distance btwn two coordinates from longitude/latitude to kilometers
   distanceInKM(point1, point2) {
-    let lat1 = point1.latitude;
-    let lon1 = point1.longitude;
-    let lat2 = point2.latitude;
-    let lon2 = point2.longitude;
+    let lat1 = point1[0];
+    let lon1 = point1[1];
+    let lat2 = point2[0];
+    let lon2 = point2[1];
 
     let p = 0.017453292519943295;
     let c = Math.cos;
@@ -63,25 +79,25 @@ export default class Map extends Component {
   }
 
   inPerimeter(userCoords, targetCoords) {
+
     const distance = this.distanceInKM(userCoords, targetCoords);
 
-    let radarMessage = '';
-    let color;
-
+    let color = "#000"
+    console.log("DISTANCE", distance)
     if (distance <= this.state.distance / 1000) {
-      color = 'red'
-      radarMessage = "you've found it";
+      color = '#f44141';
+      //found it
+
       this.updateScore();
     }
     if (distance > 0.005 && distance <= 0.05) {
-      color = 'orange'
-      radarMessage = 'warm';
+      color = '#f45c42';
+      //warm
     }
     if (distance > 0.05) {
-      color = 'blue'
-      radarMessage = 'cold';
+      color = '#426bf4';
+      //cold
     }
-    // this.setState({ proximity: color })
     return color;
   }
 
@@ -89,53 +105,96 @@ export default class Map extends Component {
     const { getParam } = this.props.navigation;
     let currentGameId = getParam('newGameId');
     let currentPlayerId = getParam('currentPlayer');
+    let selectedTarget = this.state.selectedTarget;
+
     try {
-      //find the current game
+      //find the current game for player
       let currentGame = await firebase
         .database()
-        .ref(`/Games/${currentGameId}/players/`);
+        .ref(`/Games/${currentGameId}/players/${currentPlayerId}`);
 
-      //get previousScore
-      let previousScoreObj = await currentGame
-        .child(`${currentPlayerId}`)
-        .once('value');
-      let previousScore = await previousScoreObj.val();
-
-      //update Player's score
-      let currentScore = previousScore + 10;
+      //Mark target as found
       currentGame.update({
-        [currentPlayerId]: currentScore,
+        [selectedTarget.id]: true,
       });
+      this.setState({
+        targetStatus: { ...this.state.targetStatus, [selectedTarget.id]: true },
+        selectedTarget: {}
+      })
     } catch (error) {
       console.error(error);
     }
   }
 
-  async getScores() {
-    //go into Games
-    //match playerID to user
-    //Sort based on points
+  async gameStatus() {
+    console.log('GAMESTATUS');
+    //check for existence of winner field in game
+    const { getParam } = this.props.navigation;
+    let currentGameId = getParam('newGameId');
+
+    try {
+      const currentGame = await firebase
+        .database()
+        .ref(`/Games/${currentGameId}/`);
+
+      const winner = await currentGame.once('value').then(snap => snap.val())
+        .winner;
+
+      if (!winner && Object.keys(this.state.targetStatus).length) {
+        const vals = Object.values(this.state.targetStatus).every(
+          val => val === true
+        );
+        if (vals) this.gameOver(currentGameId);
+      }
+      return winner;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
+  async gameOver(currentGameId) {
+    const { navigate, getParam } = this.props.navigation;
+    const currentGame = await firebase
+      .database()
+      .ref(`/Games/${currentGameId}/`);
+    const playerId = getParam('currentPlayer');
+
+    const game = await currentGame.once('value').then(snap => snap.val());
+    await currentGame.set({ ...game, winner: playerId });
+
+    const currentPlayer = await firebase
+      .database()
+      .ref(`/Users/${playerId}/Games/`);
+
+    await currentPlayer.update({ [currentGameId]: playerId });
+
+    navigate('Win', { playerId });
+  }
+
+  //COMMENT WHAT RENDER LIST DOES!!
   async renderList() {
     const { getParam } = this.props.navigation;
     const huntName = getParam('huntName', 'NO-HUNT');
     let list = [];
     try {
-      const hunts = await firebase
+      const huntsVal = await firebase
         .database()
         .ref('/Hunts')
-        .once('value');
-      const targets = await firebase
+        .once('value')
+        .then(snap => snap.val());
+      const locations = await firebase
         .database()
-        .ref('/Locations')
-        .once('value');
-      const huntsVal = hunts.val();
-      const locations = targets.val();
-      const huntLocationArr = huntsVal[huntName].locations;
+        .ref('/Locations2')
+        .once('value')
+        .then(snap => snap.val());
+
+      const huntLocationArr = huntsVal[huntName].locations2;
 
       for (let i = 0; i < huntLocationArr.length; i++) {
-        let target = locations[+huntLocationArr[i]];
+        let target = {
+          ...locations[huntLocationArr[i]],
+          id: huntLocationArr[i],
+        };
         list.push(target);
       }
     } catch (error) {
@@ -146,27 +205,67 @@ export default class Map extends Component {
     });
   }
 
-
   render() {
+    const {
+      targets,
+      selectedTarget,
+      modalScore,
+      modalTarget,
+      latitude,
+      longitude,
+    } = this.state;
 
-    const { targets, selectedTarget } = this.state;
+    const playerId = this.props.navigation.getParam('currentPlayer');
+    const gameId = this.props.navigation.getParam('newGameId');
+    this.gameStatus();
     return (
       <View style={{ flex: 1, position: 'relative' }}>
-        <GameMap latitude={this.state.latitude} longitude={this.state.longitude} />
+        <GameMap latitude={latitude} longitude={longitude} />
+        <HotCold
+          inPerimeter={this.inPerimeter}
+          distanceInKM={this.distanceInKM}
+          latitude={latitude}
+          longitude={longitude}
+          selectedTarget={selectedTarget}
+        />
         <View style={styles.bottomView}>
           <View style={styles.buttonList}>
-            <GameButton iconName="target" buttonName="TARGETS"
-              onPress={() => this.setState({ modalT: !this.state.modalT })} />
-            <GameButton iconName="trophy" buttonName="SCORES"
-              onPress={() => this.setState({ modalS: !this.state.modalS })} />
-            <GameButton iconName="radar" buttonName="RADAR" />
+            <GameButton
+              iconName="target"
+              buttonName="TARGETS"
+              onPress={() => this.setState({ modalTarget: !modalTarget })}
+            />
+            <GameButton
+              iconName="trophy"
+              buttonName="SCORES"
+              onPress={() => this.setState({ modalScore: !modalScore })}
+            />
           </View>
         </View>
-        <GameModal isOpen={this.state.modalT} onClosed={() => this.setState({ modalT: false })}>
-          <GameTargetsView targets={targets} selectedTarget={selectedTarget} selectTarget={this.selectTarget} />
+        <GameModal
+          isOpen={modalTarget}
+          onClosed={() =>
+            this.setState({
+              modalTarget: false,
+            })
+          }
+        >
+          <GameTargetsView
+            targets={targets}
+            selectedTarget={selectedTarget}
+            selectTarget={this.selectTarget}
+            targetStatus={this.state.targetStatus}
+          />
         </GameModal>
-        <GameModal isOpen={this.state.modalS} onClosed={() => this.setState({ modalS: false })}>
-          <Text>These are the scores.</Text>
+        <GameModal
+          isOpen={modalScore}
+          onClosed={() =>
+            this.setState({
+              modalScore: false,
+            })
+          }
+        >
+          <GameScores gameId={gameId} playerId={playerId} />
         </GameModal>
       </View>
     );

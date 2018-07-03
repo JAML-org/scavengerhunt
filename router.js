@@ -13,6 +13,7 @@ import Friends from './components/Friends';
 import MyHuntList from './components/MyHuntList';
 import Map from './components/Map';
 import InviteFriends from './components/InviteFriends';
+import Win from './components/Win'
 
 const UnLoggedInStack = createSwitchNavigator(
   {
@@ -31,19 +32,25 @@ const UnLoggedInStack = createSwitchNavigator(
   }
 );
 
-export const LoggedInStack = createStackNavigator({
-  Menu: { screen: MenuContainer },
-  Main: { screen: Main },
-  Profile: { screen: Profile },
-  Map: { screen: Map },
-  MyHuntList: { screen: MyHuntList },
-  JoinHunt: { screen: JoinHunt },
-  Friends: { screen: Friends },
-  HowToPlay: { screen: HowToPlay },
-  PursuitList: { screen: PursuitList },
-  HuntDetails: { screen: HuntDetails },
-  InviteFriends: { screen: InviteFriends },
-});
+export const LoggedInStack = createStackNavigator(
+  {
+    Menu: { screen: MenuContainer },
+    Main: { screen: Main },
+    Profile: { screen: Profile },
+    Map: { screen: Map },
+    MyHuntList: { screen: MyHuntList },
+    JoinHunt: { screen: JoinHunt },
+    Friends: { screen: Friends },
+    HowToPlay: { screen: HowToPlay },
+    PursuitList: { screen: PursuitList },
+    HuntDetails: { screen: HuntDetails },
+    InviteFriends: { screen: InviteFriends },
+    Win: { screen: Win },
+  },
+  {
+    headerMode: 'none',
+  }
+);
 
 export const RootStack = createStackNavigator(
   {
@@ -52,6 +59,6 @@ export const RootStack = createStackNavigator(
   },
   {
     headerMode: 'none',
-    initialRouteName: 'UnLoggedInStack',
+    initialRouteName: 'LoggedInStack',
   }
 );
