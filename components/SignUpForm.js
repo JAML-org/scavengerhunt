@@ -45,7 +45,7 @@ export default class SignUpForm extends Component {
           ...snap.val(),
           [firebase.auth().currentUser.uid]: {
             username,
-            avatar: "https://vistana-web-static.s3.amazonaws.com/vistana-web/assets/img/profile/production/profile-pic-thumb.png",
+            avatar: "https://upload.wikimedia.org/wikipedia/commons/d/d3/User_Circle.png",
             phone,
             name,
             email,

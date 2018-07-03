@@ -19,12 +19,18 @@ const styles = StyleSheet.create({
     height: '100%',
     flex: 1,
   },
+  loadingScreen: {
+    flex: 1,
+    backgroundColor: colors.lightblue,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'flex-start',
     paddingLeft: 20,
     paddingRight: 20,
-    paddingTop: 50,
+    paddingTop: 30,
     paddingBottom: 50,
   },
   header: {
@@ -79,6 +85,18 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 300,
   },
+  blurb: {
+    paddingTop: 10,
+  },
+  blurbText: {
+    fontSize: 15
+  },
+  win: {
+    flex:1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 });
 
 export default styles;
