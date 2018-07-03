@@ -23,7 +23,7 @@ export default class Map extends Component {
       modalTarget: true,
       modalScore: false,
       targetStatus: {},
-      appReady: false
+      appReady: false,
     };
 
     this.inPerimeter = this.inPerimeter.bind(this);
@@ -50,7 +50,9 @@ export default class Map extends Component {
       .ref(`/Games/${currentGameId}/players/${currentPlayerId}`)
       .once('value')
       .then(snap => snap.val());
-    this.setState({ targetStatus });
+    this.setState({
+      targetStatus,
+    });
 
     this.renderList();
 
@@ -66,7 +68,6 @@ export default class Map extends Component {
   }
 
   selectTarget(target) {
-    // console.log('this is target!!', target)
     this.setState({ selectedTarget: target });
   }
 
@@ -87,11 +88,10 @@ export default class Map extends Component {
   }
 
   inPerimeter(userCoords, targetCoords) {
-
     const distance = this.distanceInKM(userCoords, targetCoords);
 
-    let color = "#000"
-    console.log("DISTANCE", distance)
+    let color = '#000';
+    console.log('DISTANCE', distance);
     if (distance <= this.state.distance / 1000) {
       color = '#f44141';
       //found it
@@ -127,15 +127,14 @@ export default class Map extends Component {
       });
       this.setState({
         targetStatus: { ...this.state.targetStatus, [selectedTarget.id]: true },
-        selectedTarget: {}
-      })
+        selectedTarget: {},
+      });
     } catch (error) {
       console.error(error);
     }
   }
 
   async gameStatus() {
-    console.log('GAMESTATUS');
     //check for existence of winner field in game
     const { getParam } = this.props.navigation;
     let currentGameId = getParam('newGameId');
@@ -176,7 +175,13 @@ export default class Map extends Component {
 
     await currentPlayer.update({ [currentGameId]: playerId });
 
-    navigate('Win', { playerId });
+    const player = await firebase
+      .database()
+      .ref(`/Users/${playerId}`)
+      .once('value')
+      .then(snap => snap.val());
+    console.log('THIS IS THE PLAYER', player);
+    navigate('Win', { player });
   }
 
   //COMMENT WHAT RENDER LIST DOES!!
@@ -226,13 +231,11 @@ export default class Map extends Component {
     const playerId = this.props.navigation.getParam('currentPlayer');
     const gameId = this.props.navigation.getParam('newGameId');
     this.gameStatus();
-    return (
-      !this.state.appReady 
-      ? 
-      <View style={styles.loadingScreen}> 
-        <Bubbles size={15} color="#FFF" /> 
-      </View> 
-      :
+    return !this.state.appReady ? (
+      <View style={styles.loadingScreen}>
+        <Bubbles size={15} color="#FFF" />
+      </View>
+    ) : (
       <View style={{ flex: 1, position: 'relative' }}>
         <GameMap latitude={latitude} longitude={longitude} />
         <HotCold
@@ -304,5 +307,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#9ffae4',
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
 });

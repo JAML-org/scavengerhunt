@@ -21,21 +21,21 @@ const Main = props => {
             style={[styles.btn, mainStyling.row]}
             onPress={() => navigate('JoinHunt')}
           >
-            <Text style={styles.btnText}>Join a hunt</Text>
+            <Text style={styles.btnText}>JOIN A PURSUIT</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={[styles.btn, mainStyling.row]}
             onPress={() => navigate('PursuitList')}
           >
-            <Text style={styles.btnText}>Choose a hunt</Text>
+            <Text style={styles.btnText}>CHOOSE A PURSUIT</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={[styles.btn, mainStyling.row]}
             onPress={() => navigate('MyHuntList')}
           >
-            <Text style={styles.btnText}>My Hunt list</Text>
+            <Text style={styles.btnText}>MY PURSUIT LIST</Text>
           </TouchableOpacity>
         </View>
       </View>

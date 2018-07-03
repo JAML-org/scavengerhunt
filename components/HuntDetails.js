@@ -1,6 +1,12 @@
 import React from 'react';
-import styles from './style';
-import { View, Button, ImageBackground } from 'react-native';
+import styles, { colors } from './style';
+import {
+  View,
+  Button,
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import { Text } from 'react-native-elements';
 import { MapView } from 'expo';
 import * as firebase from 'firebase';
@@ -49,7 +55,6 @@ class HuntDetails extends React.Component {
       newGame.set({
         players: { [currentPlayer]: targets },
         theme: huntName,
-
       });
 
       //Route to currentUser games
@@ -155,55 +160,53 @@ class HuntDetails extends React.Component {
     }
 
     return (
-      !this.state.appReady 
-      ? 
-      <View style={styles.loadingScreen}> 
-        <Bubbles size={15} color="#FFF" /> 
-      </View> 
+      !this.state.appReady
+      ?
+      <View style={styles.loadingScreen}>
+        <Bubbles size={15} color="#FFF" />
+      </View>
       :
       <ImageBackground
       source={require('../urban-pursuit-leaf-bg.jpg')}
       style={styles.bgImage}
       >
         <View style={styles.container}>
-          <Text h2 style={styles.header}>
-            {huntName}
+          <Text h3 style={styles.header}>
+            {huntName.toUpperCase()}
           </Text>
           }}
-          <MapView
-            style={styles.map}
-            // customMapStyle={mapStyle}
-            initialRegion={{
-              latitude: center.latitude || 40.7051283,
-              longitude: center.longitude || -74.0089738,
-              latitudeDelta: 0.0422,
-              longitudeDelta: 0.0221,
-            }}
-          >
-            <MapView.Circle
-              center={
-                center || { latitude: 40.7051283, longitude: -74.0089738 }
-              }
-              radius={1000}
-              strokeColor="red"
-            />
+          <MapView style={styles.map} initialRegion={{ latitude: center.latitude || 40.7051283, longitude: center.longitude || -74.0089738, latitudeDelta: 0.0422, longitudeDelta: 0.0221 }}>
+            <MapView.Circle center={center || { latitude: 40.7051283, longitude: -74.0089738 }} radius={1000} strokeColor={colors.pink} fillColor="rgba(214, 103, 205, 0.5)" />
           </MapView>
-          <Text>{hunt.blurb}</Text>
-          <Text>Targets: {hunt.locations.length}</Text>
-          <Button
-            title="Ready to Play!"
-            onPress={() => {
+          <View style={styles.blurb}>
+            <Text style={styles.blurbText}>{hunt.blurb}</Text>
+            <Text style={styles.blurbText}>
+              Targets: {hunt.locations.length}
+            </Text>
+          </View>
+          <TouchableOpacity style={[styles.btn, mainStyling.row]} onPress={() => {
               this.newGame(navigate);
-            }}
-          />
-          <Button
-            title="Pick a Different Pursuit"
-            onPress={() => navigate('PursuitList')}
-          />
+            }}>
+            <Text style={styles.btnText}>READY TO PLAY!</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.btn, mainStyling.row]} onPress={() => navigate('PursuitList')}>
+            <Text style={styles.btnText}>PICK A DIFFERENT PURSUIT</Text>
+          </TouchableOpacity>
         </View>
-      </ImageBackground> 
+      </ImageBackground>
     );
   }
 }
+
+const mainStyling = StyleSheet.create({
+  column: {
+    flex: 1,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+  },
+  row: {
+    marginVertical: 10,
+  },
+});
 
 export default HuntDetails;

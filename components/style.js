@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     paddingLeft: 20,
     paddingRight: 20,
-    paddingTop: 50,
+    paddingTop: 30,
     paddingBottom: 50,
   },
   header: {
@@ -84,6 +84,18 @@ const styles = StyleSheet.create({
   map: {
     width: '100%',
     height: 300,
+  },
+  blurb: {
+    paddingTop: 10,
+  },
+  blurbText: {
+    fontSize: 15
+  },
+  win: {
+    flex:1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 
