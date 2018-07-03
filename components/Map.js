@@ -48,7 +48,9 @@ export default class Map extends Component {
       .ref(`/Games/${currentGameId}/players/${currentPlayerId}`)
       .once('value')
       .then(snap => snap.val());
-    this.setState({ targetStatus });
+    this.setState({
+      targetStatus: { a: false, b: true, c: true, d: true, e: true },
+    });
 
     this.renderList();
   }
@@ -58,7 +60,6 @@ export default class Map extends Component {
   }
 
   selectTarget(target) {
-    // console.log('this is target!!', target)
     this.setState({ selectedTarget: target });
   }
 
@@ -79,11 +80,10 @@ export default class Map extends Component {
   }
 
   inPerimeter(userCoords, targetCoords) {
-
     const distance = this.distanceInKM(userCoords, targetCoords);
 
-    let color = "#000"
-    console.log("DISTANCE", distance)
+    let color = '#000';
+    console.log('DISTANCE', distance);
     if (distance <= this.state.distance / 1000) {
       color = '#f44141';
       //found it
@@ -119,15 +119,14 @@ export default class Map extends Component {
       });
       this.setState({
         targetStatus: { ...this.state.targetStatus, [selectedTarget.id]: true },
-        selectedTarget: {}
-      })
+        selectedTarget: {},
+      });
     } catch (error) {
       console.error(error);
     }
   }
 
   async gameStatus() {
-    console.log('GAMESTATUS');
     //check for existence of winner field in game
     const { getParam } = this.props.navigation;
     let currentGameId = getParam('newGameId');
@@ -168,7 +167,13 @@ export default class Map extends Component {
 
     await currentPlayer.update({ [currentGameId]: playerId });
 
-    navigate('Win', { playerId });
+    const player = await firebase
+      .database()
+      .ref(`/Users/${playerId}`)
+      .once('value')
+      .then(snap => snap.val());
+    console.log('THIS IS THE PLAYER', player)
+    navigate('Win', { player });
   }
 
   //COMMENT WHAT RENDER LIST DOES!!

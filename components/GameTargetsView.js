@@ -24,7 +24,6 @@ const GameTargetsViews = props => {
             }
             key={i}
             onPress={() => {
-              // console.log(target)
               return (
                 !targetStatus[target.id] &&
                 selectTarget({

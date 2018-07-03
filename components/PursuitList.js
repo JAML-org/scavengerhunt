@@ -38,7 +38,7 @@ class PursuitList extends React.Component {
           <View style={styles.listContainer}>
             <View style={{ width: '100%', height: '25%' }}>
               <Text h4 style={styles.header}>
-                Choose a Pursuit
+                CHOOSE A PURSUIT
               </Text>
               <Divider />
             </View>
@@ -48,7 +48,7 @@ class PursuitList extends React.Component {
                   <Icon
                     raised
                     name={hunts[hunt].icon}
-                    type="material-community"
+                    type={hunts[hunt].type}
                     size={40}
                     onPress={() =>
                       navigate('HuntDetails', {
