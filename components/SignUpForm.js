@@ -45,9 +45,11 @@ export default class SignUpForm extends Component {
           ...snap.val(),
           [firebase.auth().currentUser.uid]: {
             username,
+            avatar: "https://vistana-web-static.s3.amazonaws.com/vistana-web/assets/img/profile/production/profile-pic-thumb.png",
             phone,
             name,
             email,
+            friends: ["initiate"]
           },
         })
         .then(this.props.navigation.navigate('LoggedInStack'));
