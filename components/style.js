@@ -19,6 +19,12 @@ const styles = StyleSheet.create({
     height: '100%',
     flex: 1,
   },
+  loadingScreen: {
+    flex: 1,
+    backgroundColor: colors.lightblue,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'flex-start',
@@ -78,7 +84,7 @@ const styles = StyleSheet.create({
   map: {
     width: '100%',
     height: 300,
-  },
+  }
 });
 
 export default styles;

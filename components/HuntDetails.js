@@ -4,6 +4,7 @@ import { View, Button, ImageBackground } from 'react-native';
 import { Text } from 'react-native-elements';
 import { MapView } from 'expo';
 import * as firebase from 'firebase';
+import { Bubbles } from 'react-native-loader';
 // import * as mapStyle from './mapStyle.json';
 
 class HuntDetails extends React.Component {
@@ -14,6 +15,7 @@ class HuntDetails extends React.Component {
       coordsArr: [],
       huntLocations: [],
       newGameId: '',
+      appReady: false
     };
     this.newGame = this.newGame.bind(this);
     this.getLatLngCenter = this.getLatLngCenter.bind(this);
@@ -96,6 +98,12 @@ class HuntDetails extends React.Component {
     } catch (error) {
       console.error(error);
     }
+
+    setTimeout(() => {
+      this.setState({
+        appReady: true,
+      });
+    }, 1000);
   }
   getLatLngCenter(latLngInDegr) {
     let LATIDX = 0;
@@ -147,9 +155,15 @@ class HuntDetails extends React.Component {
     }
 
     return (
+      !this.state.appReady 
+      ? 
+      <View style={styles.loadingScreen}> 
+        <Bubbles size={15} color="#FFF" /> 
+      </View> 
+      :
       <ImageBackground
-        source={require('../urban-pursuit-leaf-bg.jpg')}
-        style={styles.bgImage}
+      source={require('../urban-pursuit-leaf-bg.jpg')}
+      style={styles.bgImage}
       >
         <View style={styles.container}>
           <Text h2 style={styles.header}>
@@ -187,7 +201,7 @@ class HuntDetails extends React.Component {
             onPress={() => navigate('PursuitList')}
           />
         </View>
-      </ImageBackground>
+      </ImageBackground> 
     );
   }
 }
