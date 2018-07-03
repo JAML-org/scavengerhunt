@@ -79,6 +79,12 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 300,
   },
+  blurb: {
+    paddingTop: 10,
+  },
+  blurbText: {
+    fontSize: 15
+  }
 });
 
 export default styles;

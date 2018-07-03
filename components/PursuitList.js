@@ -58,7 +58,7 @@ class PursuitList extends React.Component {
                       })
                     }
                   />
-                  <Text style={styles.textCenter}>{hunt}</Text>
+                  <Text style={styles.textCenter}>{hunt.toUpperCase()}</Text>
                 </View>
               );
             })}

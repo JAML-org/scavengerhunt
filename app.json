@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "Scavenger Hunt",
+    "name": "Urban Pursuit",
     "version": "1.0.0",
-    "slug": "your-app-slug",
+    "slug": "urban-pursuit",
     "sdkVersion": "27.0.0",
     "ios": {
-      "bundleIdentifier": "com.jaml.scavenger"
+      "bundleIdentifier": "com.jaml.urbanpursuit"
     },
     "android": {
-      "package": "com.jaml.scavenger"
+      "package": "com.jaml.urbanpursuit"
     }
   }
 }

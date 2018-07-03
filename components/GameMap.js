@@ -15,7 +15,7 @@ const GameMap = (props) => {
       }}
     >
       <MapView.Marker
-        pinColor="#000000"
+        image={require('../marker.png')}
         coordinate={{
           latitude: props.latitude,
           longitude: props.longitude,
