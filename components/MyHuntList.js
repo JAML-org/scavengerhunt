@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ImageBackground } from 'react-native';
+import { StyleSheet, View, ImageBackground, ScrollView } from 'react-native';
 import { Icon, Divider, Text, List } from 'react-native-elements'
 import styles from './style';
 
@@ -49,26 +49,27 @@ export default class MyHuntList extends Component {
               </Text>
               <Divider />
             </View>
-            {
-              dummyData.map(dummy => {
-                return (
-                  <List key={dummy.id}>
-                    <Icon
-                      raised
-                      size={40}
-                      name={dummy.icon}
-                      type="material-community"
-                      style={styles.btn}
-                    />
-                    <Text style={styles.textCenter}>{dummy.name}</Text>
-                    <Text>Pursuit Number: {dummy.huntNo}</Text>
-                  </List>
+            <ScrollView>
+              {
+                dummyData.map(dummy => {
+                  return (
+                    <List key={dummy.id}>
+                      <Icon
+                        raised
+                        size={40}
+                        name={dummy.icon}
+                        type="material-community"
+                        style={styles.btn}
+                      />
+                      <Text style={styles.textCenter}>{dummy.name}</Text>
+                      <Text>Pursuit Number: {dummy.huntNo}</Text>
+                    </List>
+                  )
+                }
                 )
               }
-              )
-            }
+            </ScrollView>
           </View>
-
         </View>
       </ImageBackground>
     );
