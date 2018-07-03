@@ -25,17 +25,6 @@ const UnLoggedInStack = createSwitchNavigator(
 export const LoggedInStack = createStackNavigator(
   {
     Menu: { screen: MenuContainer },
-    // Main: { screen: Main },
-    // Profile: { screen: Profile },
-    // Map: { screen: Map },
-    // MyHuntList: { screen: MyHuntList },
-    // JoinHunt: { screen: JoinHunt },
-    // Friends: { screen: Friends },
-    // HowToPlay: { screen: HowToPlay },
-    // PursuitList: { screen: PursuitList },
-    // HuntDetails: { screen: HuntDetails },
-    // InviteFriends: { screen: InviteFriends },
-    // Win: { screen: Win },
   },
   {
     headerMode: 'none',

@@ -61,20 +61,6 @@ const Menu = createDrawerNavigator(
   }
 );
 
-
-
-/*
-const MyCustomDrawerItems = (props) => (
-  <ScrollView>
-    <SafeAreaView style={styles.container} forceInset={{ top: 'always', horizontal: 'never' }}>
-      <DrawerItems
-        {...props}
-        items={ props.items.filter() } />
-    </SafeAreaView>
-  </ScrollView>
-);
-*/
-
 const MenuContainer = () => {
   let pressMenu;
   return (
