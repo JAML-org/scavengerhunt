@@ -31,8 +31,7 @@ class HuntDetails extends React.Component {
       const huntLocationsID = getParam('huntLocationsID');
 
       //Get signed in user
-      // let currentPlayer = await firebase.auth().currentUser.uid;
-      let currentPlayer = '0Uu98KnCIrUNCqJUdn0Fl8ZegYS2';
+      let currentPlayer = await firebase.auth().currentUser.uid;
       //Route to Games in Firebase
       let games = await firebase.database().ref('/Games');
 
@@ -40,6 +39,7 @@ class HuntDetails extends React.Component {
       let targets = Object.assign(
         ...huntLocationsID.map(target => ({ [target]: false }))
       );
+      //^ DO WE NEED TO OBJECT.ASSIGN HERE???
 
       //Generate newgame ID
       let newGame = await games.push();
