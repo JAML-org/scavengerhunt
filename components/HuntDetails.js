@@ -151,8 +151,8 @@ class HuntDetails extends React.Component {
         style={styles.bgImage}
       >
         <View style={styles.container}>
-          <Text h2 style={styles.header}>
-            {huntName}
+          <Text h3 style={styles.header}>
+            {huntName.toUpperCase()}
           </Text>
           }}
           <MapView
@@ -177,7 +177,7 @@ class HuntDetails extends React.Component {
           </MapView>
           <Text>{hunt.blurb}</Text>
           <Text>Targets: {hunt.locations.length}</Text>
-          
+
           <TouchableOpacity
             style={[styles.btn, mainStyling.row]}
             onPress={() => { this.newGame(navigate)}}

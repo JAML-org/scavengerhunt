@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     paddingLeft: 20,
     paddingRight: 20,
-    paddingTop: 50,
+    paddingTop: 30,
     paddingBottom: 50,
   },
   header: {
