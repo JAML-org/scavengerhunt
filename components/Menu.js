@@ -2,12 +2,12 @@ import React from 'react';
 import { createDrawerNavigator, DrawerActions } from 'react-navigation';
 import Profile from './Profile';
 import HowToPlay from './HowToPlay';
-import JoinHunt from './JoinHunt';
+import JoinPursuit from './JoinPursuit';
 import PursuitList from './PursuitList';
 import HuntDetails from './HuntDetails';
 import Main from './Main';
 import Friends from './Friends';
-import MyHuntList from './MyHuntList';
+import MyPursuitList from './MyPursuitList';
 import Map from './Map';
 import { View, Image } from 'react-native';
 import { Icon, Header } from 'react-native-elements';
@@ -24,8 +24,8 @@ const Menu = createDrawerNavigator(
     Main: { screen: Main },
     Profile: { screen: Profile },
     PursuitList: { screen: PursuitList },
-    MyHuntList: { screen: MyHuntList },
-    JoinHunt: { screen: JoinHunt },
+    MyPursuitList: { screen: MyPursuitList },
+    JoinPursuit: { screen: JoinPursuit },
     Friends: { screen: Friends },
     HowToPlay: { screen: HowToPlay },
     Map: {

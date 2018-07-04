@@ -113,8 +113,7 @@ export default class Profile extends Component {
                   styles.textCenter,
                   profileStyling.link,
                 ]}
-              >
-                Change Avatar
+              >CHANGE AVATAR
               </Text>
             </View>
 
@@ -182,7 +181,7 @@ const profileStyling = StyleSheet.create({
     justifyContent: 'space-around',
   },
   col2: {
-    width: '50%',
+    width: '40%',
     justifyContent: 'center',
     paddingBottom: 50,
   },
