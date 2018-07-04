@@ -2,6 +2,7 @@ import React from 'react';
 import styles, { colors } from './style';
 import { View, ImageBackground, StyleSheet } from 'react-native';
 import { Icon, Text, Divider } from 'react-native-elements';
+import { Bubbles } from 'react-native-loader';
 import * as firebase from 'firebase';
 
 //Abstract mapping of hunts into it's own component
@@ -23,6 +24,7 @@ class PursuitList extends React.Component {
     super();
     this.state = {
       hunts: {},
+      appReady: false,
     };
   }
 
@@ -36,12 +38,20 @@ class PursuitList extends React.Component {
     } catch (error) {
       console.error(error);
     }
+
+    setTimeout(() => {
+      this.setState({ appReady: true });
+    }, 300);
   }
 
   render() {
     const { navigate } = this.props.navigation;
     const { hunts } = this.state;
-    return (
+    return !this.state.appReady ? (
+      <View style={styles.loadingScreen}>
+        <Bubbles size={15} color="#FFF" />
+      </View>
+    ) : (
       <ImageBackground
         source={require('../urban-pursuit-leaf-bg.jpg')}
         style={styles.bgImage}

@@ -38,6 +38,6 @@ export const RootStack = createStackNavigator(
   },
   {
     headerMode: 'none',
-    initialRouteName: 'UnLoggedInStack',
+    initialRouteName: 'LoggedInStack',
   }
 );

@@ -86,17 +86,28 @@ const styles = StyleSheet.create({
     height: 300,
   },
   blurb: {
-    paddingTop: 10,
+    marginTop: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    borderRadius: 10,
   },
   blurbText: {
-    fontSize: 15
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  blurbTarget: {
+    fontSize: 14,
+    textAlign: 'center',
+    color: colors.pink,
+    fontWeight: 'bold'
   },
   win: {
-    flex:1,
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
 export default styles;

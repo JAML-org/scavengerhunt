@@ -4,7 +4,7 @@ import { Text, Divider, List, Button, ListItem } from 'react-native-elements';
 import * as firebase from 'firebase';
 import styles, { colors } from './style';
 
-export default class JoinHunt extends Component {
+export default class JoinPursuit extends Component {
   constructor() {
     super();
     this.state = {

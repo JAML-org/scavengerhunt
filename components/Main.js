@@ -19,7 +19,7 @@ const Main = props => {
         <View style={mainStyling.column}>
           <TouchableOpacity
             style={[styles.btn, mainStyling.row]}
-            onPress={() => navigate('JoinHunt')}
+            onPress={() => navigate('JoinPursuit')}
           >
             <Text style={styles.btnText}>JOIN A PURSUIT</Text>
           </TouchableOpacity>
@@ -33,7 +33,7 @@ const Main = props => {
 
           <TouchableOpacity
             style={[styles.btn, mainStyling.row]}
-            onPress={() => navigate('MyHuntList')}
+            onPress={() => navigate('MyPursuitList')}
           >
             <Text style={styles.btnText}>MY PURSUIT LIST</Text>
           </TouchableOpacity>
