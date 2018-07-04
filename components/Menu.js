@@ -12,48 +12,69 @@ import Map from './Map';
 import { View, Image } from 'react-native';
 import { Icon, Header } from 'react-native-elements';
 import InviteFriends from './InviteFriends';
-import Win from './Win'
+import Win from './Win';
 import { colors } from './style';
 
 const Hidden = () => {
-  return null
-}
+  return null;
+};
 
 const Menu = createDrawerNavigator(
   {
     Main: { screen: Main },
     Profile: { screen: Profile },
-    PursuitList: { screen: PursuitList },
-    MyPursuitList: { screen: MyPursuitList },
-    JoinPursuit: { screen: JoinPursuit },
+    PursuitList: {
+      screen: PursuitList,
+      navigationOptions: {
+        title: 'Pursuit List',
+      },
+    },
+    MyPursuitList: {
+      screen: MyPursuitList,
+      navigationOptions: {
+        title: 'My Pursuit List',
+      },
+    },
+    JoinPursuit: {
+      screen: JoinPursuit,
+      navigationOptions: {
+        title: 'Join Pursuit',
+      },
+    },
     Friends: { screen: Friends },
-    HowToPlay: { screen: HowToPlay },
+    HowToPlay: {
+      screen: HowToPlay,
+      navigationOptions: {
+        title: 'How to Play',
+      },
+    },
     Map: {
       screen: Map,
       navigationOptions: {
-        drawerLabel: <Hidden />
-      }
+        drawerLabel: <Hidden />,
+      },
     },
     HuntDetails: {
       screen: HuntDetails,
       navigationOptions: {
-        drawerLabel: <Hidden />
-      }
+        drawerLabel: <Hidden />,
+      },
     },
     InviteFriends: {
       screen: InviteFriends,
       navigationOptions: {
-        drawerLabel: <Hidden />
-      }
+        drawerLabel: <Hidden />,
+      },
     },
     Win: {
       screen: Win,
       navigationOptions: {
-        drawerLabel: <Hidden />
-      }
-    }
+        drawerLabel: <Hidden />,
+      },
+    },
   },
-  { // maybe use
+  {
+    // maybe use
     // contentComponent: MyCustomDrawerItems
     drawerWidth: 300,
     drawerPosition: 'left',
