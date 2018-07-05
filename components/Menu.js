@@ -13,6 +13,7 @@ import { View, Image } from 'react-native';
 import { Icon, Header } from 'react-native-elements';
 import InviteFriends from './InviteFriends';
 import Win from './Win'
+import Logout from './Logout'
 import { colors } from './style';
 
 const Menu = createDrawerNavigator(
@@ -27,7 +28,8 @@ const Menu = createDrawerNavigator(
     Map: { screen: Map },
     HuntDetails: { screen: HuntDetails },
     InviteFriends: { screen: InviteFriends },
-    Win: { screen: Win}
+    Win: { screen: Win},
+    Logout: { screen: Logout }
   },
   {
     drawerWidth: 300,
