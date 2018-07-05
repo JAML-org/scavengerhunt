@@ -30,8 +30,13 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     paddingLeft: 20,
     paddingRight: 20,
-    paddingTop: 50,
+    paddingTop: 30,
     paddingBottom: 50,
+  },
+  logoutView: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   header: {
     color: colors.mediumblue,
@@ -84,7 +89,30 @@ const styles = StyleSheet.create({
   map: {
     width: '100%',
     height: 300,
-  }
+  },
+  blurb: {
+    marginTop: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    borderRadius: 10,
+  },
+  blurbText: {
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  blurbTarget: {
+    fontSize: 14,
+    textAlign: 'center',
+    color: colors.pink,
+    fontWeight: 'bold'
+  },
+  win: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default styles;

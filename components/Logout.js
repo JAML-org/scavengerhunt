@@ -7,21 +7,16 @@ import {
 import { Text, Icon, Divider } from 'react-native-elements';
 import styles, { colors } from './style';
 
-
 export default class Logout extends Component {
   
     async logoutInFirebase() {
-        const log = await firebase.auth().currentUser
-        console.log("YOU ARE Signed in!", log.uid)
-
         await firebase
         .auth()
         .signOut()
         .then(() => {
-            this.props.navigation.navigate('LoggedInStack');
             const logged = firebase.auth().currentUser
-
-          console.log("YOU ARE LOGGED OUT! YAYY!", logged)
+            this.props.navigation.navigate('SplashScreen')
+          console.log("YOU ARE LOGGED OUT! YAYY!", this.props.navigation)
         })
         .catch(function(error) {
               console.error(error)
@@ -31,7 +26,7 @@ export default class Logout extends Component {
     render() {
         return (
             <View style={styles.container}> 
-                <View > 
+                <View style= {styles.logoutView}> 
                 <Text h4>
                     Are you sure you want to log out?
                 </Text> 

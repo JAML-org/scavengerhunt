@@ -14,9 +14,9 @@ export default class GameScores extends Component {
   async componentDidMount() {
     try {
       const scoresAndPlayers = await firebase.database().ref(`/Games/${this.props.gameId}/players`).once('value').then(snap => snap.val())
-      console.log("SCORES AND PLAYERS", scoresAndPlayers)
+
       const playerIds = Object.keys(scoresAndPlayers)
-      console.log("PlayerIds", playerIds)
+
       const playerProfile = await firebase.database().ref(`/Users`).once('value').then(snap => snap.val())
       const scoreBoard = playerIds.map(id => ({
         avatar: playerProfile[id].avatar,
@@ -29,14 +29,14 @@ export default class GameScores extends Component {
 
   render() {
     const { scoreBoard } = this.state
-    console.log(this.state)
+    
     return (
       <View>
         {
           scoreBoard.map(status => (
             <View key={status.name} flexDirection='row' >
               <Avatar size="small" rounded source={{ uri: status.avatar }} />
-              <Text> {status.name} : {status.score}/50</Text>
+              <Text> {status.name} : {status.score}0 /50</Text>
             </View>
           ))
         }
