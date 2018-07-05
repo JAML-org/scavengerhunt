@@ -39,7 +39,7 @@ const Menu = createDrawerNavigator(
     MyPursuitList: {
       screen: MyPursuitList,
       navigationOptions: {
-        title: 'MY PURSUIT LIST',
+        title: 'MY PURSUITS',
       },
     },
     JoinPursuit: {
