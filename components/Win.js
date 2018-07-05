@@ -3,12 +3,10 @@ import styles, { colors } from './style';
 import {
   View,
   ImageBackground,
-  Button,
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
 import { Icon, Text, Avatar } from 'react-native-elements';
-import * as firebase from 'firebase';
 
 const Win = props => {
   const { navigate, getParam } = props.navigation;

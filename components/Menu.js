@@ -21,31 +21,42 @@ const Hidden = () => {
 
 const Menu = createDrawerNavigator(
   {
-    Main: { screen: Main },
-    Profile: { screen: Profile },
+    Main: {
+      screen: Main,
+      navigationOptions: {
+        title: 'MAIN'
+      } },
+    Profile: { screen: Profile,
+    navigationOptions: {
+      title: 'PROFILE'
+    } },
     PursuitList: {
       screen: PursuitList,
       navigationOptions: {
-        title: 'Pursuit List',
+        title: 'CHOOSE A PURSUIT',
       },
     },
     MyPursuitList: {
       screen: MyPursuitList,
       navigationOptions: {
-        title: 'My Pursuit List',
+        title: 'MY PURSUITS',
       },
     },
     JoinPursuit: {
       screen: JoinPursuit,
       navigationOptions: {
-        title: 'Join Pursuit',
+        title: 'JOIN A PURSUIT',
       },
     },
-    Friends: { screen: Friends },
+    Friends: {
+      screen: Friends,
+      navigationOptions: {
+        title: 'FRIENDS'
+      } },
     HowToPlay: {
       screen: HowToPlay,
       navigationOptions: {
-        title: 'How to Play',
+        title: 'HOW TO PLAY',
       },
     },
     Map: {
