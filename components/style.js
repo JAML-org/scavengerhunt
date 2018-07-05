@@ -33,6 +33,11 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingBottom: 50,
   },
+  logoutView: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   header: {
     color: colors.mediumblue,
     textAlign: 'left',

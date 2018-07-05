@@ -12,7 +12,10 @@ import Map from './Map';
 import { View, Image } from 'react-native';
 import { Icon, Header } from 'react-native-elements';
 import InviteFriends from './InviteFriends';
-import Win from './Win';
+import Win from './Win'
+import Logout from './Logout'
+import SplashScreen from './Splash';
+
 import { colors } from './style';
 
 const Hidden = () => {
@@ -79,6 +82,15 @@ const Menu = createDrawerNavigator(
     },
     Win: {
       screen: Win,
+      navigationOptions: {
+        drawerLabel: <Hidden />,
+      },
+    },
+    Logout: {
+      screen: Logout
+    },
+    SplashScreen: {
+      screen: SplashScreen,
       navigationOptions: {
         drawerLabel: <Hidden />,
       },

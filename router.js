@@ -5,7 +5,7 @@ import UserLoginForm from './components/UserLoginForm';
 import SignUpForm from './components/SignUpForm';
 
 
-const UnLoggedInStack = createSwitchNavigator(
+export const UnLoggedInStack = createSwitchNavigator(
   {
     SplashScreen: {
       screen: SplashScreen,
@@ -24,7 +24,7 @@ const UnLoggedInStack = createSwitchNavigator(
 
 export const LoggedInStack = createStackNavigator(
   {
-    Menu: { screen: MenuContainer },
+    Menu: { screen: MenuContainer }
   },
   {
     headerMode: 'none',
