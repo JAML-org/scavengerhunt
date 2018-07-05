@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
     color: colors.pink,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   win: {
     flex: 1,
@@ -108,6 +108,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  scoreBoard: {
+    flex: 1,
+    marginLeft: 150,
+  },
+  scoreText: {
+    paddingTop: 6,
+    paddingLeft: 2
+  }
 });
 
 export default styles;
