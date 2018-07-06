@@ -228,62 +228,63 @@ export default class Map extends Component {
 
     const playerId = this.props.navigation.getParam('currentPlayer');
     const gameId = this.props.navigation.getParam('newGameId');
+
     this.gameStatus();
     return !this.state.appReady ? (
       <View style={styles.loadingScreen}>
         <Bubbles size={15} color="#FFF" />
       </View>
     ) : (
-        <View style={{ flex: 1, position: 'relative' }}>
-          <GameMap latitude={latitude} longitude={longitude} />
-          <HotCold
-            inPerimeter={this.inPerimeter}
-            distanceInKM={this.distanceInKM}
-            latitude={latitude}
-            longitude={longitude}
-            selectedTarget={selectedTarget}
-          />
-          <View style={styles.bottomView}>
-            <View style={styles.buttonList}>
-              <GameButton
-                iconName="target"
-                buttonName="TARGETS"
-                onPress={() => this.setState({ modalTarget: !modalTarget })}
-              />
-              <GameButton
-                iconName="trophy"
-                buttonName="SCORES"
-                onPress={() => this.setState({ modalScore: !modalScore })}
-              />
-            </View>
-          </View>
-          <GameModal
-            isOpen={modalTarget}
-            onClosed={() =>
-              this.setState({
-                modalTarget: false,
-              })
-            }
-          >
-            <GameTargetsView
-              targets={targets}
-              selectedTarget={selectedTarget}
-              selectTarget={this.selectTarget}
-              targetStatus={this.state.targetStatus}
+      <View style={{ flex: 1, position: 'relative' }}>
+        <GameMap latitude={latitude} longitude={longitude} />
+        <HotCold
+          inPerimeter={this.inPerimeter}
+          distanceInKM={this.distanceInKM}
+          latitude={latitude}
+          longitude={longitude}
+          selectedTarget={selectedTarget}
+        />
+        <View style={styles.bottomView}>
+          <View style={styles.buttonList}>
+            <GameButton
+              iconName="target"
+              buttonName="TARGETS"
+              onPress={() => this.setState({ modalTarget: !modalTarget })}
             />
-          </GameModal>
-          <GameModal
-            isOpen={modalScore}
-            onClosed={() =>
-              this.setState({
-                modalScore: false,
-              })
-            }
-          >
-            <GameScores gameId={gameId} playerId={playerId} />
-          </GameModal>
+            <GameButton
+              iconName="trophy"
+              buttonName="SCORES"
+              onPress={() => this.setState({ modalScore: !modalScore })}
+            />
+          </View>
         </View>
-      );
+        <GameModal
+          isOpen={modalTarget}
+          onClosed={() =>
+            this.setState({
+              modalTarget: false,
+            })
+          }
+        >
+          <GameTargetsView
+            targets={targets}
+            selectedTarget={selectedTarget}
+            selectTarget={this.selectTarget}
+            targetStatus={this.state.targetStatus}
+          />
+        </GameModal>
+        <GameModal
+          isOpen={modalScore}
+          onClosed={() =>
+            this.setState({
+              modalScore: false,
+            })
+          }
+        >
+          <GameScores gameId={gameId} playerId={playerId} />
+        </GameModal>
+      </View>
+    );
   }
 }
 

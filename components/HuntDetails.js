@@ -66,7 +66,7 @@ class HuntDetails extends React.Component {
       });
       //Set state for newGameId to pass down to Map component before navigating
       this.setState({ newGameId: newGame.key }, () => {
-        navigate('Map', {
+        navigate('InviteFriends', {
           huntLocations: this.state.huntLocations,
           huntName,
           newGameId: this.state.newGameId,
