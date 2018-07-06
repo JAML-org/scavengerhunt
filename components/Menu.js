@@ -87,7 +87,10 @@ const Menu = createDrawerNavigator(
       },
     },
     Logout: {
-      screen: Logout
+      screen: Logout,
+      navigationOptions: {
+        title: 'LOGOUT'
+      }
     },
     SplashScreen: {
       screen: SplashScreen,
