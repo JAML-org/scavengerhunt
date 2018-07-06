@@ -51,7 +51,8 @@ export default class Map extends Component {
       .once('value')
       .then(snap => snap.val());
     this.setState({
-      targetStatus,
+      // targetStatus,
+      targetStatus: { a: false, b: true, c: true, d: true, e: true },
     });
 
     this.renderList();
