@@ -62,7 +62,7 @@ class PursuitList extends React.Component {
               <Text h3 style={styles.header}>
                 CHOOSE A PURSUIT
               </Text>
-              <Divider />
+              <Divider style={{ backgroundColor: colors.orange }} />
             </View>
             {Object.keys(hunts).map(hunt => {
               return (

@@ -172,7 +172,7 @@ class HuntDetails extends React.Component {
               {huntName.toUpperCase()}
             </Text>
           </View>
-          <Divider />
+          <Divider style={{ backgroundColor: colors.orange }} />
           <MapView
             style={styles.map}
             initialRegion={{
