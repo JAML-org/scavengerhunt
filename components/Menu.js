@@ -2,58 +2,102 @@ import React from 'react';
 import { createDrawerNavigator, DrawerActions } from 'react-navigation';
 import Profile from './Profile';
 import HowToPlay from './HowToPlay';
-import JoinHunt from './JoinHunt';
+import JoinPursuit from './JoinPursuit';
 import PursuitList from './PursuitList';
 import HuntDetails from './HuntDetails';
 import Main from './Main';
 import Friends from './Friends';
-import MyHuntList from './MyHuntList';
+import MyPursuitList from './MyPursuitList';
 import Map from './Map';
 import { View, Image } from 'react-native';
 import { Icon, Header } from 'react-native-elements';
 import InviteFriends from './InviteFriends';
 import Win from './Win'
+import Logout from './Logout'
+import SplashScreen from './Splash';
+
 import { colors } from './style';
 
 const Hidden = () => {
-  return null
-}
+  return null;
+};
 
 const Menu = createDrawerNavigator(
   {
-    Main: { screen: Main },
-    Profile: { screen: Profile },
-    PursuitList: { screen: PursuitList },
-    MyHuntList: { screen: MyHuntList },
-    JoinHunt: { screen: JoinHunt },
-    Friends: { screen: Friends },
-    HowToPlay: { screen: HowToPlay },
+    Main: {
+      screen: Main,
+      navigationOptions: {
+        title: 'MAIN'
+      } },
+    Profile: { screen: Profile,
+    navigationOptions: {
+      title: 'PROFILE'
+    } },
+    PursuitList: {
+      screen: PursuitList,
+      navigationOptions: {
+        title: 'CHOOSE A PURSUIT',
+      },
+    },
+    MyPursuitList: {
+      screen: MyPursuitList,
+      navigationOptions: {
+        title: 'MY PURSUITS',
+      },
+    },
+    JoinPursuit: {
+      screen: JoinPursuit,
+      navigationOptions: {
+        title: 'JOIN A PURSUIT',
+      },
+    },
+    Friends: {
+      screen: Friends,
+      navigationOptions: {
+        title: 'FRIENDS'
+      } },
+    HowToPlay: {
+      screen: HowToPlay,
+      navigationOptions: {
+        title: 'HOW TO PLAY',
+      },
+    },
     Map: {
       screen: Map,
       navigationOptions: {
-        drawerLabel: <Hidden />
-      }
+        drawerLabel: <Hidden />,
+      },
     },
     HuntDetails: {
       screen: HuntDetails,
       navigationOptions: {
-        drawerLabel: <Hidden />
-      }
+        drawerLabel: <Hidden />,
+      },
     },
     InviteFriends: {
       screen: InviteFriends,
       navigationOptions: {
-        drawerLabel: <Hidden />
-      }
+        drawerLabel: <Hidden />,
+      },
     },
     Win: {
       screen: Win,
       navigationOptions: {
-        drawerLabel: <Hidden />
-      }
-    }
+        drawerLabel: <Hidden />,
+      },
+    },
+    Logout: {
+      screen: Logout
+    },
+    SplashScreen: {
+      screen: SplashScreen,
+      navigationOptions: {
+        drawerLabel: <Hidden />,
+      },
+    },
   },
-  { // maybe use
+  {
+    // maybe use
     // contentComponent: MyCustomDrawerItems
     drawerWidth: 300,
     drawerPosition: 'left',

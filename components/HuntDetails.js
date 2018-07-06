@@ -2,16 +2,14 @@ import React from 'react';
 import styles, { colors } from './style';
 import {
   View,
-  Button,
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { Text } from 'react-native-elements';
+import { Text, Divider } from 'react-native-elements';
 import { MapView } from 'expo';
 import * as firebase from 'firebase';
 import { Bubbles } from 'react-native-loader';
-// import * as mapStyle from './mapStyle.json';
 
 class HuntDetails extends React.Component {
   constructor() {
@@ -169,10 +167,12 @@ class HuntDetails extends React.Component {
         style={styles.bgImage}
       >
         <View style={styles.container}>
-          <Text h3 style={styles.header}>
-            {huntName.toUpperCase()}
-          </Text>
-          }}
+          <View style={{ width: '100%', height: '10%' }}>
+            <Text h3 style={styles.header}>
+              {huntName.toUpperCase()}
+            </Text>
+          </View>
+          <Divider />
           <MapView
             style={styles.map}
             initialRegion={{
@@ -193,7 +193,7 @@ class HuntDetails extends React.Component {
           </MapView>
           <View style={styles.blurb}>
             <Text style={styles.blurbText}>{hunt.blurb}</Text>
-            <Text style={styles.blurbText}>
+            <Text style={styles.blurbTarget}>
               Targets: {hunt.locations.length}
             </Text>
           </View>
