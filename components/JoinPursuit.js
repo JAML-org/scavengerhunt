@@ -63,7 +63,7 @@ export default class JoinPursuit extends Component {
             <Divider />
           </View>
           <View style={{ flex: 2, alignContent: 'flex-start' }}>
-            {Object.keys(invites).length ? (
+            {invites && Object.keys(invites).length ? (
               <List>
                 {Object.keys(invites).map(invite => (
                   <ListItem
