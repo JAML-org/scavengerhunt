@@ -4,7 +4,6 @@ import SplashScreen from './components/Splash';
 import UserLoginForm from './components/UserLoginForm';
 import SignUpForm from './components/SignUpForm';
 
-
 const UnLoggedInStack = createSwitchNavigator(
   {
     SplashScreen: {
@@ -38,6 +37,6 @@ export const RootStack = createStackNavigator(
   },
   {
     headerMode: 'none',
-    initialRouteName: 'UnLoggedInStack',
+    initialRouteName: 'LoggedInStack',
   }
 );

@@ -148,13 +148,18 @@ export default class InviteFriends extends Component {
     }
   }
   render() {
-    const { navigate } = this.props.navigation;
+    const { navigate, getParams } = this.props.navigation;
+    const huntLocations = getParams('huntLocations');
+    const huntName = getParams('huntName');
+    const newGameId = getParams('newGameId');
+    const currentPlayer = getParams('huntLocations');
+
     return (
       <ImageBackground
         source={require('../urban-pursuit-leaf-bg.jpg')}
         style={styles.bgImage}
       >
-        <View style={styling.flex1}>
+        {/* <View style={styling.flex1}>
           <Text h4 style={styles.header}>
             Invite Friends to Play
           </Text>
@@ -181,6 +186,29 @@ export default class InviteFriends extends Component {
               buttonStyle={styles.btn}
               onPress={() => this.inviteFriends()}
             />
+          </View>
+        </View> */}
+        <View style={styles.container}>
+          <Text h4 style={styles.header}>
+            Invite Friends to Play
+          </Text>
+          <Divider />
+          <View style={styling.top}>
+            <Button
+              title="START PURSUIT"
+              onPress={() =>
+                navigate('Map', {
+                  huntLocations: huntLocations,
+                  huntName,
+                  newGameId: newGameId,
+                  currentPlayer,
+                })
+              }
+              buttonStyle={styles.btn}
+            />
+          </View>
+          <View style={styling.friendsList}>
+            <FriendsList />
           </View>
         </View>
       </ImageBackground>

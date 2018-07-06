@@ -21,7 +21,7 @@ class HuntDetails extends React.Component {
       coordsArr: [],
       huntLocations: [],
       newGameId: '',
-      appReady: false
+      appReady: false,
     };
     this.newGame = this.newGame.bind(this);
     this.getLatLngCenter = this.getLatLngCenter.bind(this);
@@ -68,7 +68,7 @@ class HuntDetails extends React.Component {
       });
       //Set state for newGameId to pass down to Map component before navigating
       this.setState({ newGameId: newGame.key }, () => {
-        navigate('Map', {
+        navigate('InviteFriends', {
           huntLocations: this.state.huntLocations,
           huntName,
           newGameId: this.state.newGameId,
@@ -159,24 +159,37 @@ class HuntDetails extends React.Component {
       center = this.getLatLngCenter(coordsArr);
     }
 
-    return (
-      !this.state.appReady
-      ?
+    return !this.state.appReady ? (
       <View style={styles.loadingScreen}>
         <Bubbles size={15} color="#FFF" />
       </View>
-      :
+    ) : (
       <ImageBackground
-      source={require('../urban-pursuit-leaf-bg.jpg')}
-      style={styles.bgImage}
+        source={require('../urban-pursuit-leaf-bg.jpg')}
+        style={styles.bgImage}
       >
         <View style={styles.container}>
           <Text h3 style={styles.header}>
             {huntName.toUpperCase()}
           </Text>
           }}
-          <MapView style={styles.map} initialRegion={{ latitude: center.latitude || 40.7051283, longitude: center.longitude || -74.0089738, latitudeDelta: 0.0422, longitudeDelta: 0.0221 }}>
-            <MapView.Circle center={center || { latitude: 40.7051283, longitude: -74.0089738 }} radius={1000} strokeColor={colors.pink} fillColor="rgba(214, 103, 205, 0.5)" />
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: center.latitude || 40.7051283,
+              longitude: center.longitude || -74.0089738,
+              latitudeDelta: 0.0422,
+              longitudeDelta: 0.0221,
+            }}
+          >
+            <MapView.Circle
+              center={
+                center || { latitude: 40.7051283, longitude: -74.0089738 }
+              }
+              radius={1000}
+              strokeColor={colors.pink}
+              fillColor="rgba(214, 103, 205, 0.5)"
+            />
           </MapView>
           <View style={styles.blurb}>
             <Text style={styles.blurbText}>{hunt.blurb}</Text>
@@ -184,12 +197,18 @@ class HuntDetails extends React.Component {
               Targets: {hunt.locations.length}
             </Text>
           </View>
-          <TouchableOpacity style={[styles.btn, mainStyling.row]} onPress={() => {
+          <TouchableOpacity
+            style={[styles.btn, mainStyling.row]}
+            onPress={() => {
               this.newGame(navigate);
-            }}>
+            }}
+          >
             <Text style={styles.btnText}>READY TO PLAY!</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.btn, mainStyling.row]} onPress={() => navigate('PursuitList')}>
+          <TouchableOpacity
+            style={[styles.btn, mainStyling.row]}
+            onPress={() => navigate('PursuitList')}
+          >
             <Text style={styles.btnText}>PICK A DIFFERENT PURSUIT</Text>
           </TouchableOpacity>
         </View>

@@ -50,15 +50,20 @@ export default class JoinHunt extends Component {
         source={require('../urban-pursuit-leaf-bg.jpg')}
         style={styles.bgImage}
       >
-        <View style={styles.container}>
-          <View style={{ width: '100%', height: '25%' }}>
-            <Text h4 style={{ color: 'white' }}>
+        <View
+          style={[
+            styles.container,
+            { justifyContent: 'flex-start', alignContent: 'start' },
+          ]}
+        >
+          <View>
+            <Text h4 style={styles.header}>
               Invites
             </Text>
             <Divider />
           </View>
-          <View>
-            {invites ? (
+          <View style={{ flex: 2, alignContent: 'flex-start' }}>
+            {Object.keys(invites).length ? (
               <List>
                 {Object.keys(invites).map(invite => (
                   <ListItem
@@ -75,12 +80,12 @@ export default class JoinHunt extends Component {
                 ))}
               </List>
             ) : (
-                <Text h4 style={{ color: 'white' }}>
-                  Sorry no Invites
+              <Text h4 style={{ color: colors.mediumblue }}>
+                Sorry no Invites
               </Text>
-              )}
+            )}
           </View>
-          <View style={styling.buttonList}>
+          {/* <View style={styling.buttonList}>
             <View>
               <Button
                 title="ACCEPT"
@@ -95,7 +100,7 @@ export default class JoinHunt extends Component {
                 onPress={() => this.deleteInvite(selected)}
               />
             </View>
-          </View>
+          </View> */}
         </View>
       </ImageBackground>
     );
