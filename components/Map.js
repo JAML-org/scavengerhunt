@@ -228,8 +228,7 @@ export default class Map extends Component {
 
     const playerId = this.props.navigation.getParam('currentPlayer');
     const gameId = this.props.navigation.getParam('newGameId');
-    console.log('NEWGAMEID', gameId);
-    console.log('PLAYER', playerId);
+
     this.gameStatus();
     return !this.state.appReady ? (
       <View style={styles.loadingScreen}>
