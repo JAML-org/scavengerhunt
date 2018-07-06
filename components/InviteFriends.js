@@ -148,12 +148,16 @@ export default class InviteFriends extends Component {
     }
   }
   render() {
-    const { navigate, getParams } = this.props.navigation;
-    const huntLocations = getParams('huntLocations');
-    const huntName = getParams('huntName');
-    const newGameId = getParams('newGameId');
-    const currentPlayer = getParams('huntLocations');
+    const { navigate, getParam } = this.props.navigation;
+    const huntLocations = getParam('huntLocations');
+    const huntName = getParam('huntName');
+    const newGameId = getParam('newGameId');
+    const currentPlayer = getParam('huntLocations');
 
+    console.log('HUNTLOCATIONS', huntLocations);
+    console.log('HUNTNAME', huntName);
+    console.log('NEWGAMEID', newGameId);
+    console.log('PLAYER', currentPlayer);
     return (
       <ImageBackground
         source={require('../urban-pursuit-leaf-bg.jpg')}
