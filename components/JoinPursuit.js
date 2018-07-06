@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ImageBackground } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  ImageBackground,
+  TouchableOpacity,
+} from 'react-native';
 import { Text, Divider, List, Button, ListItem } from 'react-native-elements';
 import * as firebase from 'firebase';
 import styles, { colors } from './style';
@@ -53,14 +58,14 @@ export default class JoinPursuit extends Component {
         <View
           style={[
             styles.container,
-            { justifyContent: 'flex-start', alignContent: 'start' },
+            { justifyContent: 'flex-start', alignContent: 'flex-start' },
           ]}
         >
           <View>
             <Text h4 style={styles.header}>
               Invites
             </Text>
-            <Divider />
+            <Divider style={{ backgroundColor: colors.orange }} />
           </View>
           <View style={{ flex: 2, alignContent: 'flex-start' }}>
             {invites && Object.keys(invites).length ? (
@@ -74,6 +79,13 @@ export default class JoinPursuit extends Component {
                     avatar={{ uri: invites[invite].from.avatar }}
                     containerStyle={
                       selected === invite ? styling.active : styling.inactive
+                    }
+                    rightIcon={
+                      <TouchableOpacity
+                        style={[styles.btn, { paddingHorizontal: 15 }]}
+                      >
+                        <Text style={styles.btnText}>JOIN</Text>
+                      </TouchableOpacity>
                     }
                     onPress={() => this.toggleSelected(invite)}
                   />

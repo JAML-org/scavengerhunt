@@ -153,7 +153,7 @@ export default class InviteFriends extends Component {
     const huntName = getParam('huntName');
     const newGameId = getParam('newGameId');
     const currentPlayer = getParam('currentPlayer');
-    
+
     return (
       <ImageBackground
         source={require('../urban-pursuit-leaf-bg.jpg')}
@@ -192,7 +192,7 @@ export default class InviteFriends extends Component {
           <Text h4 style={styles.header}>
             Invite Friends to Play
           </Text>
-          <Divider />
+          <Divider style={{ backgroundColor: colors.orange }} />
           <View style={styling.top}>
             <Button
               title="START PURSUIT"

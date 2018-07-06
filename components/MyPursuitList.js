@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, ImageBackground, ScrollView } from 'react-native';
 import { Divider, Text, List, ListItem } from 'react-native-elements';
-import styles from './style';
+import styles, { colors } from './style';
 
 const dummyData = [
   { id: 7, icon: 'filmstrip', name: 'Film Locations', pursuitNo: 'pursuit 1' },
@@ -28,7 +28,7 @@ export default class MyPursuitList extends Component {
               MY PURSUIT LIST
             </Text>
           </View>
-          <Divider />
+          <Divider style={{ backgroundColor: colors.orange }} />
           <ScrollView style={styles.container3}>
             <List>
               {dummyData.map(dummy => {
