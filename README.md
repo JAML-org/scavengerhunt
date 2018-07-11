@@ -1,3 +1,5 @@
+![logo] (https://github.com/JAML-org/urbanpursuit/blob/master/urban-pursuit-logo.jpg)
+
 # Urban Pursuit
 
 Urban Pursuit is a New York City based scavenger hunt app for your mobile phone. It comes with a variety of themed pursuits to choose from. We designed Urban Pursuit to allow players to invite each other to compete in pursuits, or play solo.
@@ -22,6 +24,7 @@ Also, create an account with Firebase before getting started.
 * Choose 'Add Firebase to your web app' to get the necessary credentials for the config.js file.
 * Create a database in test mode.
 * Make sure the database type is 'Realtime Database'.
+* Turn on Email/Password as Sign-in provider under Authentication.
 
 ### Installing
 
