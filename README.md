@@ -6,6 +6,8 @@
 
 Urban Pursuit is a New York City based scavenger hunt app for your mobile phone. It comes with a variety of themed pursuits to choose from. We designed Urban Pursuit to allow players to invite each other to compete in pursuits, or play solo.
 
+Video presentation can be found [here](https://youtu.be/BLSe5jkwTeo)
+
 ## Getting Started
 
 Our mobile app was built using Firebase as the database and requires a config.js file in the root directory with the following format.
