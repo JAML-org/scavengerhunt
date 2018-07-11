@@ -1,4 +1,6 @@
-![logo] (https://github.com/JAML-org/urbanpursuit/blob/master/urban-pursuit-logo.jpg)
+[logo]: https://github.com/JAML-org/urbanpursuit/blob/master/urban-pursuit-logo.jpg
+
+![logo]
 
 # Urban Pursuit
 
