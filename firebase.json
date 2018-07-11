@@ -1,0 +1,69 @@
+{
+  "Hunts" : {
+    "Bar Crawl" : {
+      "blurb" : "Find these bars located in the financial district!",
+      "icon" : "martini",
+
+      "locations2" : [ "a", "b", "c", "d", "e" ],
+      "type" : "material-community"
+    },
+    "Museums" : {
+      "blurb" : "How many museums do you know of in New York? Find these in the lower east side!",
+      "icon" : "building",
+      "locations2" : [ "f", "g", "h", "i", "j" ],
+      "type" : "font-awesome"
+    }
+  },
+  "Locations2" : {
+    "a" : {
+      "coords" : [ 40.7050604, -74.0086598 ],
+      "image" : "https://farm9.static.flickr.com/8406/8695098704_cacbdbef86_b.jpg",
+      "name" : "Killarney Rose"
+    },
+    "b" : {
+      "coords" : [ 40.704582, -74.010082 ],
+      "image" : "http://www.batterypark.tv/wp-content/uploads/2013/01/IMG_0110.jpg",
+      "name" : "Mad Dog & Beans"
+    },
+    "c" : {
+      "coords" : [ 40.704035, -74.011077 ],
+      "image" : "http://i1.wp.com/www.foodrepublic.com/wp-content/uploads/2015/07/MG_2497-1000x666.jpg",
+      "name" : "The Dead Rabbit Grocery and Grog"
+    },
+    "d" : {
+      "coords" : [ 40.7024937, -74.0126649 ],
+      "image" : "https://media.xogrp.com/images/b3cda67a-d4b8-4e17-8ccb-e05ac70746f0~rs_840.h",
+      "name" : "Staten Island Ferry Terminal Bar"
+    },
+    "e" : {
+      "coords" : [ 40.7045609, -74.010662 ],
+      "image" : "https://lh3.ggpht.com/p/AF1QipMotqBJEVlEQu4S1hUUcnfAzYmmAQ6obU7_oJhl=s0",
+      "name" : "Bavaria Bierhaus"
+    },
+    "f" : {
+      "coords" : [ 40.7226062, -74.0025143 ],
+      "image" : "https://www.nycgo.com/images/venues/2129/icp_museum_ext_metnick__card.jpg",
+      "name" : "International Center of Photography Museum"
+    },
+    "g" : {
+      "coords" : [ 40.7221563, -74.0009523 ],
+      "image" : "https://media.gettyimages.com/photos/the-entrance-to-the-dahesh-museum-of-art-in-manhattan-picture-id539659231",
+      "name" : "Dahesh Museum of Art"
+    },
+    "h" : {
+      "coords" : [ 40.7250921, -74.0046352 ],
+      "image" : "https://cdn.archpaper.com/wp-content/uploads/2017/10/Exterior-of-the-Museum-of-Chinese-in-America-1-1.jpg",
+      "name" : "Museum of Chinese In America"
+    },
+    "i" : {
+      "coords" : [ 40.7147, -73.9936 ],
+      "image" : "http://i0.wp.com/www.thelodownny.com/leslog/wp-content/uploads/2017/12/IMG_2004.jpg?resize=563%2C750",
+      "name" : "Museum at Eldridge Street"
+    },
+    "j" : {
+      "coords" : [ 40.7193281, -73.9988985 ],
+      "image" : "https://www.nycgo.com/images/venues/2159/newmuseum_schaer-014__large.jpg",
+      "name" : "New Museum"
+    }
+  }
+}
