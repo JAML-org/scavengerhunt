@@ -194,7 +194,7 @@ class HuntDetails extends React.Component {
           <View style={styles.blurb}>
             <Text style={styles.blurbText}>{hunt.blurb}</Text>
             <Text style={styles.blurbTarget}>
-              Targets: {hunt.locations.length}
+              Targets: {hunt.locations2.length}
             </Text>
           </View>
           <TouchableOpacity
